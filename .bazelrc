@@ -1,0 +1,31 @@
+#
+#    Copyright 2021 Julian Amann
+#
+#    Licensed under the Apache License, Version 2.0 (the "License");
+#    you may not use this file except in compliance with the License.
+#    You may obtain a copy of the License at
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+#    Unless required by applicable law or agreed to in writing, software
+#    distributed under the License is distributed on an "AS IS" BASIS,
+#    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#    See the License for the specific language governing permissions and
+#    limitations under the License.
+#
+#    SPDX-License-Identifier: Apache-2.0
+#
+
+build --symlink_prefix=/ # Out of source build
+
+# Setup compiler flags - required for Qt6 is at least C++17
+build:gcc9 --cxxopt=-std=c++2a
+build:gcc9 --cxxopt=-Wall
+build:gcc9 --cxxopt=-Werror
+
+build:vs2019 --cxxopt=/std:c++17
+build:vs2019 --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
+build:vs2019 --copt=-DWIN32_LEAN_AND_MEAN
+build:vs2019 --copt=-DNOGDI
+build:vs2019 --host_copt=-DWIN32_LEAN_AND_MEAN
+build:vs2019 --host_copt=-DNOGDI
