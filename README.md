@@ -47,13 +47,17 @@ I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This
     build:vs2019 --host_copt=-DWIN32_LEAN_AND_MEAN
     build:vs2019 --host_copt=-DNOGDI
 
-### Linux using GCC9
+### Working with Linux using GCC9
 
     bazel run --config=gcc9 //:Qt6HelloWorld
 
 Compilation works. Execution not.
 
-### Windows using Visual Studio 2019
+When trying to run this `Qt6HelloWorld` demo this error gets reported:
+
+    /home/user/.cache/bazel/_bazel_$USER/196a14423fc09522ef7bd657344d1cd0/execroot/Qt6Testbed/bazel-out/k8-fastbuild/bin/Qt6HelloWorld: error while loading shared libraries: libQt6Network.so.6: cannot open shared object file: No such file or directory
+
+### Working with Windows using Visual Studio 2019
 
 Copy `platforms` folder to bazel-out:
 
