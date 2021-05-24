@@ -1,12 +1,14 @@
-# Bazel rules for Qt6
+# Experimental Bazel rules for Qt6
 
 ## Goal 
 
-The goal of this experiment is to be able to build Qt6 applications using Bazel on Windows, Linux and MacOS without the need to preinstall Qt6. All the magic to setup Qt6 should be done by Bazel with as less effort as possible.
+The goal of this experiment is to be able to build Qt6 applications using Bazel on Windows, 
+Linux and macOS without the need to preinstall Qt6. 
+All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
 ## Current status
 
-This project is just a testbed for Qt6 with Bazel 4.0.0 and still experimental.
+This project is just a testbed for Qt6 with Bazel 4.1.0 and still experimental.
 
 A prebuild version of Qt is fetched from my website:
 
@@ -31,13 +33,25 @@ A prebuild version of Qt is fetched from my website:
             build_file = "//:qt_6.1.0_linux_desktop_gcc_64.BUILD",
         )
 
-I create a .bazelrc file that contains a config for gcc9 and vs2019. This is needed since Qt6 needs at least C++17 standard enabled.
+I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This is needed since Qt6 needs at least C++17 standard enabled.
+
+    # Setup compiler flags - required for Qt6 is at least C++17
+    build:gcc9 --cxxopt=-std=c++2a
+    build:gcc9 --cxxopt=-Wall
+    build:gcc9 --cxxopt=-Werror
+
+    build:vs2019 --cxxopt=/std:c++17
+    build:vs2019 --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
+    build:vs2019 --copt=-DWIN32_LEAN_AND_MEAN
+    build:vs2019 --copt=-DNOGDI
+    build:vs2019 --host_copt=-DWIN32_LEAN_AND_MEAN
+    build:vs2019 --host_copt=-DNOGDI
 
 ### Linux using GCC9
 
-    bazel run --config=gcc9 //:HelloWorldQt6
+    bazel run --config=gcc9 //:Qt6HelloWorld
 
-Compiliation works. Execution not.
+Compilation works. Execution not.
 
 ### Windows using Visual Studio 2019
 
