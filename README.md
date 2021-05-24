@@ -69,14 +69,15 @@ Should display the following window:
 
 ## Contributions
 
-Any improvments to the Qt6 build experience using Bazel are welcome. 
+Any improvements to the Qt6 build experience using Bazel are welcome. 
 Maybe you have solved this problem already. 
-In this case I would appreciate it when you could share your efforts under some permissive license.
+In this case, 
+I would appreciate it when you could share your efforts under some permissive license.
 
 ## License
 
-This work is puplish under Apache 2.0 License.
-This works builds on top of https://github.com/justbuchanan/bazel_rules_qt
+This work is puplished under Apache 2.0 License.
+This work builds on top of https://github.com/justbuchanan/bazel_rules_qt
 
 The original project is contained in the `third_party` folder of this project with all license notes included.
 
