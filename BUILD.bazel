@@ -1,19 +1,10 @@
 load(":qt_helper.bzl", "create_platfroms_folder")
+load(":qt_libraries.bzl", "QT_LIBRARIES")
 
 # Works only on Windows
 create_platfroms_folder()
 
 ### The following sections is copied and from https://github.com/justbuchanan/bazel_rules_qt/blob/master/qt.BUILD
-QT_LIBRARIES = [
-    ("core", "QtCore", "Qt6Core", []),
-    ("network", "QtNetwork", "Qt6Network", []),
-    ("widgets", "QtWidgets", "Qt6Widgets", [":qt_core", ":qt_gui"]),
-    ("quick", "QtQuick", "Qt6Quick", [":qt_gui", ":qt_qml"]),
-    ("qml", "QtQml", "Qt6Qml", [":qt_core", ":qt_network"]),
-    ("qml_models", "QtQmlModels", "Qt6QmlModels", []),
-    ("gui", "QtGui", "Qt6Gui", [":qt_core"]),
-    ("opengl", "QtOpenGL", "Qt6OpenGL", []),
-]
 
 [
     cc_library(
@@ -28,7 +19,7 @@ QT_LIBRARIES = [
 ]
 
 ### end of copied code from https://github.com/justbuchanan/bazel_rules_qt/blob/master/qt.BUILD
-### The copied code 
+### The copied code
 
 cc_binary(
     name = "Qt6HelloWorld",
@@ -38,7 +29,16 @@ cc_binary(
         ":qt_qml",
         ":qt_widgets",
     ],
-    #data = [
-    #   "@qt//:platform_files",
-    #]
+    env = select({
+        "@platforms//os:linux": {
+            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.1.0_linux_desktop_gcc_64/plugins",
+        },
+        "@platforms//os:windows": {
+            # TODO
+        },
+    }),
+    data = select({
+        "@platforms//os:linux": ["@qt_6.1.0_linux_desktop_gcc_64//:plugin_files"],
+        "@platforms//os:windows": [],
+    }),
 )
