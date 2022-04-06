@@ -24,7 +24,7 @@ def fetch_qt6():
     # downloaded via  python -m aqt install windows desktop win64_msvc2019_64
     http_archive(
         name = "qt_6.1.0_windows_desktop_win64_msvc2019_64",
-        urls = ["http://vertexwahn.de/lfs/v1/qt_6.1.0_windows_desktop_win64_msvc2019_64.zip"],
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.1.0_windows_desktop_win64_msvc2019_64.zip"],
         sha256 = "705684b672bc4305435f5a78c80399aef08f0120623b59c02f1298339c93fab4",
         strip_prefix = "6.1.0/msvc2019_64",
         build_file = "//:qt_6.1.0_windows_desktop_win64_msvc2019_64.BUILD",
@@ -32,9 +32,9 @@ def fetch_qt6():
 
     # downloaded via python -m aqt install 6.1.0 linux desktop gcc_64
     http_archive(
-        name = "qt_6.1.0_linux_desktop_gcc_64",
-        urls = ["http://vertexwahn.de/lfs/v1/qt_6.1.0_linux_desktop_gcc_64.tar.xz"],
-        sha256 = "334dfabef8d98cf6e61db304b1ff8e892c7ea7a02f0e238014203161498ef5b9",
-        strip_prefix = "6.1.0/gcc_64",
-        build_file = "//:qt_6.1.0_linux_desktop_gcc_64.BUILD",
+        name = "qt_6.2.4_linux_desktop_gcc_64",
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz"],
+        sha256 = "50f969898d0112c9035ff9833fca52bad7f6ba95e6d837add15ff9f22badbd69",
+        strip_prefix = "6.2.4/gcc_64",
+        build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
     )

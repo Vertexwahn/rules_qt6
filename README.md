@@ -10,7 +10,7 @@ All the magic to set up Qt6 should be done by Bazel with as little effort as pos
 
 This project is just a testbed for Qt6 with Bazel 5.1.0 and still experimental.
 
-A prebuild version of Qt is fetched from my website:
+A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/):
 
     def fetch_qt6():
         ### Qt 6.1.0
@@ -51,7 +51,7 @@ I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This
 
     bazel run --config=gcc9 //:Qt6HelloWorld
 
-![Screenshot of HelloWorld demo on Ubuntu 20.04](/screenshots/Ubuntu20.04.png)
+![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/Ubuntu20.04.png)
 
 ### Working with Windows using Visual Studio 2019
 
@@ -65,7 +65,7 @@ Run Qt6HelloWorld
 
 Should display the following window:
 
-![Screenshot of HelloWorld demo on Windows 10](/screenshots/Windows10.png)
+![Screenshot of HelloWorld demo on Windows 10](/docs/screenshots/Windows10.png)
 
 ### macOS
 

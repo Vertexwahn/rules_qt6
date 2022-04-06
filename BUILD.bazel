@@ -11,7 +11,7 @@ create_platfroms_folder()
         name = "qt_%s" % name,
         visibility = ["//visibility:public"],
         deps = dependencies + select({
-            "@platforms//os:linux": ["@qt_6.1.0_linux_desktop_gcc_64//:qt_%s_linux" % name],
+            "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_%s_linux" % name],
             "@platforms//os:windows": ["@qt_6.1.0_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
         }),
     )
@@ -31,14 +31,14 @@ cc_binary(
     ],
     env = select({
         "@platforms//os:linux": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.1.0_linux_desktop_gcc_64/plugins",
+            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
         },
         "@platforms//os:windows": {
             # TODO
         },
     }),
     data = select({
-        "@platforms//os:linux": ["@qt_6.1.0_linux_desktop_gcc_64//:plugin_files"],
+        "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files"],
         "@platforms//os:windows": [],
     }),
 )
