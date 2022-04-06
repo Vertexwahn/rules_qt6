@@ -6,6 +6,9 @@ The goal of this experiment is to be able to build Qt6 applications using Bazel 
 Linux and macOS without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
+This rules require at least Bazel 4.0.0 to work.
+With some small modifaction you can get work these rules also on earlier versions of Bazel.
+
 ## Current status
 
 This project is just a testbed for Qt6 with Bazel 5.1.0 and still experimental.
@@ -18,7 +21,7 @@ A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/)
         # downloaded via  python -m aqt install windows desktop win64_msvc2019_64
         http_archive(
             name = "qt_6.1.0_windows_desktop_win64_msvc2019_64",
-            urls = ["http://vertexwahn.de/lfs/v1/qt_6.1.0_windows_desktop_win64_msvc2019_64.zip"],
+            urls = ["https://vertexwahn.de/lfs/v1/qt_6.1.0_windows_desktop_win64_msvc2019_64.zip"],
             sha256 = "705684b672bc4305435f5a78c80399aef08f0120623b59c02f1298339c93fab4",
             strip_prefix = "6.1.0/msvc2019_64",
             build_file = "//:qt_6.1.0_windows_desktop_win64_msvc2019_64.BUILD",
@@ -26,11 +29,11 @@ A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/)
 
         # downloaded via python -m aqt install 6.1.0 linux desktop gcc_64
         http_archive(
-            name = "qt_6.1.0_linux_desktop_gcc_64",
-            urls = ["http://vertexwahn.de/lfs/v1/qt_6.1.0_linux_desktop_gcc_64.tar.xz"],
+            name = "qt_6.2.4_linux_desktop_gcc_64",
+            urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz"],
             sha256 = "334dfabef8d98cf6e61db304b1ff8e892c7ea7a02f0e238014203161498ef5b9",
-            strip_prefix = "6.1.0/gcc_64",
-            build_file = "//:qt_6.1.0_linux_desktop_gcc_64.BUILD",
+            strip_prefix = "6.2.4/gcc_64",
+            build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
         )
 
 I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This is needed since Qt6 needs at least C++17 standard enabled.
