@@ -4,8 +4,6 @@ load(":qt_libraries.bzl", "QT_LIBRARIES")
 # Works only on Windows
 create_platfroms_folder()
 
-### The following sections is copied and from https://github.com/justbuchanan/bazel_rules_qt/blob/master/qt.BUILD
-
 [
     cc_library(
         name = "qt_%s" % name,
@@ -17,9 +15,6 @@ create_platfroms_folder()
     )
     for name, _, _, dependencies in QT_LIBRARIES
 ]
-
-### end of copied code from https://github.com/justbuchanan/bazel_rules_qt/blob/master/qt.BUILD
-### The copied code
 
 cc_binary(
     name = "Qt6HelloWorld",
