@@ -4,11 +4,11 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 [
     cc_library(
         name = "qt_%s_linux" % name,
-        hdrs = glob(["include/%s/**" % include_folder]),
         srcs = glob([
             "lib/lib%s.so*" % library_name,
             "lib/libicu*.so*",
         ]),
+        hdrs = glob(["include/%s/**" % include_folder]),
         includes = ["include"],
         # Available from Bazel 4.0.0
         target_compatible_with = ["@platforms//os:linux"],
