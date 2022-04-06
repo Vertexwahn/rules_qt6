@@ -67,6 +67,10 @@ Should display the following window:
 
 ![Screenshot of HelloWorld demo on Windows 10](/screenshots/Windows10.png)
 
+### macOS
+
+*TODO*
+
 ## Contributions
 
 Any improvements to the Qt6 build experience using Bazel are welcome. 
