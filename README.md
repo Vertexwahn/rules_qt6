@@ -8,7 +8,7 @@ All the magic to set up Qt6 should be done by Bazel with as little effort as pos
 
 ## Current status
 
-This project is just a testbed for Qt6 with Bazel 4.1.0 and still experimental.
+This project is just a testbed for Qt6 with Bazel 5.1.0 and still experimental.
 
 A prebuild version of Qt is fetched from my website:
 
