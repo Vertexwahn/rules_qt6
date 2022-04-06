@@ -78,9 +78,6 @@ I would appreciate it when you could share your efforts under some permissive li
 
 This work is published under Apache 2.0 License.
 This work builds on top of https://github.com/justbuchanan/bazel_rules_qt
-
-The original project is contained in the `third_party` folder of this project with all license notes included.
-
 which is also licensed under Apache 2.0.
 The copyright holders of the bazel_rules_qt repsoitory are:
 - justbuchanan Justin Buchanan
