@@ -10,7 +10,7 @@ create_platfroms_folder()
         visibility = ["//visibility:public"],
         deps = dependencies + select({
             "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_%s_linux" % name],
-            "@platforms//os:windows": ["@qt_6.1.0_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
+            "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
         }),
     )
     for name, _, _, dependencies in QT_LIBRARIES

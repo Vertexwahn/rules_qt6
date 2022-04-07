@@ -16,7 +16,7 @@
 #    SPDX-License-Identifier: Apache-2.0
 #
 
-workspace(name = "Qt6Testbed")
+workspace(name = "rules_qt6")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 

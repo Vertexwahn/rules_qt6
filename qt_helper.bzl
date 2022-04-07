@@ -19,4 +19,4 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 
 def create_platfroms_folder():
-    copy_file("qwindows.dll", src="@qt_6.1.0_windows_desktop_win64_msvc2019_64//:platform_files", out="platforms/qwindows.dll")
+    copy_file("qwindows.dll", src="@qt_6.2.4_windows_desktop_win64_msvc2019_64//:platform_files", out="platforms/qwindows.dll")

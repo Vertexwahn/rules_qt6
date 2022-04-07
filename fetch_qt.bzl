@@ -19,18 +19,16 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def fetch_qt6():
-    ### Qt 6.1.0
+    ### Qt 6.2.4
 
-    # downloaded via  python -m aqt install windows desktop win64_msvc2019_64
     http_archive(
-        name = "qt_6.1.0_windows_desktop_win64_msvc2019_64",
-        urls = ["https://vertexwahn.de/lfs/v1/qt_6.1.0_windows_desktop_win64_msvc2019_64.zip"],
-        sha256 = "705684b672bc4305435f5a78c80399aef08f0120623b59c02f1298339c93fab4",
-        strip_prefix = "6.1.0/msvc2019_64",
-        build_file = "//:qt_6.1.0_windows_desktop_win64_msvc2019_64.BUILD",
+        name = "qt_6.2.4_windows_desktop_win64_msvc2019_64",
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_windows_desktop_win64_msvc2019_64.zip"],
+        sha256 = "926b528de8470f2f4217c49a9c9acb29d9b1e649d27e1c7d59885e389e69e325",
+        strip_prefix = "6.2.4/msvc2019_64",
+        build_file = "//:qt_6.2.4_windows_desktop_win64_msvc2019_64.BUILD",
     )
 
-    # downloaded via python -m aqt install 6.1.0 linux desktop gcc_64
     http_archive(
         name = "qt_6.2.4_linux_desktop_gcc_64",
         urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz"],
