@@ -22,7 +22,24 @@ jobs:
       run: |
         bazelisk build --config=gcc9 //...
 
-  build_and_test_windows:
+  build_and_test_windows10:
+    name: Windows Server 2019 build <Visual Studio 2019>
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Mount bazel cache
+      uses: actions/cache@v2
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel
+
+    - name: Build
+      run: |
+        bazelisk build --config=vs2019 //...
+
+  build_and_test_windows11:
     name: Windows Server 2022 build <Visual Studio 2022>
     runs-on: windows-2022
 

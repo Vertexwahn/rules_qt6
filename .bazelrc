@@ -34,7 +34,7 @@ build:vs2019 --host_copt=-DWIN32_LEAN_AND_MEAN
 build:vs2019 --host_copt=-DNOGDI
 
 # Visual Studio 2022
-build:vs2022 --cxxopt=/std:c++17
+build:vs2022 --cxxopt=/std:c++20
 build:vs2022 --cxxopt=/Zc:__cplusplus
 build:vs2022 --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
 build:vs2022 --define compiler=vs2022
