@@ -7,18 +7,17 @@ Linux and macOS without the need to preinstall Qt6.
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
 This rules require at least Bazel 4.0.0 to work.
-With some small modifaction you can get work these rules also on earlier versions of Bazel.
+With some small modifications you can get work these rules also on earlier versions of Bazel.
 
 ## Current status
 
-This project is just a testbed for Qt6 with Bazel 5.1.0 and still experimental.
+This project is just a testbed for Qt6 with Bazel 5.1.0 and is still experimental.
 
 A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/):
 
     def fetch_qt6():
         ### Qt 6.2.4
 
-        # downloaded via  python -m aqt install windows desktop win64_msvc2019_64
         http_archive(
             name = "qt_6.2.4_windows_desktop_win64_msvc2019_64",
             urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_windows_desktop_win64_msvc2019_64.zip"],
@@ -27,7 +26,6 @@ A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/)
             build_file = "//:qt_6.2.4_windows_desktop_win64_msvc2019_64.BUILD",
         )
 
-        # downloaded via python -m aqt install 6.2.4 linux desktop gcc_64
         http_archive(
             name = "qt_6.2.4_linux_desktop_gcc_64",
             urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz"],
@@ -36,19 +34,8 @@ A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/)
             build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
         )
 
-I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This is needed since Qt6 needs at least C++17 standard enabled.
-
-    # Setup compiler flags - required for Qt6 is at least C++17
-    build:gcc9 --cxxopt=-std=c++2a
-    build:gcc9 --cxxopt=-Wall
-    build:gcc9 --cxxopt=-Werror
-
-    build:vs2019 --cxxopt=/std:c++17
-    build:vs2019 --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
-    build:vs2019 --copt=-DWIN32_LEAN_AND_MEAN
-    build:vs2019 --copt=-DNOGDI
-    build:vs2019 --host_copt=-DWIN32_LEAN_AND_MEAN
-    build:vs2019 --host_copt=-DNOGDI
+I created a `.bazelrc` file that contains a config for `gcc9`, `vs2019` and ``vs2022`. This is needed since Qt6 needs at least C++17 standard enabled.
+For more details have a look at [.bazelrc](bazelrc).
 
 ### Working with Linux using GCC9
 
@@ -57,10 +44,6 @@ I created a `.bazelrc` file that contains a config for `gcc9` and `vs2019`. This
 ![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/Ubuntu20.04.png)
 
 ### Working with Windows using Visual Studio 2019
-
-Copy `platforms` folder to bazel-out:
-
-    bazel run --config=vs2019 //...
 
 Run Qt6HelloWorld
 

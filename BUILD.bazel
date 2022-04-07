@@ -1,8 +1,4 @@
-load(":qt_helper.bzl", "create_platfroms_folder")
 load(":qt_libraries.bzl", "QT_LIBRARIES")
-
-# Works only on Windows
-create_platfroms_folder()
 
 [
     cc_library(
@@ -29,11 +25,11 @@ cc_binary(
             "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
         },
         "@platforms//os:windows": {
-            # TODO
+            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
         },
     }),
     data = select({
         "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files"],
-        "@platforms//os:windows": [],
+        "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files"],
     }),
 )

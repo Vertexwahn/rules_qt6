@@ -1,4 +1,3 @@
-load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
@@ -8,8 +7,7 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
         hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
         interface_library = "lib/%s.lib" % library_name,
         shared_library = "bin/%s.dll" % library_name,
-        # Not available in cc_import (See: https://github.com/bazelbuild/bazel/issues/12745)
-        #target_compatible_with = ["@platforms//os:windows"],
+        target_compatible_with = ["@platforms//os:windows"],
     )
     for name, include_folder, library_name, _ in QT_LIBRARIES
 ]
@@ -29,21 +27,6 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 ]
 
 filegroup(
-    name = "platform_files",
-    srcs = [
-        #"plugins/platforms/qdirect2d.dll",
-        #"plugins/platforms/qdirect2dd.dll",
-        #"plugins/platforms/qminimal.dll",
-        #"plugins/platforms/qminimald.dll",
-        #"plugins/platforms/qoffscreen.dll",
-        #"plugins/platforms/qoffscreend.dll",
-        "plugins/platforms/qwindows.dll",
-        #"plugins/platforms/qwindowsd.dll"
-    ],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
     name = "uic",
     srcs = ["bin/uic.exe"],
     visibility = ["//visibility:public"],
@@ -52,5 +35,11 @@ filegroup(
 filegroup(
     name = "moc",
     srcs = ["bin/moc.exe"],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "plugin_files",
+    srcs = glob(["plugins/**/*"]),
     visibility = ["//visibility:public"],
 )

@@ -1,4 +1,3 @@
-load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
