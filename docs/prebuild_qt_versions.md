@@ -16,3 +16,9 @@ This document explains how the archive of the prebuild version is generated.
     python -m pip install aqtinstall
     aqt list-qt windows desktop --arch 6.2.4
     aqt install-qt windows desktop 6.2.0 win64_msvc2019_64 -m all
+
+## macOS 12 Intel
+
+    pip install aqtinstall
+    aqt list-qt macos desktop --arch 6.2.0
+    aqt install-qt mac desktop 6.2.0 clang_64

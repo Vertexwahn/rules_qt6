@@ -3,14 +3,14 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(
-        name = "qt_%s_linux" % name,
+        name = "qt_%s_mac" % name,
         srcs = glob([
             "lib/lib%s.so*" % library_name,
             "lib/libicu*.so*",
         ]),
         hdrs = glob(["include/%s/**" % include_folder]),
         includes = ["include"],
-        target_compatible_with = ["@platforms//os:linux"],
+        target_compatible_with = ["@platforms//os:mac"],
         visibility = ["//visibility:public"],
     )
     for name, include_folder, library_name, _ in QT_LIBRARIES
