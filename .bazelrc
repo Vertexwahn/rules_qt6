@@ -28,6 +28,3 @@ build:vs2022 --host_copt=-DNOGDI
 # macOS (e.g. Clang 12.0.0)
 build:macos --cxxopt=-std=c++2a
 build:macos --cxxopt=-Wall
-#build:macos --cxxopt=-Werror # Commented out because of embree
-##build:macos --cxxopt=-Wextra
-build:macos --define compiler=clang12
