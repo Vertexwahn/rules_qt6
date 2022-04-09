@@ -6,6 +6,7 @@ load(":qt_libraries.bzl", "QT_LIBRARIES")
         visibility = ["//visibility:public"],
         deps = dependencies + select({
             "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_%s_linux" % name],
+            "@platforms//os:osx": ["@qt_6.2.4_mac_desktop_clang_64//:qt_%s_mac" % name],
             "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
         }),
     )
@@ -24,12 +25,16 @@ cc_binary(
         "@platforms//os:linux": {
             "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
         },
+        "@platforms//os:osx": {
+            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/plugins",
+        },
         "@platforms//os:windows": {
             "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
         },
     }),
     data = select({
         "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files"],
+        "@platforms//os:osx": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files"],
         "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files"],
     }),
 )

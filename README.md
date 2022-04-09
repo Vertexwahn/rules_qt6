@@ -55,7 +55,14 @@ Should display the following window:
 
 ### macOS
 
-*TODO*
+    bazel run --config=macos //:Qt6HelloWorld
+
+Results in:
+
+    main.cpp:1:10: fatal error: 'QtCore/QThread' file not found
+    #include <QtCore/QThread>
+            ^~~~~~~~~~~~~~~~
+    1 error generated.
 
 ## Contributions
 

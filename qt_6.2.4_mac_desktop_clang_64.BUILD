@@ -9,7 +9,7 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
         ]),
         hdrs = glob(["include/%s/**" % include_folder]),
         includes = ["include"],
-        target_compatible_with = ["@platforms//os:mac"],
+        target_compatible_with = ["@platforms//os:osx"],
         visibility = ["//visibility:public"],
     )
     for name, include_folder, library_name, _ in QT_LIBRARIES

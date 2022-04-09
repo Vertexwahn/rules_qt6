@@ -19,10 +19,10 @@ def fetch_qt6():
         build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
     )
 
-    #http_archive(
-    #    name = "qt_6.2.4_mac_desktop_clang_64",
-    #    urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_mac_desktop_clang_64.zip"],
-    #    #sha256 = "50f969898d0112c9035ff9833fca52bad7f6ba95e6d837add15ff9f22badbd69",
-    #    strip_prefix = "6.2.4/gcc_64",
-    #    build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
-    #)
+    http_archive(
+        name = "qt_6.2.4_mac_desktop_clang_64",
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_mac_desktop_clang_64.zip"],
+        sha256 = "9543aa178a6fe6aa138e4319fb07a106375b7fef11be150d154d5c1b8a321721",
+        strip_prefix = "6.2.4/macos",
+        build_file = "//:qt_6.2.4_mac_desktop_clang_64.BUILD",
+    )
