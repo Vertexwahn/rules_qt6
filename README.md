@@ -82,3 +82,9 @@ The copyright holders of the bazel_rules_qt repsoitory are:
 - dnewmarch
 
 See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors
+
+## Similar projects
+
+- [aabtop/rules_qt](https://github.com/aabtop/rules_qt)
+- [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example)
+- [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt)
