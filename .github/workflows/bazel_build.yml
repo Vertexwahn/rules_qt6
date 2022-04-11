@@ -56,9 +56,36 @@ jobs:
       run: |
         bazelisk build --config=vs2022 //...
 
-  build_and_test_macos:
+  build_and_test_macos11:
     name: macOS 11 Bazel build <Apple Clang13>
     runs-on: macOS-11
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Mount bazel cache
+      uses: actions/cache@v2
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel
+
+    - name: Print info
+      run: |
+        echo "OS info:"
+        sw_vers
+        uname
+        echo "Compiler info:"
+        clang --version
+    
+    - name: Build
+      run: |
+        brew install qt@6
+        brew link qt@6
+        bazelisk build --config=macos //...
+
+  build_and_test_macos10:
+    name: macOS 10.15 Bazel build <Apple Clang13>
+    runs-on: macOS-10.15
 
     steps:
     - uses: actions/checkout@v3
