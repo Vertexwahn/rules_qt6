@@ -22,5 +22,14 @@ This document explains how the archive of the prebuilt version is generated.
     pip install aqtinstall
     aqt list-qt mac desktop --arch 6.2.4
     aqt install-qt mac desktop 6.2.4 clang_64
+    # This is currently not done - but needs also to be done to get it working:
+    cd 6.2.4/include
+    ln -s ../lib/QtCore.framework/Headers QtCore
+    ln -s ../lib/QtWidgets.framework/Headers QtWidgets
+    ln -s ../lib/QtGui.framework/Headers QtGui
     # zip it
     mv 6.2.4.zip qt_6.2.4_mac_desktop_clang_64.zip
+
+    brew install qt@6 # install qt 6.2.3_1 monterey
+    cd .../external/qt_6.2.4_mac_desktop_clang_64/include
+

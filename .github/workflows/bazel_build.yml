@@ -79,4 +79,6 @@ jobs:
     
     - name: Build
       run: |
+        brew install qt@6
+        brew link qt@6
         bazelisk build --config=macos //...

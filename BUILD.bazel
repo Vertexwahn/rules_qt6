@@ -26,7 +26,7 @@ cc_binary(
             "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
         },
         "@platforms//os:osx": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/plugins",
+            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
         },
         "@platforms//os:windows": {
             "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",

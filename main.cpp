@@ -1,4 +1,4 @@
-#include <QtCore/QThread>
+#include "QtCore/QThread"
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QStylePainter>
