@@ -1,10 +1,13 @@
-# Experimental Bazel rules for Qt6
+# Bazel rules for Qt6
 
 ## Goal 
 
-The goal of this experiment is to be able to build Qt6 applications using Bazel on Windows, 
+The goal of this rules is to be able to build Qt6 applications using Bazel on Windows, 
 Linux and macOS without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
+
+Currently, on macOS these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
+On Windows and Linux those rules should work without a preinstalled Qt6 version.
 
 This rules require at least Bazel 4.0.0 to work.
 With some small modifications you can get work these rules also on earlier versions of Bazel.
@@ -57,13 +60,7 @@ Should display the following window:
 
     bazel run --config=macos //:Qt6HelloWorld
 
-Results in:
-
-    main.cpp:1:10: fatal error: 'QtCore/QThread' file not found
-    #include <QtCore/QThread>
-            ^~~~~~~~~~~~~~~~
-    1 error generated.
-
+![Screenshot of HelloWorld demo on macOS](/docs/screenshots/macOS12.png)
 ## Contributions
 
 Any improvements to the Qt6 build experience using Bazel are welcome. 
