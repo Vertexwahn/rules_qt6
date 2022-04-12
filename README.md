@@ -74,12 +74,13 @@ I would appreciate it when you could share your efforts under some permissive li
 ## License
 
 This work is published under Apache 2.0 License.
-This work builds on top of https://github.com/justbuchanan/bazel_rules_qt
-which is also licensed under Apache 2.0.
+
+This work builds on top of (a) https://github.com/justbuchanan/bazel_rules_qt which is also licensed under Apache 2.0.
+
 The copyright holders of the bazel_rules_qt repsoitory are:
-- justbuchanan Justin Buchanan
-- limdor Xavier Bonaventura
 - dnewmarch
+- Justin Buchanan
+- Xavier Bonaventura
 
 See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors
 

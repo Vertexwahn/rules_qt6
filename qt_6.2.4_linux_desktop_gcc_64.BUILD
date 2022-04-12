@@ -1,4 +1,4 @@
-load("@//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(

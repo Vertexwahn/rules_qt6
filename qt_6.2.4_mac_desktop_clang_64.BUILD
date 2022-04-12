@@ -1,4 +1,4 @@
-load("@//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(
@@ -19,13 +19,13 @@ load("@//:qt_libraries.bzl", "QT_LIBRARIES")
 
 filegroup(
     name = "uic",
-    srcs = ["libexec/uic"],
+    srcs = ["bin/uic"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "moc",
-    srcs = ["libexec/moc"],
+    srcs = ["bin/moc"],
     visibility = ["//visibility:public"],
 )
 

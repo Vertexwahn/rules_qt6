@@ -23,9 +23,9 @@ qt_toolchain(
 qt_toolchain(
     name = "qt_osx",
     # TODO: determine paths in qt_configure.bzl
-    moc_path = "/usr/local/opt/qt5/bin/moc",
-    rcc_path = "/usr/local/opt/qt5/bin/rcc",
-    uic_path = "/usr/local/opt/qt5/bin/uic",
+    moc_path = "/usr/local/opt/qt@6/share/qt/libexec/moc",
+    rcc_path = "/usr/local/opt/qt@6/share/qt/libexec/rcc",
+    uic_path = "/usr/local/opt/qt@6/share/qt/libexec/uic",
 )
 
 toolchain(

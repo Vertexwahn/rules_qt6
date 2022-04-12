@@ -1,6 +1,6 @@
 workspace(name = "de_vertexwahn_rules_qt6")
 
-load(":fetch_qt.bzl", "fetch_qt6")
+load("@de_vertexwahn_rules_qt6//:fetch_qt.bzl", "fetch_qt6")
 fetch_qt6()
 
 load("@de_vertexwahn_rules_qt6//tools:qt_toolchain.bzl", "register_qt_toolchains")
