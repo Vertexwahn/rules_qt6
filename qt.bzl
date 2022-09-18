@@ -2,6 +2,8 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 def _gen_ui_header(ctx):
     info = ctx.toolchains["@de_vertexwahn_rules_qt6//tools:toolchain_type"].qtinfo
+
+
     args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
     ctx.actions.run(
         inputs = [ctx.file.ui_file],
@@ -9,6 +11,7 @@ def _gen_ui_header(ctx):
         arguments = args,
         executable = info.uic_path,
     )
+
     return [OutputGroupInfo(ui_header = depset([ctx.outputs.ui_header]))]
 
 gen_ui_header = rule(
@@ -191,13 +194,14 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
             srcs = [hdr],
             outs = [moc_name + ".cc"],
             cmd = select({
-                "@platforms//os:linux": "moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@platforms//os:windows": "$(location @qt//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@platforms//os:linux": "$(location @qt_6.2.4_linux_desktop_gcc_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@platforms//os:windows": "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:osx": "/usr/local/opt/qt@6/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
+                #"@platforms//os:osx": "/opt/homebrew/Cellar/qt/6.3.1_3/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
-                "@platforms//os:linux": [],
-                "@platforms//os:windows": ["@de_vertexwahn_rules_qt6//:moc"],
+                "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:moc"],
+                "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc"],
                 "@platforms//os:osx": [],
             }),
         )

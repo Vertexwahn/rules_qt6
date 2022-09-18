@@ -6,9 +6,9 @@ This document explains how the archive of the prebuilt version is generated.
 
 ## Linux
 
-    pip3 install aqtinstall 
-    python3 -m aqt install --outputdir $HOME/Qt 6.2.4 linux desktop
+    pip3 install aqtinstall
     cd $HOME/Qt
+    python3 -m aqt install --outputdir $HOME/Qt 6.2.4 linux desktop
     tar cf - "6.2.4" | xz -z - > qt_6.2.4_linux_desktop_gcc_64.tar.xz
 
 ## Windows 64-bit x86

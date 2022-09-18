@@ -8,7 +8,7 @@ load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
             "include",
             "include/QtCore",
         ],
-        linkopts = ["-F/usr/local/opt/qt@6/lib"] + [
+        linkopts = ["-F/opt/homebrew/Cellar/qt/6.3.1_3/lib"] + [
             "-framework %s" % library_name.replace("6", "") # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
         ],
         target_compatible_with = ["@platforms//os:osx"],
@@ -19,13 +19,13 @@ load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
 
 filegroup(
     name = "uic",
-    srcs = ["bin/uic"],
+    srcs = ["share/qt/libexec/uic"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "moc",
-    srcs = ["bin/moc"],
+    srcs = ["share/qt/libexec/moc"],
     visibility = ["//visibility:public"],
 )
 

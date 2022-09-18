@@ -6,7 +6,7 @@ build:gcc9 --cxxopt=-Wall
 build:gcc9 --cxxopt=-Werror
 
 # Visual Studio 2019
-build:vs2019 --cxxopt=/std:c++17
+build:vs2019 --cxxopt=/std:c++20
 build:vs2019 --cxxopt=/Zc:__cplusplus # Untested
 build:vs2019 --enable_runfiles # https://github.com/bazelbuild/bazel/issues/8843
 build:vs2019 --define compiler=vs2019

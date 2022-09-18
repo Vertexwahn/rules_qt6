@@ -34,6 +34,12 @@ def fetch_qt6():
     # Note: brew will not necessarily install the exact Qt version 6.2.4
     native.new_local_repository(
         name = "qt_6.2.4_mac_desktop_clang_64",
-        path = "/usr/local/opt/qt@6",
+        path = "/usr/local/opt/qt@6",#"/usr/local/opt/qt@6",
         build_file = "@de_vertexwahn_rules_qt6//:qt_6.2.4_mac_desktop_clang_64.BUILD",
+    )
+
+    native.new_local_repository(
+        name = "qt_6.2.4_mac_desktop_clang_64_M1",
+        path = "/opt/homebrew/Cellar/qt/6.3.1_3",#"/usr/local/opt/qt@6",
+        build_file = "@de_vertexwahn_rules_qt6//:qt_6.2.4_mac_desktop_clang_64_M1.BUILD",
     )
