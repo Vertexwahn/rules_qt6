@@ -5,6 +5,14 @@ build:gcc9 --cxxopt=-std=c++2a
 build:gcc9 --cxxopt=-Wall
 build:gcc9 --cxxopt=-Werror
 
+# GCC 11.2
+#build:gcc11 --cxxopt=-std=c++23 # blocked by emsdk
+build:gcc11 --cxxopt=-std=c++20
+build:gcc11 --cxxopt=-Wall
+#build:gcc11 --cxxopt=-Werror
+#build:gcc11 --cxxopt=-Wno-error=volatile # blocked by emsdk
+##build:gcc11 --cxxopt=-Wextra
+
 # Visual Studio 2019
 build:vs2019 --cxxopt=/std:c++20
 build:vs2019 --cxxopt=/Zc:__cplusplus # Untested
