@@ -27,4 +27,5 @@ def register_qt_toolchains():
         "@de_vertexwahn_rules_qt6//tools:qt_linux_toolchain",
         "@de_vertexwahn_rules_qt6//tools:qt_windows_toolchain",
         "@de_vertexwahn_rules_qt6//tools:qt_osx_toolchain",
+        "@de_vertexwahn_rules_qt6//tools:qt_osx_M1_toolchain",
     )

@@ -32,6 +32,8 @@ def fetch_qt6():
     # $ brew install qt@6
     # $ brew link qt@6
     # Note: brew will not necessarily install the exact Qt version 6.2.4
+
+    # Check if paht exists
     native.new_local_repository(
         name = "qt_6.2.4_mac_desktop_clang_64",
         path = "/usr/local/opt/qt@6",#"/usr/local/opt/qt@6",

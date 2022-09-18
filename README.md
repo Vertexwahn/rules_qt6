@@ -1,20 +1,27 @@
-# Experimental Bazel rules for Qt6
+
+<!--
+SPDX-FileCopyrightText: 2022 Julian Amann <dev@vertexwahn.de>
+SPDX-License-Identifier: Apache-2.0
+-->
+
+[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine)
+
+# Bazel rules for Qt6
 
 ## Goal 
 
-The goal of these rules is to be able to build Qt6 applications using Bazel on Windows, 
+The goal of these rules is to be able to build Qt6 applications using [Bazel](https://bazel.build/) on Windows, 
 Linux and macOS without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
 ## Current status
 
-Currently, on macOS these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
+Currently, on macOS, these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
 
 On Windows and Linux it should be possible to run `bazel run --config=gcc9 //:Qt6HelloWorld` without the need to preinstall Bazel.
 
 For more advanced uses of Qt (e.g. using `uic`) these rule do currently not work.
-
-This rules require at least Bazel 4.0.0 to work.
+These rules require at least Bazel 4.0.0 to work.
 With some small modifications, you can get work these rules also on earlier versions of Bazel.
 
 This project is just a testbed for Qt6 with Bazel 5.1.0 and is still experimental.
@@ -40,7 +47,7 @@ A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/)
             build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
         )
 
-I created a `.bazelrc` file that contains a config for `gcc9`, `vs2019` and ``vs2022`. This is needed since Qt6 needs at least C++17 standard enabled.
+I created a `.bazelrc` file that contains a config for `gcc9`, `vs2019`, and ``vs2022`. This is needed since Qt6 needs at least C++17 standard enabled.
 For more details have a look at [.bazelrc](bazelrc).
 
 ### Working with Linux using GCC9
@@ -69,10 +76,7 @@ Should display the following window:
 Any improvements to the Qt6 build experience using Bazel are welcome. 
 Maybe you have solved this problem already. 
 In this case, 
-I would appreciate it when you could share your efforts under some permissive license.
-
-
-See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors
+I would appreciate it if you could share your efforts under some permissive license.
 
 ## Similar projects
 
@@ -84,7 +88,8 @@ See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/cont
 
 This work is published under Apache 2.0 License.
 
-This work builds on top of (a) https://github.com/justbuchanan/bazel_rules_qt which is also licensed under Apache 2.0.
+This work builds on top of https://github.com/justbuchanan/bazel_rules_qt which is also licensed under Apache 2.0.
+See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors
 
 ## Thanks to all contributors ❤
 
