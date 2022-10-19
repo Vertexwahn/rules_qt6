@@ -41,7 +41,7 @@ def fetch_qt6():
     )
 
     native.new_local_repository(
-        name = "qt_6.3.1_4_mac_desktop_clang_64_M1",
-        path = "/opt/homebrew/Cellar/qt/6.3.1_4",#"/usr/local/opt/qt@6",
-        build_file = "@de_vertexwahn_rules_qt6//:qt_6.3.1_4_mac_desktop_clang_64_M1.BUILD",
+        name = "qt_6.3.2_mac_desktop_clang_64_M1",
+        path = "/opt/homebrew/Cellar/qt/6.3.2",#"/usr/local/opt/qt@6",
+        build_file = "@de_vertexwahn_rules_qt6//:qt_6.3.2_mac_desktop_clang_64_M1.BUILD",
     )

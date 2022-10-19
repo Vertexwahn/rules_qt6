@@ -30,9 +30,9 @@ qt_toolchain(
 qt_toolchain(
     name = "qt_osx_M1",
     # TODO: determine paths in qt_configure.bzl
-    moc_path = "/opt/homebrew/Cellar/qt/6.3.1_4/share/qt/libexec/moc",
-    rcc_path = "/opt/homebrew/Cellar/qt/6.3.1_4/share/qt/libexec/rcc",
-    uic_path = "/opt/homebrew/Cellar/qt/6.3.1_4/share/qt/libexec/uic",
+    moc_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/moc",
+    rcc_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/rcc",
+    uic_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/uic",
 )
 
 toolchain(
