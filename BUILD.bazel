@@ -1,4 +1,5 @@
-load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_qt//:qt.bzl", "qt_plugin_data", "qt_plugin_env")
 
 [
     cc_library(
@@ -14,32 +15,36 @@ load("@de_vertexwahn_rules_qt6//:qt_libraries.bzl", "QT_LIBRARIES")
     for name, _, _, dependencies in QT_LIBRARIES
 ]
 
+cc_library(
+    name = "qt_hdrs",
+    visibility = ["//visibility:public"],
+    deps = select({
+        "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_hdrs"],
+        "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:qt_hdrs"],
+        "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.3.2_mac_desktop_clang_64_M1//:qt_hdrs"],
+        "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qt_hdrs"],
+    }),
+)
+
+all_qt_libs = [":qt_%s" % name for name, _, _, _ in QT_LIBRARIES]
+
+cc_library(
+    name = "qt",
+    visibility = ["//visibility:public"],
+    deps = all_qt_libs + [":qt_hdrs"],
+)
+
 cc_binary(
     name = "Qt6HelloWorld",
     srcs = ["main.cpp"],
+    copts = [
+        "-fPIC",
+    ],
+    data = qt_plugin_data,
+    env = qt_plugin_env,
     deps = [
         ":qt_core",
         ":qt_qml",
         ":qt_widgets",
     ],
-    env = select({
-        "@platforms//os:linux": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
-        },
-        "@bazel_tools//src/conditions:darwin_x86_64": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
-        },
-        "@bazel_tools//src/conditions:darwin_arm64": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/share/qt/plugins",
-        },
-        "@platforms//os:windows": {
-            "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
-        },
-    }),
-    data = select({
-        "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files"],
-        "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files"],
-        "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.3.2_mac_desktop_clang_64_M1//:plugin_files"],
-        "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files"],
-    }),
 )

@@ -1,4 +1,3 @@
-build --symlink_prefix=/ # Out of source build
 
 # Setup compiler flags - required for Qt6 is at least C++17
 build:gcc9 --cxxopt=-std=c++2a
