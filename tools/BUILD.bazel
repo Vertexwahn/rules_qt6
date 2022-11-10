@@ -44,13 +44,13 @@ qt_toolchain(
 
 qt_toolchain(
     name = "qt_osx_M1",
-    moc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:moc)",
-    rcc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:rcc)",
-    uic_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:uic)",
+    moc_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:moc)",
+    rcc_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:rcc)",
+    uic_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:uic)",
     data = [
-        "@qt_6.3.2_mac_desktop_clang_64_M1//:rcc",
-        "@qt_6.3.2_mac_desktop_clang_64_M1//:uic",
-        "@qt_6.3.2_mac_desktop_clang_64_M1//:moc",
+        "@qt_6.4.0_mac_desktop_clang_64_M1//:rcc",
+        "@qt_6.4.0_mac_desktop_clang_64_M1//:uic",
+        "@qt_6.4.0_mac_desktop_clang_64_M1//:moc",
     ],
 )
 

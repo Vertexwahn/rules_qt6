@@ -53,7 +53,7 @@ def fetch_qt6():
     )
 
     native.new_local_repository(
-        name = "qt_6.3.2_mac_desktop_clang_64_M1",
+        name = "qt_6.4.0_mac_desktop_clang_64_M1",
         path = "/opt/homebrew/Cellar/qt/6.3.2",  #"/usr/local/opt/qt@6",
-        build_file = "@rules_qt//:qt_6.3.2_mac_desktop_clang_64_M1.BUILD",
+        build_file = "@rules_qt//:qt_6.4.0_mac_desktop_clang_64_M1.BUILD",
     )

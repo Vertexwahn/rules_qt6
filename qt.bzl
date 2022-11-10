@@ -254,9 +254,9 @@ qt_plugin_env = select({
         "QT_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
     },
     "@bazel_tools//src/conditions:darwin_arm64": {
-        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/share/qt/plugins/platforms",
-        "QML2_IMPORT_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/qml",
-        "QT_PLUGIN_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/share/qt/plugins",
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins/platforms",
+        "QML2_IMPORT_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/qml",
+        "QT_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins",
     },
     "@platforms//os:windows": {
         "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins/platforms",
@@ -268,7 +268,7 @@ qt_plugin_env = select({
 qt_plugin_data = select({
     "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files", "@qt_6.2.4_linux_desktop_gcc_64//:qml_files"],
     "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files", "@qt_6.2.4_mac_desktop_clang_64//:qml_files"],
-    "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.3.2_mac_desktop_clang_64_M1//:plugin_files", "@qt_6.3.2_mac_desktop_clang_64_M1//:qml_files"],
+    "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:plugin_files", "@qt_6.4.0_mac_desktop_clang_64_M1//:qml_files"],
     "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files", "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qml_files"],
 })
 
