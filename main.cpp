@@ -4,7 +4,6 @@
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QStylePainter>
 
-#include <iostream>
 
 class MyWidget : public QWidget
 {

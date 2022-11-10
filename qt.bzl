@@ -1,8 +1,7 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+"""qt common rules"""
 
 def _gen_ui_header(ctx):
-    info = ctx.toolchains["@de_vertexwahn_rules_qt6//tools:toolchain_type"].qtinfo
-
+    info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
     args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
     ctx.actions.run(
@@ -20,10 +19,10 @@ gen_ui_header = rule(
         "ui_file": attr.label(allow_single_file = True, mandatory = True),
         "ui_header": attr.output(),
     },
-    toolchains = ["@de_vertexwahn_rules_qt6//tools:toolchain_type"],
+    toolchains = ["@rules_qt//tools:toolchain_type"],
 )
 
-def qt_ui_library(name, ui, deps, **kwargs):
+def qt_ui_library(name, ui, deps, target_compatible_with=[], **kwargs):
     """Compiles a QT UI file and makes a library for it.
     Args:
       name: A name for the rule.
@@ -34,16 +33,18 @@ def qt_ui_library(name, ui, deps, **kwargs):
         name = "%s_uic" % name,
         ui_file = ui,
         ui_header = "ui_%s.h" % ui.split(".")[0],
+        target_compatible_with = target_compatible_with,
     )
-    cc_library(
+    native.cc_library(
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
+        target_compatible_with = target_compatible_with,
         **kwargs
     )
 
 def _gencpp(ctx):
-    info = ctx.toolchains["@de_vertexwahn_rules_qt6//tools:toolchain_type"].qtinfo
+    info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
     resource_files = [(f, ctx.actions.declare_file(f.path)) for f in ctx.files.files]
     for target_file, output in resource_files:
@@ -53,11 +54,16 @@ def _gencpp(ctx):
         )
 
     args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
+    exec_requirements = {}
+    for elem in ctx.attr.tags:
+        exec_requirements[elem] = "1"
+
     ctx.actions.run(
         inputs = [resource for _, resource in resource_files] + [ctx.file.qrc],
         outputs = [ctx.outputs.cpp],
         arguments = args,
         executable = info.rcc_path,
+        execution_requirements = exec_requirements,
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
@@ -69,20 +75,24 @@ gencpp = rule(
         "qrc": attr.label(allow_single_file = True, mandatory = True),
         "cpp": attr.output(),
     },
-    toolchains = ["@de_vertexwahn_rules_qt6//tools:toolchain_type"],
+    toolchains = ["@rules_qt//tools:toolchain_type"],
 )
 
 def _gencpp2(ctx):
-    info = ctx.toolchains["@de_vertexwahn_rules_qt6//tools:toolchain_type"].qtinfo
+    info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
     resource_files = ctx.files.files
 
     args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
+    exec_requirements = {}
+    for elem in ctx.attr.tags:
+        exec_requirements[elem] = "1"
     ctx.actions.run(
         inputs = [resource for resource in resource_files] + [ctx.file.qrc],
         outputs = [ctx.outputs.cpp],
         arguments = args,
         executable = info.rcc_path,
+        execution_requirements = exec_requirements,
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
@@ -94,7 +104,7 @@ gencpp2 = rule(
         "qrc": attr.label(allow_single_file = True, mandatory = True),
         "cpp": attr.output(),
     },
-    toolchains = ["@de_vertexwahn_rules_qt6//tools:toolchain_type"],
+    toolchains = ["@rules_qt//tools:toolchain_type"],
 )
 
 # generate a qrc file that lists each of the input files.
@@ -105,9 +115,13 @@ def _genqrc(ctx):
         qrc_content += "\n    <file>%s</file>" % f.path
     qrc_content += "\n  </qresource>\n</RCC>"
     cmd = ["echo", "\"%s\"" % qrc_content, ">", qrc_output.path]
+    exec_requirements = {}
+    for elem in ctx.attr.tags:
+        exec_requirements[elem] = "1"
     ctx.actions.run_shell(
         command = " ".join(cmd),
         outputs = [qrc_output],
+        execution_requirements = exec_requirements,
     )
     return [OutputGroupInfo(qrc = depset([qrc_output]))]
 
@@ -119,7 +133,7 @@ genqrc = rule(
     },
 )
 
-def qt_resource_via_qrc(name, qrc_file, files, **kwargs):
+def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with=[], **kwargs):
     """Creates a cc_library containing the contents of all input files using qt's `rcc` tool.
     Args:
       name: rule name
@@ -138,15 +152,18 @@ def qt_resource_via_qrc(name, qrc_file, files, **kwargs):
         files = files,
         qrc = qrc_file,
         cpp = outfile,
+        target_compatible_with = target_compatible_with,
+        tags = ["local"],
     )
-    cc_library(
+    native.cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
+        target_compatible_with = target_compatible_with,
         **kwargs
     )
 
-def qt_resource(name, files, **kwargs):
+def qt_resource(name, files, target_compatible_with=[], **kwargs):
     """Creates a cc_library containing the contents of all input files using qt's `rcc` tool.
     Args:
       name: rule name
@@ -154,7 +171,7 @@ def qt_resource(name, files, **kwargs):
       kwargs: extra args to pass to the cc_library
     """
     qrc_file = name + "_qrc.qrc"
-    genqrc(name = name + "_qrc", files = files, qrc = qrc_file)
+    genqrc(name = name + "_qrc", files = files, qrc = qrc_file, target_compatible_with = target_compatible_with)
 
     # every resource cc_library that is linked into the same binary needs a
     # unique 'name'.
@@ -167,15 +184,20 @@ def qt_resource(name, files, **kwargs):
         files = files,
         qrc = qrc_file,
         cpp = outfile,
+        target_compatible_with = target_compatible_with,
+        tags = [
+            "local",
+        ],
     )
-    cc_library(
+    native.cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
+        target_compatible_with = target_compatible_with,
         **kwargs
     )
 
-def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
+def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], target_compatible_with=[], **kwargs):
     """Compiles a QT library and generates the MOC for it.
     Args:
       name: A name for the rule.
@@ -204,12 +226,64 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, **kwargs):
                 "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc"],
                 "@platforms//os:osx": [],
             }),
+            target_compatible_with = target_compatible_with,
         )
         _moc_srcs.append(":" + moc_name)
-    cc_library(
+    native.cc_library(
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
         deps = deps,
+        copts = copts + select({
+            "@platforms//os:windows": [],
+            "//conditions:default": ["-fPIC"],
+        }),
+        target_compatible_with = target_compatible_with,
         **kwargs
     )
+
+qt_plugin_env = select({
+    "@platforms//os:linux": {
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins/platforms",
+        "QML2_IMPORT_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/qml",
+        "QT_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
+    },
+    "@bazel_tools//src/conditions:darwin_x86_64": {
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins/platforms",
+        "QML2_IMPORT_PATH": "external/qt_6.2.4_mac_desktop_clang_64/qml",
+        "QT_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
+    },
+    "@bazel_tools//src/conditions:darwin_arm64": {
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/share/qt/plugins/platforms",
+        "QML2_IMPORT_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/qml",
+        "QT_PLUGIN_PATH": "external/qt_6.3.2_mac_desktop_clang_64_M1/share/qt/plugins",
+    },
+    "@platforms//os:windows": {
+        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins/platforms",
+        "QML2_IMPORT_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/qml",
+        "QT_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
+    },
+})
+
+qt_plugin_data = select({
+    "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files", "@qt_6.2.4_linux_desktop_gcc_64//:qml_files"],
+    "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files", "@qt_6.2.4_mac_desktop_clang_64//:qml_files"],
+    "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.3.2_mac_desktop_clang_64_M1//:plugin_files", "@qt_6.3.2_mac_desktop_clang_64_M1//:qml_files"],
+    "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files", "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qml_files"],
+})
+
+def qt_cc_binary(name, srcs, deps = None, copts = [], **kwargs):
+    native.cc_binary(
+        name = name,
+        srcs = srcs,
+        deps = deps,
+        copts = copts + select({
+            "@platforms//os:windows": [],
+            "//conditions:default": ["-fPIC"],
+        }),
+        data = qt_plugin_data,
+        env = qt_plugin_env,
+        **kwargs
+    )
+
+

@@ -5,34 +5,53 @@ load(":qt_toolchain.bzl", "qt_toolchain")
 toolchain_type(name = "toolchain_type")
 qt_toolchain(
     name = "qt_linux",
-    # TODO: determine paths in qt_configure.bzl
-    moc_path = "moc",
-    rcc_path = "/opt/Qt/6.2.4/gcc_64/libexec/rcc",
-    uic_path = "/opt/Qt/6.2.4/gcc_64/libexec/uic",
+    moc_cmd = "$(location @qt_6.2.4_linux_desktop_gcc_64//:moc)",
+    rcc_cmd = "$(location @qt_6.2.4_linux_desktop_gcc_64//:rcc)",
+    uic_cmd = "$(location @qt_6.2.4_linux_desktop_gcc_64//:uic)",
+    data = [
+        "@qt_6.2.4_linux_desktop_gcc_64//:rcc",
+        "@qt_6.2.4_linux_desktop_gcc_64//:uic",
+        "@qt_6.2.4_linux_desktop_gcc_64//:moc",
+    ],
 )
+
 
 qt_toolchain(
     name = "qt_windows",
-    # TODO: determine paths in qt_configure.bzl
-    moc_path = "moc",
-    rcc_path = "C:/Qt/6.2.4/msvc2019_64/bin/rcc",
-    uic_path = "C:/Qt/6.2.4/msvc2019_64/bin/uic",
+    moc_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc)",
+    rcc_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:rcc)",
+    uic_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:uic)",
+    data = [
+        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:rcc",
+        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:uic",
+        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc",
+    ],
 )
 
+
+## osx current use pre installed qt, when ready, change to use download version like linux and windows
 qt_toolchain(
     name = "qt_osx",
-    # TODO: determine paths in qt_configure.bzl
-    moc_path = "/usr/local/opt/qt@6/share/qt/libexec/moc",
-    rcc_path = "/usr/local/opt/qt@6/share/qt/libexec/rcc",
-    uic_path = "/usr/local/opt/qt@6/share/qt/libexec/uic",
+    moc_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:moc)",
+    rcc_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:rcc)",
+    uic_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:uic)",
+    data = [
+        "@qt_6.2.4_mac_desktop_clang_64//:rcc",
+        "@qt_6.2.4_mac_desktop_clang_64//:uic",
+        "@qt_6.2.4_mac_desktop_clang_64//:moc",
+    ],
 )
 
 qt_toolchain(
     name = "qt_osx_M1",
-    # TODO: determine paths in qt_configure.bzl
-    moc_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/moc",
-    rcc_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/rcc",
-    uic_path = "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/uic",
+    moc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:moc)",
+    rcc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:rcc)",
+    uic_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64_M1//:uic)",
+    data = [
+        "@qt_6.3.2_mac_desktop_clang_64_M1//:rcc",
+        "@qt_6.3.2_mac_desktop_clang_64_M1//:uic",
+        "@qt_6.3.2_mac_desktop_clang_64_M1//:moc",
+    ],
 )
 
 toolchain(
@@ -45,7 +64,7 @@ toolchain(
         "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_linux",
-    toolchain_type = "@de_vertexwahn_rules_qt6//tools:toolchain_type",
+    toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
 toolchain(
@@ -58,7 +77,7 @@ toolchain(
         "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_windows",
-    toolchain_type = "@de_vertexwahn_rules_qt6//tools:toolchain_type",
+    toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
 toolchain(
@@ -71,7 +90,7 @@ toolchain(
         "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_osx",
-    toolchain_type = "@de_vertexwahn_rules_qt6//tools:toolchain_type",
+    toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
 toolchain(
@@ -84,5 +103,5 @@ toolchain(
         "@platforms//cpu:arm64",
     ],
     toolchain = ":qt_osx_M1",
-    toolchain_type = "@de_vertexwahn_rules_qt6//tools:toolchain_type",
+    toolchain_type = "@rules_qt//tools:toolchain_type",
 )
