@@ -6,10 +6,23 @@ This document explains how the archive of the prebuilt version is generated.
 
 ## Windows x64
 
+*Powershell*
+
 ```shell
 python3 -m pip install aqtinstall
 aqt list-qt windows desktop --arch 6.4.0
 aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
+```
+
+*Bash using Ubuntu to prepare Qt for Windows build*
+
+```shell
+cd ~
+mkdir Qt
+pip3 install aqtinstall
+cd $HOME/Qt
+aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
+tar cf - "6.4.0" | xz -z - > qt_6.4.0_windows_desktop_win64_msvc2019_64.tar.xz
 ```
 
 ## Ubuntu x64
