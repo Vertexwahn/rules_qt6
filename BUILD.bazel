@@ -33,18 +33,3 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = all_qt_libs + [":qt_hdrs"],
 )
-
-cc_binary(
-    name = "Qt6HelloWorld",
-    srcs = ["main.cpp"],
-    copts = [
-        "-fPIC",
-    ],
-    data = qt_plugin_data,
-    env = qt_plugin_env,
-    deps = [
-        ":qt_core",
-        ":qt_qml",
-        ":qt_widgets",
-    ],
-)

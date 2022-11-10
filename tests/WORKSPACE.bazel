@@ -1,0 +1,12 @@
+local_repository(
+    name = "rules_qt",
+    path = "..",
+)
+
+load("@rules_qt//:fetch_qt.bzl", "fetch_qt6")
+
+fetch_qt6()
+
+load("@rules_qt//tools:qt_toolchain.bzl", "register_qt_toolchains")
+
+register_qt_toolchains()

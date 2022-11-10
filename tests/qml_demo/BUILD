@@ -16,7 +16,7 @@ qt_cc_library(
         "cpp_object.h",
     ],
     deps = [
-        "//:qt",
+        "@rules_qt//:qt",
     ],
 )
 

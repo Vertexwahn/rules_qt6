@@ -24,7 +24,7 @@ For more advanced uses of Qt (e.g. using `uic`) these rule do currently not work
 These rules require at least Bazel 4.0.0 to work.
 With some small modifications, you can get work these rules also on earlier versions of Bazel.
 
-This project is just a testbed for Qt6 with Bazel 5.1.0 and is still experimental.
+This project is just a testbed for Qt6 with Bazel 5.3.2 and is still experimental.
 
 A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/):
 
@@ -52,7 +52,10 @@ For more details have a look at [.bazelrc](bazelrc).
 
 ### Working with Linux using GCC9
 
-    bazel run --config=gcc9 //:Qt6HelloWorld
+```shell
+cd tests
+bazel run --config=gcc9 //:Qt6HelloWorld
+```
 
 ![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/Ubuntu20.04.png)
 
@@ -60,7 +63,10 @@ For more details have a look at [.bazelrc](bazelrc).
 
 Run Qt6HelloWorld
 
-    bazel run --config=vs2019 //:Qt6HelloWorld
+```shell
+cd tests
+bazel run --config=vs2019 //:Qt6HelloWorld
+```
 
 Should display the following window:
 
@@ -68,7 +74,10 @@ Should display the following window:
 
 ### macOS
 
-    bazel run --config=macos //:Qt6HelloWorld
+```shell
+cd tests
+bazel run --config=macos //:Qt6HelloWorld
+```
 
 ![Screenshot of HelloWorld demo on macOS](/docs/screenshots/macOS12.png)
 ## Contributions
