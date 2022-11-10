@@ -4,6 +4,7 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def fetch_qt6():
     ### Qt 6.4.0
+
     http_archive(
         name = "qt_6.4.0_windows_desktop_win64_msvc2019_64",
         urls = [
@@ -20,15 +21,14 @@ def fetch_qt6():
     #    build_file = "@rules_qt//:qt_6.4.0_windows_desktop_win64_msvc2019_64.BUILD",
     #)
 
-    ### Qt 6.2.4
     http_archive(
-        name = "qt_6.2.4_linux_desktop_gcc_64",
+        name = "qt_6.4.0_linux_desktop_gcc_64",
         urls = [
-            "https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz",
+            "https://vertexwahn.de/lfs/v1/qt_6.4.0_linux_desktop_gcc_64.tar.xz",
         ],
-        sha256 = "50f969898d0112c9035ff9833fca52bad7f6ba95e6d837add15ff9f22badbd69",
-        strip_prefix = "6.2.4/gcc_64",
-        build_file = "@rules_qt//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
+        #sha256 = "50f969898d0112c9035ff9833fca52bad7f6ba95e6d837add15ff9f22badbd69",
+        strip_prefix = "6.4.0/gcc_64",
+        build_file = "@rules_qt//:qt_6.4.0_linux_desktop_gcc_64.BUILD",
     )
 
     #http_archive(

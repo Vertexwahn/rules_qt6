@@ -216,13 +216,13 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             srcs = [hdr],
             outs = [moc_name + ".cc"],
             cmd = select({
-                "@platforms//os:linux": "$(location @qt_6.2.4_linux_desktop_gcc_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@platforms//os:linux": "$(location @qt_6.4.0_linux_desktop_gcc_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@bazel_tools//src/conditions:darwin_x86_64": "/usr/local/opt/qt@6/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@bazel_tools//src/conditions:darwin_arm64": "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
-                "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:moc"],
+                "@platforms//os:linux": ["@qt_6.4.0_linux_desktop_gcc_64//:moc"],
                 "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc"],
                 "@platforms//os:osx": [],
             }),
@@ -243,7 +243,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files", "@qt_6.2.4_linux_desktop_gcc_64//:qml_files"],
+    "@platforms//os:linux": ["@qt_6.4.0_linux_desktop_gcc_64//:plugin_files", "@qt_6.4.0_linux_desktop_gcc_64//:qml_files"],
     "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files", "@qt_6.2.4_mac_desktop_clang_64//:qml_files"],
     "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:plugin_files", "@qt_6.4.0_mac_desktop_clang_64_M1//:qml_files"],
     "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:plugin_files", "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:qml_files"],
@@ -256,9 +256,9 @@ def update_dict(source, env):
     return result
 
 LINUX_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.4.0_linux_desktop_gcc_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_6.4.0_linux_desktop_gcc_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_6.4.0_linux_desktop_gcc_64/plugins",
 }
 
 MAC_X64_ENV_DATA = {

@@ -79,7 +79,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 *Ubuntu*
 
-![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/hello_world_Ubuntu20.04.png)
+![Screenshot of HelloWorld demo on Ubuntu 22.04](/docs/screenshots/hello_world_Ubuntu20.04.png)
 
 *macOS*
 
@@ -108,11 +108,11 @@ def fetch_qt6():
     )
 
     http_archive(
-        name = "qt_6.2.4_linux_desktop_gcc_64",
-        urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_linux_desktop_gcc_64.tar.xz"],
+        name = "qt_6.4.0_linux_desktop_gcc_64",
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.4.0_linux_desktop_gcc_64.tar.xz"],
         sha256 = "334dfabef8d98cf6e61db304b1ff8e892c7ea7a02f0e238014203161498ef5b9",
         strip_prefix = "6.2.4/gcc_64",
-        build_file = "//:qt_6.2.4_linux_desktop_gcc_64.BUILD",
+        build_file = "//:qt_6.4.0_linux_desktop_gcc_64.BUILD",
     )
 ```
 
