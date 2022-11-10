@@ -1,0 +1,19 @@
+load("@rules_qt//:qt.bzl", "qt_cc_binary", "qt_cc_library", "qt_resource")
+
+qt_resource(
+    name = "qt_demo_qrc2",
+    files = [
+        "main.qml",
+    ],
+)
+
+qt_cc_binary(
+    name = "horch2",
+    srcs = [
+        "main.cpp",
+    ],
+    deps = [
+        "@rules_qt//:qt",
+        ":qt_demo_qrc2",
+    ],
+)
