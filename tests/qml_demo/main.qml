@@ -1,6 +1,7 @@
 import QtQuick 2.14
 import QtQuick.Window 2.14
 import CppObject 1.0
+import Sample
 
 
 Window {
@@ -14,29 +15,29 @@ Window {
     signal qmlSignalA
     signal qmlSignalB(string str,int value)
 
-    //鼠标点击区域
+    //mouse click area
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.LeftButton | Qt.RightButton
-        //测试时点击左键或右键
+        // use left or right mouse button to test
         onClicked: {
             if (mouse.button===Qt.LeftButton) {
-                console.log('----qml 点击左键：Cpp发射信号')
-                cpp_obj.name="admin"  //修改属性会触发set函数，获取值会触发get函数
+                console.log('----qml click left: Cpp emit signal')
+                cpp_obj.name="admin"  // change attribute will trigger signal
                 cpp_obj.year=0
-                cpp_obj.sendSignal() //调用Q_INVOKABLE宏标记的函数
+                cpp_obj.sendSignal() // call Q_INVOKABLE marked function
             } else {
-                console.log('----qml 点击右键：QML发射信号')
+                console.log('----qml click right: Qml emit signal')
                 root.qmlSignalA()
                 root.qmlSignalB('admin',0)
             }
         }
     }
 
-    //作为一个QML对象
+    // custom cpp qml object
     CppObject{
         id:cpp_obj
-        //也可以像原生QML对象一样操作，增加属性之类的
+        // add custom attribute
         property int counts: 0
 
         onYearChanged: {
@@ -48,19 +49,17 @@ Window {
         }
     }
 
-    //组件加载完成执行
+    // when component finish load
     Component.onCompleted: {
-        //关联信号与信号处理函数的方式同QML中的类型
-        //Cpp对象的信号关联到Qml
-        //cpp_obj.onCppSignalA.connect(function(){console.log('qml signalA process')})
-        cpp_obj.onCppSignalA.connect(()=>console.log('qml signalA process')) //js的lambda
+        // connect cpp signals to qml object slots
+        cpp_obj.onCppSignalA.connect(()=>console.log('qml signalA process')) // js lambda function
         cpp_obj.onCppSignalB.connect(processB)
-        //Qml对象的信号关联到Cpp
+        // connect qml signals to cpp object slots
         root.onQmlSignalA.connect(cpp_obj.cppSlotA)
         root.onQmlSignalB.connect(cpp_obj.cppSlotB)
     }
 
-    //定义的函数可以作为槽函数
+    // qml defined function
     function processB(str,value){
         console.log('qml function processB',str,value)
     }

@@ -9,20 +9,20 @@ class CppObject : public QObject {
   Q_PROPERTY(int year READ getYear WRITE setYear NOTIFY yearChanged)
 public:
   explicit CppObject(QObject *parent = nullptr);
-  // 通过Q_INVOKEBLE宏标记的public函数可以在QML中访问
-  Q_INVOKABLE void sendSignal(); //  发送信号
+  // use Q_INVOKABLE macro, we can use this function in qml
+  Q_INVOKABLE void sendSignal(); //  send signal
   void setName(const QString &name);
   const QString &getName() const;
   void setYear(int32_t year);
   int32_t getYear() const;
 signals:
-  void cppSignalA(); // 一个无参数信号
+  void cppSignalA(); // zero parameter signal
   void cppSignalB(const QString &str, int32_t value);
   void nameChanged(const QString &name);
   void yearChanged(int32_t year);
 public slots:
-  void cppSlotA();                                  //  一个无参数槽函数
-  void cppSlotB(const QString &str, int32_t value); //  带参数槽函数
+  void cppSlotA();                                  //  zero parameter slo
+  void cppSlotB(const QString &str, int32_t value); //  two parameter slot
 private:
   QString myName;
   int32_t myYear;

@@ -19,6 +19,7 @@ int main(int argc, char *argv[]) {
   qDebug() << "import path : " << import_path;
 
   engine.addImportPath(import_path);
+  engine.addImportPath("qrc:/qml_demo/qml");
 
   qmlRegisterType<CppObject>("CppObject", 1, 0, "CppObject");
 

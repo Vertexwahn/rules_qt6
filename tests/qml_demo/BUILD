@@ -1,4 +1,4 @@
-load("@rules_qt//:qt.bzl", "qt_cc_library", "qt_cc_binary", "qt_resource")
+load("@rules_qt//:qt.bzl", "qt_cc_binary", "qt_cc_library", "qt_resource")
 
 qt_resource(
     name = "qt_demo_qrc",
@@ -28,5 +28,6 @@ qt_cc_binary(
     deps = [
         ":cpp_object",
         ":qt_demo_qrc",
+        "//qml_demo/qml/Sample:sample",
     ],
 )

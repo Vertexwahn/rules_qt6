@@ -1,5 +1,5 @@
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
-load("@rules_qt//:qt.bzl", "qt_plugin_data", "qt_plugin_env")
+load("@rules_qt//:qt.bzl", "qt_cc_binary")
 
 [
     cc_library(
@@ -32,4 +32,14 @@ cc_library(
     name = "qt",
     visibility = ["//visibility:public"],
     deps = all_qt_libs + [":qt_hdrs"],
+)
+
+qt_cc_binary(
+    name = "Qt6HelloWorld",
+    srcs = ["main.cpp"],
+    deps = [
+        ":qt_core",
+        ":qt_qml",
+        ":qt_widgets",
+    ],
 )
