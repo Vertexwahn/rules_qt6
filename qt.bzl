@@ -22,7 +22,7 @@ gen_ui_header = rule(
     toolchains = ["@rules_qt//tools:toolchain_type"],
 )
 
-def qt_ui_library(name, ui, deps, target_compatible_with=[], **kwargs):
+def qt_ui_library(name, ui, deps, target_compatible_with = [], **kwargs):
     """Compiles a QT UI file and makes a library for it.
     Args:
       name: A name for the rule.
@@ -133,7 +133,7 @@ genqrc = rule(
     },
 )
 
-def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with=[], **kwargs):
+def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with = [], **kwargs):
     """Creates a cc_library containing the contents of all input files using qt's `rcc` tool.
     Args:
       name: rule name
@@ -163,7 +163,7 @@ def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with=[], **kwar
         **kwargs
     )
 
-def qt_resource(name, files, target_compatible_with=[], **kwargs):
+def qt_resource(name, files, target_compatible_with = [], **kwargs):
     """Creates a cc_library containing the contents of all input files using qt's `rcc` tool.
     Args:
       name: rule name
@@ -197,7 +197,7 @@ def qt_resource(name, files, target_compatible_with=[], **kwargs):
         **kwargs
     )
 
-def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], target_compatible_with=[], **kwargs):
+def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], target_compatible_with = [], **kwargs):
     """Compiles a QT library and generates the MOC for it.
     Args:
       name: A name for the rule.
@@ -242,29 +242,6 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
         **kwargs
     )
 
-qt_plugin_env = select({
-    "@platforms//os:linux": {
-        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins/platforms",
-        "QML2_IMPORT_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/qml",
-        "QT_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
-    },
-    "@bazel_tools//src/conditions:darwin_x86_64": {
-        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins/platforms",
-        "QML2_IMPORT_PATH": "external/qt_6.2.4_mac_desktop_clang_64/qml",
-        "QT_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
-    },
-    "@bazel_tools//src/conditions:darwin_arm64": {
-        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins/platforms",
-        "QML2_IMPORT_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/qml",
-        "QT_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins",
-    },
-    "@platforms//os:windows": {
-        "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins/platforms",
-        "QML2_IMPORT_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/qml",
-        "QT_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
-    },
-})
-
 qt_plugin_data = select({
     "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:plugin_files", "@qt_6.2.4_linux_desktop_gcc_64//:qml_files"],
     "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:plugin_files", "@qt_6.2.4_mac_desktop_clang_64//:qml_files"],
@@ -272,7 +249,52 @@ qt_plugin_data = select({
     "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:plugin_files", "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qml_files"],
 })
 
-def qt_cc_binary(name, srcs, deps = None, copts = [], **kwargs):
+def update_dict(source, env):
+    result = {}
+    result.update(source)
+    result.update(env)
+    return result
+
+LINUX_ENV_DATA = {
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_6.2.4_linux_desktop_gcc_64/plugins",
+}
+
+MAC_X64_ENV_DATA = {
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_6.2.4_mac_desktop_clang_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_6.2.4_mac_desktop_clang_64/share/qt/plugins",
+}
+
+WINDOWS_ENV_DATA = {
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_6.2.4_windows_desktop_win64_msvc2019_64/plugins",
+}
+
+MAC_M1_ENV_DATA = {
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/qml",
+    "QT_PLUGIN_PATH": "external/qt_6.4.0_mac_desktop_clang_64_M1/share/qt/plugins",
+}
+
+def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
+    """ cc_binary which depend on qt_cc_library or want to use qt tools
+
+    Args:
+      name: A name for the rule.
+      srcs: The cpp files to compile.
+      deps: cc_library dependencies for the library.
+      copts: cc_library copts
+      data: which data need to depend
+      env: environment value
+      **kwargs: Any additional arguments are passed to the cc_library rule.
+    """
+    linux_env_data = update_dict(LINUX_ENV_DATA, env)
+    mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
+    windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
+    mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
     native.cc_binary(
         name = name,
         srcs = srcs,
@@ -281,9 +303,12 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], **kwargs):
             "@platforms//os:windows": [],
             "//conditions:default": ["-fPIC"],
         }),
-        data = qt_plugin_data,
-        env = qt_plugin_env,
+        data = qt_plugin_data + data,
+        env = select({
+            "@platforms//os:linux": linux_env_data,
+            "@bazel_tools//src/conditions:darwin_x86_64": mac_x64_env_data,
+            "@bazel_tools//src/conditions:darwin_arm64": mac_m1_env_data,
+            "@platforms//os:windows": windows_env_data,
+        }),
         **kwargs
     )
-
-

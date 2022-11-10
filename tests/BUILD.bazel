@@ -1,16 +1,10 @@
-load("@rules_qt//:qt.bzl", "qt_plugin_data", "qt_plugin_env")
+load("@rules_qt//:qt.bzl", "qt_cc_binary")
 
-cc_binary(
+qt_cc_binary(
     name = "Qt6HelloWorld",
     srcs = ["main.cpp"],
-    copts = [
-        "-fPIC",
-    ],
-    data = qt_plugin_data,
-    env = qt_plugin_env,
     deps = [
         "@rules_qt//:qt_core",
-        "@rules_qt//:qt_qml",
         "@rules_qt//:qt_widgets",
     ],
 )

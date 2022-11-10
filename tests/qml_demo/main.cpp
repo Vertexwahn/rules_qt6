@@ -8,17 +8,7 @@ int main(int argc, char *argv[]) {
   qDebug() << "App path : " << QDir::currentPath();
   QQmlApplicationEngine engine;
 
-  QString qml2_import_path = qgetenv("QML2_IMPORT_PATH");
-  QString import_path;
-
-  if (QDir::isRelativePath(qml2_import_path)) {
-    import_path = QDir::currentPath() + "/" + qml2_import_path;
-  } else {
-    import_path = qml2_import_path;
-  }
-  qDebug() << "import path : " << import_path;
-
-  engine.addImportPath(import_path);
+  engine.addImportPath("qrc:/qml_demo/qml");
 
   qmlRegisterType<CppObject>("CppObject", 1, 0, "CppObject");
 

@@ -1,5 +1,4 @@
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
-load("@rules_qt//:qt.bzl", "qt_plugin_data", "qt_plugin_env")
 
 [
     cc_library(
