@@ -20,7 +20,7 @@ jobs:
 
     - name: Build
       run: |
-        bazelisk build --config=gcc9 //qml_demo:qt_demo
+        bazelisk build --config=gcc9 //qml_demo:qt_demo //:Qt6HelloWorld
 
   build_and_test_ubuntu22:
     name: Linux Ubuntu 22.04 build <GCC 11.2.0>
@@ -37,7 +37,7 @@ jobs:
 
     - name: Build
       run: |
-        bazelisk build --config=gcc11 //qml_demo:qt_demo
+        bazelisk build --config=gcc11 //qml_demo:qt_demo //:Qt6HelloWorld
 
   build_and_test_windows10:
     name: Windows Server 2019 build <Visual Studio 2019>
@@ -54,7 +54,7 @@ jobs:
 
     - name: Build
       run: |
-        bazelisk build --config=vs2019 //qml_demo:qt_demo
+        bazelisk build --config=vs2019 //qml_demo:qt_demo //:Qt6HelloWorld
 
   build_and_test_windows11:
     name: Windows Server 2022 build <Visual Studio 2022>
@@ -71,7 +71,7 @@ jobs:
 
     - name: Build
       run: |
-        bazelisk build --config=vs2022 //qml_demo:qt_demo
+        bazelisk build --config=vs2022 //qml_demo:qt_demo //:Qt6HelloWorld
 
   build_and_test_macos11:
     name: macOS 11 Bazel build <Apple Clang13>
@@ -98,7 +98,7 @@ jobs:
       run: |
         brew install qt@6
         brew link qt@6
-        bazelisk build --config=macos //qml_demo:qt_demo
+        bazelisk build --config=macos //qml_demo:qt_demo //:Qt6HelloWorld
 
   build_and_test_macos12:
     name: macOS 12 Bazel build <Apple Clang13>
@@ -125,4 +125,4 @@ jobs:
       run: |
         brew install qt@6
         brew link qt@6
-        bazelisk build --config=macos //qml_demo:qt_demo
+        bazelisk build --config=macos //qml_demo:qt_demo //:Qt6HelloWorld
