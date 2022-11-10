@@ -38,25 +38,25 @@ cd tests
 *Run Hello World demo with Windows 10/11 x64 with Visual Studio 2019:*
 
 ```shell
-bazel run --config=vs2019 //:Qt6HelloWorld
+bazel run --config=vs2019 //hello_world:hello_world
 ```
 
 *Run Hello World demo with Windows 10/11 x64 with Visual Studio 2022:*
 
 ```shell
-bazel run --config=vs2022 //:Qt6HelloWorld
+bazel run --config=vs2022 //hello_world:hello_world
 ```
 
 *Run Hello World demo with Ubuntu 20.04:*
 
 ```shell
-bazel run --config=gcc9 //:Qt6HelloWorld
+bazel run --config=gcc9 //hello_world:hello_world
 ```
 
 *Run Hello World demo with Ubuntu 22.04:*
 
 ```shell
-bazel run --config=gcc11 //:Qt6HelloWorld
+bazel run --config=gcc11 //hello_world:hello_world
 ```
 
 *Run Hello World demo with macOS 11/12:*
@@ -66,7 +66,7 @@ bazel run --config=gcc11 //:Qt6HelloWorld
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install qt@6 # Unfortunately a preinstalled version of Qt6 is still needed on macOS 
 brew link qt@6
-bazel run --config=macos //:Qt6HelloWorld
+bazel run --config=macos //hello_world:hello_world
 ```
 
 **Expected output**
@@ -88,7 +88,7 @@ The expected output should be similar (depending on your platform) to the follow
 ## Current status
 
 Currently, on macOS, these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
-On Windows and Linux it should be possible to run `bazel run --config=[gcc9|gcc11|vs2019|vs2022] //:Qt6HelloWorld` without the need to preinstall Bazel.
+On Windows and Linux it should be possible to run `bazel run --config=[gcc9|gcc11|vs2019|vs2022] //hello_world:hello_world` without the need to preinstall Bazel.
 
 These rules require at least Bazel 4.0.0 to work.
 With some small modifications, you can get work these rules also on earlier versions of Bazel.

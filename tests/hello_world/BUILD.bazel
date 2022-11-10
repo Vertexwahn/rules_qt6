@@ -1,8 +1,8 @@
 load("@rules_qt//:qt.bzl", "qt_cc_binary")
 
 qt_cc_binary(
-    name = "Qt6HelloWorld",
-    srcs = ["main.cpp"],
+    name = "hello_world",
+    srcs = ["hello_world.cpp"],
     deps = [
         "@rules_qt//:qt_core",
         "@rules_qt//:qt_widgets",
