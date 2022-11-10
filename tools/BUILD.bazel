@@ -18,13 +18,13 @@ qt_toolchain(
 
 qt_toolchain(
     name = "qt_windows",
-    moc_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc)",
-    rcc_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:rcc)",
-    uic_cmd = "$(location @qt_6.2.4_windows_desktop_win64_msvc2019_64//:uic)",
+    moc_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc)",
+    rcc_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:rcc)",
+    uic_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:uic)",
     data = [
-        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:rcc",
-        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:uic",
-        "@qt_6.2.4_windows_desktop_win64_msvc2019_64//:moc",
+        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:rcc",
+        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:uic",
+        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc",
     ],
 )
 

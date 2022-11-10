@@ -16,9 +16,9 @@ tar cf - "6.2.4" | xz -z - > qt_6.2.4_linux_desktop_gcc_64.tar.xz
 ## Windows 64-bit x86
 
 ```shell
-python -m pip install aqtinstall
-aqt list-qt windows desktop --arch 6.2.4
-aqt install-qt windows desktop 6.2.0 win64_msvc2019_64 -m all
+python3 -m pip install aqtinstall
+aqt list-qt windows desktop --arch 6.4.0
+aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
 ```
 
 ## macOS 12 Intel

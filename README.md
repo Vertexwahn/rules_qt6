@@ -75,15 +75,15 @@ The expected output should be similar (depending on your platform) to the follow
 
 *Windows*
 
-![Screenshot of HelloWorld demo on Windows 10](/docs/screenshots/Windows10.png)
+![Screenshot of HelloWorld demo on Windows 10](/docs/screenshots/hello_world_Windows11.png)
 
 *Ubuntu*
 
-![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/Ubuntu20.04.png)
+![Screenshot of HelloWorld demo on Ubuntu 20.04](/docs/screenshots/hello_world_Ubuntu20.04.png)
 
 *macOS*
 
-![Screenshot of HelloWorld demo on macOS](/docs/screenshots/macOS12.png)
+![Screenshot of HelloWorld demo on macOS](/docs/screenshots/hello_world_macOS12.png)
 
 ## Current status
 
@@ -100,11 +100,11 @@ def fetch_qt6():
     ### Qt 6.2.4
 
     http_archive(
-        name = "qt_6.2.4_windows_desktop_win64_msvc2019_64",
-        urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_windows_desktop_win64_msvc2019_64.zip"],
+        name = "qt_6.4.0_windows_desktop_win64_msvc2019_64",
+        urls = ["https://vertexwahn.de/lfs/v1/qt_6.4.0_windows_desktop_win64_msvc2019_64.zip"],
         sha256 = "705684b672bc4305435f5a78c80399aef08f0120623b59c02f1298339c93fab4",
         strip_prefix = "6.2.4/msvc2019_64",
-        build_file = "//:qt_6.2.4_windows_desktop_win64_msvc2019_64.BUILD",
+        build_file = "//:qt_6.4.0_windows_desktop_win64_msvc2019_64.BUILD",
     )
 
     http_archive(

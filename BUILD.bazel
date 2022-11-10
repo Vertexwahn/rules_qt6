@@ -8,7 +8,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
             "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_%s_linux" % name],
             "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:qt_%s_mac" % name],
             "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:qt_%s_mac" % name],
-            "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
+            "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
         }),
     )
     for name, _, _, dependencies in QT_LIBRARIES
@@ -21,7 +21,7 @@ cc_library(
         "@platforms//os:linux": ["@qt_6.2.4_linux_desktop_gcc_64//:qt_hdrs"],
         "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.2.4_mac_desktop_clang_64//:qt_hdrs"],
         "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:qt_hdrs"],
-        "@platforms//os:windows": ["@qt_6.2.4_windows_desktop_win64_msvc2019_64//:qt_hdrs"],
+        "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:qt_hdrs"],
     }),
 )
 

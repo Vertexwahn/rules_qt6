@@ -10,6 +10,8 @@ public:
     MyWidget() {
         QLabel *label = new QLabel(this);
         label->setText(QT_VERSION_STR);
+
+        setWindowTitle("Hello World");
     }
 private:
    
