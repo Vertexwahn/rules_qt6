@@ -4,11 +4,17 @@ def _gen_ui_header(ctx):
     info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
     args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
+    
+    exec_requirements = {}
+    for elem in ctx.attr.tags:
+        exec_requirements[elem] = "1"
+
     ctx.actions.run(
         inputs = [ctx.file.ui_file],
         outputs = [ctx.outputs.ui_header],
         arguments = args,
         executable = info.uic_path,
+        execution_requirements = exec_requirements,
     )
 
     return [OutputGroupInfo(ui_header = depset([ctx.outputs.ui_header]))]
@@ -34,6 +40,7 @@ def qt_ui_library(name, ui, deps, target_compatible_with = [], **kwargs):
         ui_file = ui,
         ui_header = "ui_%s.h" % ui.split(".")[0],
         target_compatible_with = target_compatible_with,
+        tags = ["local"],
     )
     native.cc_library(
         name = name,
