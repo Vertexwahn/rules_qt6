@@ -1,0 +1,83 @@
+"""
+    SPDX-FileCopyrightText: 2022 Julian Amann <dev@vertexwahn.de>
+    SPDX-License-Identifier: Apache-2.0
+"""
+
+load("@rules_qt//:qt.bzl", "qt_cc_binary", "qt_cc_library", "qt_resource", "qt_resource_via_qrc", "qt_ui_library")
+
+qt_resource(
+    name = "main_qrc",
+    files = [
+        "okapi.ui.ico",
+        "okapi.ui.qss",
+    ],
+)
+
+qt_resource_via_qrc(
+    name = "resource2",
+    files = [
+        "okapi.ui.ico",
+        "okapi.ui.qss",
+        "widgets/checkbox_checked_disabled.png",
+        "widgets/checkbox_checked_enabled.png",
+        "widgets/checkbox_indeterminate_disabled.png",
+        "widgets/checkbox_indeterminate_enabled.png",
+        "widgets/checkbox_unchecked_disabled.png",
+        "widgets/checkbox_unchecked_enabled.png",
+        "widgets/combobox_arrow_down.png",
+        "widgets/combobox_arrow_down_selected.png",
+        "widgets/menu_arrow_right.png",
+        "widgets/menu_arrow_right_selected.png",
+        "widgets/radiobutton_checked_disabled.png",
+        "widgets/radiobutton_checked_enabled.png",
+        "widgets/radiobutton_unchecked_disabled.png",
+        "widgets/radiobutton_unchecked_enabled.png",
+        "widgets/scrollbar_arrow_down_disabled.png",
+        "widgets/scrollbar_arrow_down_enabled.png",
+        "widgets/scrollbar_arrow_left_disabled.png",
+        "widgets/scrollbar_arrow_left_enabled.png",
+        "widgets/scrollbar_arrow_right_disabled.png",
+        "widgets/scrollbar_arrow_right_enabled.png",
+        "widgets/scrollbar_arrow_up_disabled.png",
+        "widgets/scrollbar_arrow_up_enabled.png",
+    ],
+    qrc_file = "okapi.ui.qrc",
+)
+
+qt_ui_library(
+    name = "main_window_ui",
+    ui = "mainwindow.ui",
+    deps = [
+        "@rules_qt//:qt_widgets",
+    ],
+)
+
+qt_cc_library(
+    name = "main_window",
+    srcs = [
+        "main_window.cpp",
+    ],
+    hdrs = ["main_window.h"],
+    deps = [
+        ":main_window_ui",
+        "@rules_qt//:qt_widgets",
+    ],
+)
+
+qt_cc_binary(
+    name = "main",
+    srcs = ["main.cpp"],
+    data = [
+        "okapi.ui.ico",
+        "okapi.ui.qss",
+        "okapi.ui.rc",
+    ],
+    deps = [
+        ":main_qrc",
+        ":main_window",
+        ":resource2",
+        "@rules_qt//:qt_core",
+        "@rules_qt//:qt_qml",
+        "@rules_qt//:qt_widgets",
+    ],
+)

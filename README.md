@@ -85,6 +85,10 @@ The expected output should be similar (depending on your platform) to the follow
 
 ![Screenshot of HelloWorld demo on macOS](/docs/screenshots/hello_world_macOS12_M1.png)
 
+**More Examples**
+
+More examples can be found in the [tests](tests) directory.
+
 ## Current status
 
 Currently, on macOS, these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
