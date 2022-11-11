@@ -32,13 +32,13 @@ qt_toolchain(
 ## osx current use pre installed qt, when ready, change to use download version like linux and windows
 qt_toolchain(
     name = "qt_osx",
-    moc_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:moc)",
-    rcc_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:rcc)",
-    uic_cmd = "$(location @qt_6.2.4_mac_desktop_clang_64//:uic)",
+    moc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:moc)",
+    rcc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:rcc)",
+    uic_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:uic)",
     data = [
-        "@qt_6.2.4_mac_desktop_clang_64//:rcc",
-        "@qt_6.2.4_mac_desktop_clang_64//:uic",
-        "@qt_6.2.4_mac_desktop_clang_64//:moc",
+        "@qt_6.3.2_mac_desktop_clang_64//:rcc",
+        "@qt_6.3.2_mac_desktop_clang_64//:uic",
+        "@qt_6.3.2_mac_desktop_clang_64//:moc",
     ],
 )
 

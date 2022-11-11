@@ -32,11 +32,11 @@ def fetch_qt6():
     )
 
     #http_archive(
-    #    name = "qt_6.2.4_mac_desktop_clang_64",
-    #    urls = ["https://vertexwahn.de/lfs/v1/qt_6.2.4_mac_desktop_clang_64.zip"],
+    #    name = "qt_6.3.2_mac_desktop_clang_64",
+    #    urls = ["https://vertexwahn.de/lfs/v1/qt_6.3.2_mac_desktop_clang_64.zip"],
     #    sha256 = "9543aa178a6fe6aa138e4319fb07a106375b7fef11be150d154d5c1b8a321721",
     #    strip_prefix = "6.2.4/macos",
-    #    build_file = "@rules_qt////:qt_6.2.4_mac_desktop_clang_64.BUILD",
+    #    build_file = "@rules_qt////:qt_6.3.2_mac_desktop_clang_64.BUILD",
     #)
 
     # On macOS we make use of an system installed Qt6
@@ -47,9 +47,9 @@ def fetch_qt6():
 
     # Check if paht exists
     native.new_local_repository(
-        name = "qt_6.2.4_mac_desktop_clang_64",
+        name = "qt_6.3.2_mac_desktop_clang_64",
         path = "/usr/local/opt/qt@6",  #"/usr/local/opt/qt@6",
-        build_file = "@rules_qt//:qt_6.2.4_mac_desktop_clang_64.BUILD",
+        build_file = "@rules_qt//:qt_6.3.2_mac_desktop_clang_64.BUILD",
     )
 
     native.new_local_repository(

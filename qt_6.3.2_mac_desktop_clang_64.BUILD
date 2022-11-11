@@ -28,19 +28,19 @@ cc_library(
 
 filegroup(
     name = "uic",
-    srcs = ["bin/uic"],
+    srcs = ["share/qt/libexec/uic"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "moc",
-    srcs = ["bin/moc"],
+    srcs = ["share/qt/libexec/moc"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "rcc",
-    srcs = ["bin/rcc"],
+    srcs = ["share/qt/libexec/rcc"],
     visibility = ["//visibility:public"],
 )
 
