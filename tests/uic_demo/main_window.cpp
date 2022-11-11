@@ -3,4 +3,4 @@
  *  SPDX-License-Identifier: Apache-2.0
  */
 
-#include "okapi/tests/warp_tester/main_window.h"
+#include "uic_demo/main_window.h"
