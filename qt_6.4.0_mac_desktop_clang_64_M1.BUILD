@@ -8,7 +8,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
             "include",
             "include/QtCore",
         ],
-        linkopts = ["-F/opt/homebrew/Cellar/qt/6.3.2/lib"] + [
+        linkopts = ["-F/opt/homebrew/Cellar/qt/6.4.0/lib"] + [
             "-framework %s" % library_name.replace("6", ""),  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
         ],
         target_compatible_with = ["@platforms//os:osx"],

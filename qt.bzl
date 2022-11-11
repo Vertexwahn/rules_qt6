@@ -219,7 +219,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
                 "@platforms//os:linux": "$(location @qt_6.4.0_linux_desktop_gcc_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@bazel_tools//src/conditions:darwin_x86_64": "/usr/local/opt/qt@6/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@bazel_tools//src/conditions:darwin_arm64": "/opt/homebrew/Cellar/qt/6.3.2/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@bazel_tools//src/conditions:darwin_arm64": "/opt/homebrew/Cellar/qt/6.4.0/share/qt/libexec/moc $(location %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
                 "@platforms//os:linux": ["@qt_6.4.0_linux_desktop_gcc_64//:moc"],
