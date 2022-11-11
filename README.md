@@ -83,7 +83,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 *macOS*
 
-![Screenshot of HelloWorld demo on macOS](/docs/screenshots/hello_world_macOS12.png)
+![Screenshot of HelloWorld demo on macOS](/docs/screenshots/hello_world_macOS12_M1.png)
 
 ## Current status
 
