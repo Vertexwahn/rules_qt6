@@ -75,7 +75,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 *Windows*
 
-![Screenshot of HelloWorld demo on Windows 10](/docs/screenshots/hello_world_Windows11.png)
+![Screenshot of HelloWorld demo on Windows 11](/docs/screenshots/hello_world_Windows11.png)
 
 *Ubuntu*
 

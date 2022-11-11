@@ -8,7 +8,7 @@ qt_resource(
 )
 
 qt_cc_binary(
-    name = "horch2",
+    name = "main",
     srcs = [
         "main.cpp",
     ],
