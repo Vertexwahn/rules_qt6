@@ -1,57 +1,56 @@
-package(default_visibility = ["//visibility:public"])
-
 load(":qt_toolchain.bzl", "qt_toolchain")
 
+package(default_visibility = ["//visibility:public"])
+
 toolchain_type(name = "toolchain_type")
+
 qt_toolchain(
     name = "qt_linux",
-    moc_cmd = "$(location @qt_6.4.0_linux_desktop_gcc_64//:moc)",
-    rcc_cmd = "$(location @qt_6.4.0_linux_desktop_gcc_64//:rcc)",
-    uic_cmd = "$(location @qt_6.4.0_linux_desktop_gcc_64//:uic)",
     data = [
-        "@qt_6.4.0_linux_desktop_gcc_64//:rcc",
-        "@qt_6.4.0_linux_desktop_gcc_64//:uic",
-        "@qt_6.4.0_linux_desktop_gcc_64//:moc",
+        "@qt_linux_x86_64//:moc",
+        "@qt_linux_x86_64//:rcc",
+        "@qt_linux_x86_64//:uic",
     ],
+    moc_cmd = "$(location @qt_linux_x86_64//:moc)",
+    rcc_cmd = "$(location @qt_linux_x86_64//:rcc)",
+    uic_cmd = "$(location @qt_linux_x86_64//:uic)",
 )
-
 
 qt_toolchain(
     name = "qt_windows",
-    moc_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc)",
-    rcc_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:rcc)",
-    uic_cmd = "$(location @qt_6.4.0_windows_desktop_win64_msvc2019_64//:uic)",
     data = [
-        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:rcc",
-        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:uic",
-        "@qt_6.4.0_windows_desktop_win64_msvc2019_64//:moc",
+        "@qt_windows_x86_64//:moc",
+        "@qt_windows_x86_64//:rcc",
+        "@qt_windows_x86_64//:uic",
     ],
+    moc_cmd = "$(location @qt_windows_x86_64//:moc)",
+    rcc_cmd = "$(location @qt_windows_x86_64//:rcc)",
+    uic_cmd = "$(location @qt_windows_x86_64//:uic)",
 )
-
 
 ## osx current use pre installed qt, when ready, change to use download version like linux and windows
 qt_toolchain(
     name = "qt_osx",
-    moc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:moc)",
-    rcc_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:rcc)",
-    uic_cmd = "$(location @qt_6.3.2_mac_desktop_clang_64//:uic)",
     data = [
-        "@qt_6.3.2_mac_desktop_clang_64//:rcc",
-        "@qt_6.3.2_mac_desktop_clang_64//:uic",
-        "@qt_6.3.2_mac_desktop_clang_64//:moc",
+        "@qt_mac_x86_64//:moc",
+        "@qt_mac_x86_64//:rcc",
+        "@qt_mac_x86_64//:uic",
     ],
+    moc_cmd = "$(location @qt_mac_x86_64//:moc)",
+    rcc_cmd = "$(location @qt_mac_x86_64//:rcc)",
+    uic_cmd = "$(location @qt_mac_x86_64//:uic)",
 )
 
 qt_toolchain(
     name = "qt_osx_M1",
-    moc_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:moc)",
-    rcc_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:rcc)",
-    uic_cmd = "$(location @qt_6.4.0_mac_desktop_clang_64_M1//:uic)",
     data = [
-        "@qt_6.4.0_mac_desktop_clang_64_M1//:rcc",
-        "@qt_6.4.0_mac_desktop_clang_64_M1//:uic",
-        "@qt_6.4.0_mac_desktop_clang_64_M1//:moc",
+        "@qt_mac_aarch64//:moc",
+        "@qt_mac_aarch64//:rcc",
+        "@qt_mac_aarch64//:uic",
     ],
+    moc_cmd = "$(location @qt_mac_aarch64//:moc)",
+    rcc_cmd = "$(location @qt_mac_aarch64//:rcc)",
+    uic_cmd = "$(location @qt_mac_aarch64//:uic)",
 )
 
 toolchain(

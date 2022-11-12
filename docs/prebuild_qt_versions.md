@@ -22,7 +22,7 @@ mkdir Qt
 pip3 install aqtinstall
 cd $HOME/Qt
 aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
-tar cf - "6.4.0" | xz -z - > qt_6.4.0_windows_desktop_win64_msvc2019_64.tar.xz
+tar cf - "6.4.0" | xz -z - > qt_windows_x86_64.tar.xz
 ```
 
 ## Ubuntu x64
@@ -34,7 +34,7 @@ pip3 install aqtinstall
 cd $HOME/Qt
 aqt list-qt linux desktop --arch 6.4.0
 python3 -m aqt install --outputdir $HOME/Qt 6.4.0 linux desktop
-tar cf - "6.4.0" | xz -z - > qt_6.4.0_linux_desktop_gcc_64.tar.xz
+tar cf - "6.4.0" | xz -z - > qt_linux_x86_64.tar.xz
 ```
 
 ## macOS 12 Intel
