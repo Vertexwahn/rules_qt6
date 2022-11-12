@@ -5,10 +5,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         name = "qt_%s" % name,
         visibility = ["//visibility:public"],
         deps = dependencies + select({
-            "@platforms//os:linux": ["@qt_6.4.0_linux_desktop_gcc_64//:qt_%s_linux" % name],
-            "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.3.2_mac_desktop_clang_64//:qt_%s_mac" % name],
-            "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:qt_%s_mac" % name],
-            "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:qt_%s_windows" % name],
+            "@platforms//os:linux": ["@qt_linux_x86_64//:qt_%s_linux" % name],
+            "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_mac_x86_64//:qt_%s_mac" % name],
+            "@bazel_tools//src/conditions:darwin_arm64": ["@qt_mac_aarch64//:qt_%s_mac" % name],
+            "@platforms//os:windows": ["@qt_windows_x86_64//:qt_%s_windows" % name],
         }),
     )
     for name, _, _, dependencies in QT_LIBRARIES
@@ -18,10 +18,10 @@ cc_library(
     name = "qt_hdrs",
     visibility = ["//visibility:public"],
     deps = select({
-        "@platforms//os:linux": ["@qt_6.4.0_linux_desktop_gcc_64//:qt_hdrs"],
-        "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_6.3.2_mac_desktop_clang_64//:qt_hdrs"],
-        "@bazel_tools//src/conditions:darwin_arm64": ["@qt_6.4.0_mac_desktop_clang_64_M1//:qt_hdrs"],
-        "@platforms//os:windows": ["@qt_6.4.0_windows_desktop_win64_msvc2019_64//:qt_hdrs"],
+        "@platforms//os:linux": ["@qt_linux_x86_64//:qt_hdrs"],
+        "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_mac_x86_64//:qt_hdrs"],
+        "@bazel_tools//src/conditions:darwin_arm64": ["@qt_mac_aarch64//:qt_hdrs"],
+        "@platforms//os:windows": ["@qt_windows_x86_64//:qt_hdrs"],
     }),
 )
 
