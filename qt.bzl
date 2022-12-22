@@ -240,14 +240,14 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             cmd = select({
                 "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@bazel_tools//src/conditions:darwin_x86_64": "$(location @qt_mac_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@bazel_tools//src/conditions:darwin_arm64": "$(location @qt_mac_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@rules_qt//:osx_x86_64": "$(location @qt_mac_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@rules_qt//:osx_arm64": "$(location @qt_mac_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
                 "@platforms//os:linux": ["@qt_linux_x86_64//:moc"],
                 "@platforms//os:windows": ["@qt_windows_x86_64//:moc"],
-                "@bazel_tools//src/conditions:darwin_arm64": ["@qt_mac_aarch64//:moc"],
-                "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_mac_x86_64//:moc"],
+                "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:moc"],
+                "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:moc"],
             }),
             target_compatible_with = target_compatible_with,
         )
@@ -267,8 +267,8 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
 
 qt_plugin_data = select({
     "@platforms//os:linux": ["@qt_linux_x86_64//:plugin_files", "@qt_linux_x86_64//:qml_files"],
-    "@bazel_tools//src/conditions:darwin_x86_64": ["@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
-    "@bazel_tools//src/conditions:darwin_arm64": ["@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
+    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
+    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
     "@platforms//os:windows": ["@qt_windows_x86_64//:plugin_files", "@qt_windows_x86_64//:qml_files"],
 })
 
@@ -329,8 +329,8 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         data = qt_plugin_data + data,
         env = select({
             "@platforms//os:linux": linux_env_data,
-            "@bazel_tools//src/conditions:darwin_x86_64": mac_x64_env_data,
-            "@bazel_tools//src/conditions:darwin_arm64": mac_m1_env_data,
+            "@rules_qt//:osx_x86_64": mac_x64_env_data,
+            "@rules_qt//:osx_arm64": mac_m1_env_data,
             "@platforms//os:windows": windows_env_data,
         }),
         **kwargs
