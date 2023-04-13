@@ -335,3 +335,39 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         }),
         **kwargs
     )
+
+
+
+def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
+    """ cc_test which depend on qt_cc_library or want to use qt tools
+
+    Args:
+      name: A name for the rule.
+      srcs: The cpp files to compile.
+      deps: cc_library dependencies for the library.
+      copts: cc_test copts
+      data: which data need to depend
+      env: environment value
+      **kwargs: Any additional arguments are passed to the cc_test rule.
+    """
+    linux_env_data = update_dict(LINUX_ENV_DATA, env)
+    mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
+    windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
+    mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
+    native.cc_test(
+        name = name,
+        srcs = srcs,
+        deps = deps,
+        copts = copts + select({
+            "@platforms//os:windows": [],
+            "//conditions:default": ["-fPIC"],
+        }),
+        data = qt_plugin_data + data,
+        env = select({
+            "@platforms//os:linux": linux_env_data,
+            "@rules_qt//:osx_x86_64": mac_x64_env_data,
+            "@rules_qt//:osx_arm64": mac_m1_env_data,
+            "@platforms//os:windows": windows_env_data,
+        }),
+        **kwargs
+    )
