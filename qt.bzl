@@ -336,8 +336,6 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         **kwargs
     )
 
-
-
 def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
     """ cc_test which depend on qt_cc_library or want to use qt tools
 

@@ -11,7 +11,7 @@ def _qt_toolchain_impl(ctx):
         qtinfo = QtToolchainInfo(
             rcc_path = expand_rcc_path,
             uic_path = expand_uic_path,
-            moc_path = expand_moc_path
+            moc_path = expand_moc_path,
         ),
     )
     return [toolchain_info]
@@ -22,7 +22,7 @@ qt_toolchain = rule(
         "rcc_cmd": attr.string(),
         "uic_cmd": attr.string(),
         "moc_cmd": attr.string(),
-        "data": attr.label_list(allow_files= True),
+        "data": attr.label_list(allow_files = True),
     },
 )
 

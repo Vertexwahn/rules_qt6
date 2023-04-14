@@ -13,7 +13,7 @@ qt_cc_binary(
         "main.cpp",
     ],
     deps = [
-        "@rules_qt//:qt",
         ":qt_demo_qrc2",
+        "@rules_qt//:qt",
     ],
 )
