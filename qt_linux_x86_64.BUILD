@@ -8,7 +8,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
             "lib/libicu*.so*",
         ]),
         hdrs = glob(["include/%s/**" % include_folder]),
-        includes = ["include"],
+        includes = [
+            "include",
+            "include/%s" % include_folder,
+        ],
         target_compatible_with = ["@platforms//os:linux"],
         visibility = ["//visibility:public"],
     )

@@ -6,7 +6,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         hdrs = glob(["include/%s/**" % include_folder]),  # allow_empty = True
         includes = [
             "include",
-            "include/QtCore",
+            "include/%s" % include_folder,
         ],
         linkopts = ["-F/usr/local/opt/qt@6/lib"] + [
             "-framework %s" % library_name.replace("6", ""),  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
