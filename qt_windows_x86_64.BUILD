@@ -23,7 +23,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
             ["include/%s/**" % include_folder],
             allow_empty = True,
         ),
-        includes = ["include"],
+        includes = [
+            "include",
+            "include/%s" % include_folder,
+        ],
         target_compatible_with = ["@platforms//os:windows"],
         visibility = ["//visibility:public"],
         deps = [":qt_%s_windows_import" % name],
