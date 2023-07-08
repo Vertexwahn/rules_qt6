@@ -1,7 +1,7 @@
-#include <QtCore/QThread>
+#include <QThread>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QLabel>
+#include <QLabel>
 #include <QtWidgets/QStylePainter>
 
 class MyWidget : public QWidget
