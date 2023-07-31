@@ -6,7 +6,7 @@ on:
 
 jobs:
   build_and_test_ubuntu20:
-    name: Linux Ubuntu 20.04 build <GCC 9.3.0>
+    name: Linux Ubuntu 20.04 build <GCC 9.4.0>
     runs-on: ubuntu-20.04
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         bazelisk build --config=gcc9 //...
 
   build_and_test_ubuntu22:
-    name: Linux Ubuntu 22.04 build <GCC 11.2.0>
+    name: Linux Ubuntu 22.04 build <GCC 11.3.0>
     runs-on: ubuntu-22.04
 
     steps:
