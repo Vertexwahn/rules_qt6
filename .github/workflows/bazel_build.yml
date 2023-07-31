@@ -106,7 +106,7 @@ jobs:
         bazelisk build --config=macos //...
 
   build_and_test_macos12:
-    name: macOS 12 Bazel build <Apple Clang13>
+    name: macOS 12 Bazel build <Apple Clang14>
     runs-on: macOS-12
 
     steps:
@@ -132,3 +132,31 @@ jobs:
         #brew link qt@6
         cd tests
         bazelisk build --config=macos //...
+
+  build_and_test_macos13:
+    name: macOS 13 Bazel build <Apple Clang14>
+    runs-on: macOS-13
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Mount bazel cache
+        uses: actions/cache@v3
+        with:
+          path: "/home/runner/.cache/bazel"
+          key: bazel
+
+      - name: Print info
+        run: |
+          echo "OS info:"
+          sw_vers
+          uname
+          echo "Compiler info:"
+          clang --version
+
+      - name: Build
+        run: |
+          brew install qt@6
+          #brew link qt@6
+          cd tests
+          bazelisk build --config=macos //...
