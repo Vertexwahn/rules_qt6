@@ -32,9 +32,11 @@ cd ~
 mkdir Qt
 pip3 install aqtinstall
 cd $HOME/Qt
-aqt list-qt linux desktop --arch 6.4.0
-python3 -m aqt install --outputdir $HOME/Qt 6.4.0 linux desktop
-tar cf - "6.4.0" | xz -z - > qt_linux_x86_64.tar.xz
+aqt list-qt linux desktop
+aqt list-qt linux desktop --modules 6.6.1 gcc_64
+aqt install-qt linux desktop 6.6.1
+aqt install-qt linux desktop 6.6.1 -m debug_info qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgraphs qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwaylandcompositor qtwebchannel qtwebengine qtwebsockets qtwebview
+tar cf - "6.6.1" | xz -z - > qt_6.6.1_linux_desktop_gcc_64.tar.xz
 ```
 
 ## macOS 12 Intel
