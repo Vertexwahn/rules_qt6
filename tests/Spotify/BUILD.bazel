@@ -1,0 +1,48 @@
+load("@rules_qt//:qt.bzl", "qt_cc_binary", "qt_cc_library", "qt_resource")
+
+qt_resource(
+    name = "qrc",
+    files = [
+        "SpotifyOAuth.qmltypes",
+        "qmldir",
+    ],
+)
+
+qt_resource(
+    name = "qrc2",
+    files = [
+        "main.qml"
+    ],
+)
+
+qt_cc_library(
+    name = "spotify",
+    srcs = [
+        "spotifyapi.cpp",
+        "spotifymodel.cpp",
+    ],
+    hdrs = [
+        "spotifyapi.h",
+        "spotifymodel.h",
+    ],
+    deps = [
+        "@rules_qt//:qt",
+    ],
+)
+
+qt_cc_binary(
+    name = "SpotifyOAuth",
+    srcs = [
+        "main.cpp",
+    ],
+    deps = [
+        ":qrc",
+        ":qrc2",
+        ":spotify",
+        "@rules_qt//:qt",
+    ],
+    data = [
+        ":qrc",
+        ":qrc2",
+    ]
+)
