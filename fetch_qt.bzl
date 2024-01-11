@@ -25,10 +25,10 @@ def fetch_qt6():
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
-            "https://vertexwahn.de/lfs/v1/qt_6.4.0_linux_desktop_gcc_64.tar.xz",
+            "https://vertexwahn.de/lfs/v1/qt_6.6.1_linux_desktop_gcc_64.tar.xz",
         ],
         sha256 = "809919895e2ac0567df9290676d4ec6cd1ed39c432dc5da0722b3104681fd376",
-        strip_prefix = "6.4.0/gcc_64",
+        strip_prefix = "6.6.1/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
 
