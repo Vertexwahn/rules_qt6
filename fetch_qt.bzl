@@ -27,7 +27,7 @@ def fetch_qt6():
         urls = [
             "https://vertexwahn.de/lfs/v1/qt_6.6.1_linux_desktop_gcc_64.tar.xz",
         ],
-        sha256 = "809919895e2ac0567df9290676d4ec6cd1ed39c432dc5da0722b3104681fd376",
+        sha256 = "e782dcd5e6778088d03c1dedecccaca8df5d60a54efbdca121a5f969a88638f0",
         strip_prefix = "6.6.1/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
