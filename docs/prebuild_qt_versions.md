@@ -9,9 +9,16 @@ This document explains how the archive of the prebuilt version is generated.
 *Powershell*
 
 ```shell
-python3 -m pip install aqtinstall
-aqt list-qt windows desktop --arch 6.4.0
-aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
+mkdir Qt
+cd Qt
+pip install -U pip
+pip install aqtinstall
+# List available architectures
+aqt list-qt windows desktop --arch 6.6.1
+# Install qt with all modules
+aqt install-qt windows desktop 6.6.1 win64_msvc2019_64 -m all
+# does not work sicne Compress-Archive does not support archives > 2GB
+#Compress-Archive -Path "6.6.1" -DestinationPath qt_6.6.1_windows_desktop_win64_msvc2019_64.zip
 ```
 
 *Bash using Ubuntu to prepare Qt for Windows build*

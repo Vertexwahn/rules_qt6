@@ -11,7 +11,7 @@ SpotifyAPI::SpotifyAPI(QObject *parent): QObject(parent), m_isAuthenticated(fals
 
     m_oauth2.setReplyHandler(new QOAuthHttpServerReplyHandler(8000, this));
 
-    connect(&m_oauth2, &QOAuth2AuthorizationCodeFlow::statusChanged, [=](QAbstractOAuth::Status status) {
+    connect(&m_oauth2, &QOAuth2AuthorizationCodeFlow::statusChanged, [=, this](QAbstractOAuth::Status status) {
         if (status == QAbstractOAuth::Status::Granted) {
             setAuthenticated(true);
         } else {

@@ -9,10 +9,10 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-            "https://vertexwahn.de/lfs/v1/qt_6.4.0_windows_desktop_win64_msvc2019_64.zip",
+             "https://vertexwahn.de/lfs/v1/qt_6.6.1_windows_desktop_win64_msvc2019_64.zip",,
         ],
-        sha256 = "e3c20b441ddd8bb803e46de32bf2fc5563fda125409d62dcd12b5647ae5a9c7e",
-        strip_prefix = "6.4.0/msvc2019_64",
+        sha256 = "88d0d3632d89970a8db69558b83b37d84686bb46820d77407d812a503b889e7f",
+        strip_prefix = "6.6.1/msvc2019_64",
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
 
@@ -27,7 +27,7 @@ def fetch_qt6():
         urls = [
             "https://vertexwahn.de/lfs/v1/qt_6.6.1_linux_desktop_gcc_64.tar.xz",
         ],
-        sha256 = "e782dcd5e6778088d03c1dedecccaca8df5d60a54efbdca121a5f969a88638f0",
+        sha256 = "661b82ba85836f1289a21bc48021a62da1586b59f8527b5928e55d555d9e42ef",
         strip_prefix = "6.6.1/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
