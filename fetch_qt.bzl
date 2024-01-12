@@ -9,7 +9,7 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-             "https://vertexwahn.de/lfs/v1/qt_6.6.1_windows_desktop_win64_msvc2019_64.zip",,
+             "https://vertexwahn.de/lfs/v1/qt_6.6.1_windows_desktop_win64_msvc2019_64.zip",
         ],
         sha256 = "88d0d3632d89970a8db69558b83b37d84686bb46820d77407d812a503b889e7f",
         strip_prefix = "6.6.1/msvc2019_64",
