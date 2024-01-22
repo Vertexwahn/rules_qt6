@@ -7,7 +7,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
             "lib/lib%s.so*" % library_name,
             "lib/libicu*.so*",
         ]),
-        hdrs = glob(["include/%s/**" % include_folder]),
+        hdrs = glob([
+            "include/%s/**" % include_folder,
+            "include/QtCore/6.4.0/QtCore/private/**",
+        ]),
         includes = [
             "include",
             "include/%s" % include_folder,
@@ -20,10 +23,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
 cc_library(
     name = "qt_hdrs",
-    hdrs = glob([
-        "include/**",
-        "include/QtCore/6.4.0/QtCore/private/**",
-    ]),
+    hdrs = glob(["include/**"]),
     includes = [
         "include",
     ],
