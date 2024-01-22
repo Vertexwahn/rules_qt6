@@ -24,9 +24,13 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
 cc_library(
     name = "qt_hdrs",
-    hdrs = glob(["include/**"]),
+    hdrs = glob([
+        "include/**",
+        "include/QtCore/6.4.0/QtCore/private/**",
+    ]),
     includes = [
         "include",
+        "include/QtCore/6.4.0/QtCore/private/**",
     ],
     visibility = ["//visibility:public"],
 )
