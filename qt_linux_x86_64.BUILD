@@ -14,6 +14,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         includes = [
             "include",
             "include/%s" % include_folder,
+            "include/QtCore/6.4.0/QtCore/private/**",
         ],
         target_compatible_with = ["@platforms//os:linux"],
         visibility = ["//visibility:public"],
