@@ -25,10 +25,10 @@ def fetch_qt6():
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
-            "https://github.com/Sayter99/rules_qt6/blob/main/prebuilt/qt_6.5.3_linux_desktop_gcc_64.zip",
+            "https://github.com/Sayter99/rules_qt6/raw/main/prebuilt/qt_6.5.3_linux_desktop_gcc_64.zip?download=",
         ],
         sha256 = "e283eb2ca8e9eb65aeeae4a6e18395705e68637e7f543ea40ce47ce52ce7415a",
-        strip_prefix = "6.5.3/gcc_64",
+        strip_prefix = "qt_6.5.3_linux_desktop_gcc_64/6.5.3/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
 
