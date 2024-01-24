@@ -1,0 +1,36 @@
+module(name = "tests", version = "0.0.0")
+
+bazel_dep(name = "rules_python", version = "0.27.1")
+bazel_dep(name = "platforms", version = "0.0.8")
+bazel_dep(name = "rules_qt", version = "0.0.0")
+local_path_override(
+    module_name = "rules_qt",
+    path = "../",
+)
+
+bazel_dep(name="rules_cc", version = "0.0.9")
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+bazel_dep(name = "toolchains_llvm", version = "0.10.3")
+
+llvm = use_extension("@toolchains_llvm//toolchain/extensions:llvm.bzl", "llvm")
+llvm.toolchain(
+   # The official LLVM GitHub release page lacked pre-built packages
+   # for linux and amd64 at the time 0.10.3 release was created:
+   # https://github.com/llvm/llvm-project/releases/tag/llvmorg-16.0.6
+   llvm_version = "17.0.6",
+   urls = {
+       "linux-x86_64": ["https://github.com/llvm/llvm-project/releases/download/llvmorg-17.0.6/clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04.tar.xz"],
+   },
+   sha256 = {
+       "linux-x86_64": "884ee67d647d77e58740c1e645649e29ae9e8a6fe87c1376be0f3a30f3cc9ab3",
+   },
+   strip_prefix = {
+       "linux-x86_64": "clang+llvm-17.0.6-x86_64-linux-gnu-ubuntu-22.04",
+   },
+   cxx_standard = {
+       "linux-x86_64": "c++17",
+   },
+)
+
+use_repo(llvm, "llvm_toolchain")
+register_toolchains("@llvm_toolchain//:all")

@@ -1,20 +1,28 @@
 """qt common rules"""
 
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "cc_test")
+
+def get_execution_requirements(ctx):
+    exec_requirements = {}
+    for elem in ctx.attr.tags:
+        exec_requirements[elem] = "1"
+    return exec_requirements
+
 def _gen_ui_header(ctx):
     info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
     args = [ctx.file.ui_file.path, "-o", ctx.outputs.ui_header.path]
 
-    exec_requirements = {}
-    for elem in ctx.attr.tags:
-        exec_requirements[elem] = "1"
+    deps = []
+    for dep in info.data:
+        deps += dep[DefaultInfo].files.to_list()
 
     ctx.actions.run(
-        inputs = [ctx.file.ui_file],
+        inputs = deps + [ctx.file.ui_file],
         outputs = [ctx.outputs.ui_header],
         arguments = args,
         executable = info.uic_path,
-        execution_requirements = exec_requirements,
+        execution_requirements = get_execution_requirements(ctx),
     )
 
     return [OutputGroupInfo(ui_header = depset([ctx.outputs.ui_header]))]
@@ -39,14 +47,18 @@ def qt_ui_library(name, ui, deps, target_compatible_with = [], **kwargs):
         platform in order for this toolchain to be selected for a target building for that platform.
       **kwargs: extra args pass to cc_library
     """
+    tags = kwargs.get("tags", [])
+    if "manual" not in tags:
+        tags += ["manual"]
+
     gen_ui_header(
         name = "%s_uic" % name,
         ui_file = ui,
         ui_header = "ui_%s.h" % ui.split(".")[0],
         target_compatible_with = target_compatible_with,
-        tags = ["local"],
+        tags = tags,
     )
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
@@ -65,16 +77,17 @@ def _gencpp(ctx):
         )
 
     args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
-    exec_requirements = {}
-    for elem in ctx.attr.tags:
-        exec_requirements[elem] = "1"
+
+    deps = []
+    for dep in info.data:
+        deps += dep[DefaultInfo].files.to_list()
 
     ctx.actions.run(
-        inputs = [resource for _, resource in resource_files] + [ctx.file.qrc],
+        inputs = deps + [resource for _, resource in resource_files] + [ctx.file.qrc],
         outputs = [ctx.outputs.cpp],
         arguments = args,
         executable = info.rcc_path,
-        execution_requirements = exec_requirements,
+        execution_requirements = get_execution_requirements(ctx),
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
@@ -95,15 +108,17 @@ def _gencpp2(ctx):
     resource_files = ctx.files.files
 
     args = ["--name", ctx.attr.resource_name, "--output", ctx.outputs.cpp.path, ctx.file.qrc.path]
-    exec_requirements = {}
-    for elem in ctx.attr.tags:
-        exec_requirements[elem] = "1"
+
+    deps = []
+    for dep in info.data:
+        deps += dep[DefaultInfo].files.to_list()
+
     ctx.actions.run(
-        inputs = [resource for resource in resource_files] + [ctx.file.qrc],
+        inputs = deps + [resource for resource in resource_files] + [ctx.file.qrc],
         outputs = [ctx.outputs.cpp],
         arguments = args,
         executable = info.rcc_path,
-        execution_requirements = exec_requirements,
+        execution_requirements = get_execution_requirements(ctx),
     )
     return [OutputGroupInfo(cpp = depset([ctx.outputs.cpp]))]
 
@@ -122,17 +137,17 @@ gencpp2 = rule(
 def _genqrc(ctx):
     qrc_output = ctx.outputs.qrc
     qrc_content = "<RCC>\n  <qresource prefix=\\\"/\\\">"
+
     for f in ctx.files.files:
         qrc_content += "\n    <file>%s</file>" % f.path
+
     qrc_content += "\n  </qresource>\n</RCC>"
     cmd = ["echo", "\"%s\"" % qrc_content, ">", qrc_output.path]
-    exec_requirements = {}
-    for elem in ctx.attr.tags:
-        exec_requirements[elem] = "1"
+
     ctx.actions.run_shell(
         command = " ".join(cmd),
         outputs = [qrc_output],
-        execution_requirements = exec_requirements,
+        execution_requirements = get_execution_requirements(ctx),
     )
     return [OutputGroupInfo(qrc = depset([qrc_output]))]
 
@@ -160,6 +175,10 @@ def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with = [], **kw
     # unique 'name'.
     rsrc_name = native.package_name().replace("/", "_") + "_" + name
 
+    tags = kwargs.get("tags", [])
+    if "manual" not in tags:
+        tags += ["manual"]
+
     outfile = name + "_gen.cpp"
     gencpp2(
         name = name + "_gen",
@@ -168,9 +187,9 @@ def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with = [], **kw
         qrc = qrc_file,
         cpp = outfile,
         target_compatible_with = target_compatible_with,
-        tags = ["local"],
+        tags = tags,
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -195,6 +214,10 @@ def qt_resource(name, files, target_compatible_with = [], **kwargs):
     # unique 'name'.
     rsrc_name = native.package_name().replace("/", "_") + "_" + name
 
+    tags = kwargs.get("tags", [])
+    if "manual" not in tags:
+        tags += ["manual"]
+
     outfile = name + "_gen.cpp"
     gencpp(
         name = name + "_gen",
@@ -203,17 +226,50 @@ def qt_resource(name, files, target_compatible_with = [], **kwargs):
         qrc = qrc_file,
         cpp = outfile,
         target_compatible_with = target_compatible_with,
-        tags = [
-            "local",
-        ],
+        tags = tags,
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
         target_compatible_with = target_compatible_with,
         **kwargs
     )
+
+def _gen_moc_cc(ctx):
+    info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
+    package_path = "{}/{}".format(ctx.label.workspace_root, ctx.label.package)
+    out_file = ctx.outputs.filename
+    args = [ctx.file.hdr.path, "-o", "{}".format(out_file.path), "-f", "{}".format(ctx.file.hdr.path)]
+
+    deps = []
+    for dep in info.data:
+        deps += dep[DefaultInfo].files.to_list()
+
+    ctx.actions.run(
+        inputs = ctx.files.hdr + deps,
+        outputs = [out_file],
+        arguments = args,
+        executable = info.moc_path,
+        execution_requirements = get_execution_requirements(ctx),
+        mnemonic = "QtMocGen",
+        progress_message = "Creating QT MOC: %s for %s" % (
+            out_file,
+            ctx.label,
+        ),
+        toolchain = "@rules_qt//tools:toolchain_type",
+    )
+    return [OutputGroupInfo(cpp = depset([ctx.outputs.filename]))]
+
+gen_moc_cc = rule(
+    implementation = _gen_moc_cc,
+    attrs = {
+        "hdr": attr.label(allow_single_file = True, mandatory = True),
+        "filename": attr.output(mandatory = True),
+    },
+    toolchains = ["@rules_qt//tools:toolchain_type"],
+)
+
 
 def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], target_compatible_with = [], **kwargs):
     """Compiles a QT library and generates the MOC for it.
@@ -229,30 +285,23 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
         platform in order for this toolchain to be selected for a target building for that platform.
       **kwargs: Any additional arguments are passed to the cc_library rule.
     """
+    tags = kwargs.get("tags", [])
+    if "manual" not in tags:
+        tags += ["manual"]
+
     _moc_srcs = []
     for hdr in hdrs:
-        header_path = "%s/%s" % (native.package_name(), hdr) if len(native.package_name()) > 0 else hdr
         moc_name = "%s_moc" % hdr.replace(".", "_")
-        native.genrule(
+        moc_src = moc_name + ".cc"
+        gen_moc_cc(
             name = moc_name,
-            srcs = [hdr],
-            outs = [moc_name + ".cc"],
-            cmd = select({
-                "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@rules_qt//:osx_x86_64": "$(location @qt_mac_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@rules_qt//:osx_arm64": "$(location @qt_mac_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-            }),
-            tools = select({
-                "@platforms//os:linux": ["@qt_linux_x86_64//:moc"],
-                "@platforms//os:windows": ["@qt_windows_x86_64//:moc"],
-                "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:moc"],
-                "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:moc"],
-            }),
-            target_compatible_with = target_compatible_with,
+            hdr = hdr,
+            filename = moc_src,
+            tags = tags,
         )
-        _moc_srcs.append(":" + moc_name)
-    native.cc_library(
+        _moc_srcs.append(":" + moc_src)
+
+    cc_library(
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
@@ -266,10 +315,10 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_linux_x86_64//:plugin_files", "@qt_linux_x86_64//:qml_files"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
-    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
-    "@platforms//os:windows": ["@qt_windows_x86_64//:plugin_files", "@qt_windows_x86_64//:qml_files"],
+    "@platforms//os:linux": [Label("@qt_linux_x86_64//:plugin_files"), Label("@qt_linux_x86_64//:qml_files")],
+    "@rules_qt//:osx_x86_64": [Label("@qt_mac_x86_64//:plugin_files"), Label("@qt_mac_x86_64//:qml_files")],
+    "@rules_qt//:osx_arm64": [Label("@qt_mac_aarch64//:plugin_files"), Label("@qt_mac_aarch64//:qml_files")],
+    "@platforms//os:windows": [Label("@qt_windows_x86_64//:plugin_files"), Label("@qt_windows_x86_64//:qml_files")],
 })
 
 def update_dict(source, env):
@@ -278,28 +327,36 @@ def update_dict(source, env):
     result.update(env)
     return result
 
+x86_workspace = Label("@qt_linux_x86_64//:plugin_files").workspace_root
+x86_package = Label("@qt_linux_x86_64//:plugin_files").package
 LINUX_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_linux_x86_64/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_linux_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_linux_x86_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "{}/{}/plugins/platforms".format(x86_workspace, x86_package),
+    "QML2_IMPORT_PATH": "{}/{}/qml".format(x86_workspace, x86_package),
+    "QT_PLUGIN_PATH": "{}/{}/plugins".format(x86_workspace, x86_package),
 }
 
+mac_x86_workspace = Label("@qt_mac_x86_64//:plugin_files").workspace_root
+mac_x86_package = Label("@qt_mac_x86_64//:plugin_files").package
 MAC_X64_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_x86_64/share/qt/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_mac_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_mac_x86_64/share/qt/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "{}/{}/share/qt/plugins/platforms".format(mac_x86_workspace, mac_x86_package),
+    "QML2_IMPORT_PATH": "{}/{}/qml".format(mac_x86_workspace, mac_x86_package),
+    "QT_PLUGIN_PATH": "{}/{}/share/qt/plugins".format(mac_x86_workspace, mac_x86_package),
 }
 
+win_workspace = Label("@qt_windows_x86_64//:plugin_files").workspace_root
+win_package = Label("@qt_windows_x86_64//:plugin_files").package
 WINDOWS_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_windows_x86_64/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_windows_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_windows_x86_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "{}/{}/plugins/platforms".format(win_workspace, win_package),
+    "QML2_IMPORT_PATH": "{}/{}/qml".format(win_workspace, win_package),
+    "QT_PLUGIN_PATH": "{}/{}/plugins".format(win_workspace, win_package),
 }
 
+mac_m1_workspace = Label("@qt_mac_aarch64//:plugin_files").workspace_root
+mac_m1_package = Label("@qt_mac_aarch64//:plugin_files").package
 MAC_M1_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_aarch64/share/qt/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_mac_aarch64/qml",
-    "QT_PLUGIN_PATH": "external/qt_mac_aarch64/share/qt/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "{}/{}/share/qt/plugins/platforms".format(mac_m1_workspace, mac_m1_package),
+    "QML2_IMPORT_PATH": "{}/{}/qml".format(mac_m1_workspace, mac_m1_package),
+    "QT_PLUGIN_PATH": "{}/{}/share/qt/plugins".format(mac_m1_workspace, mac_m1_package),
 }
 
 def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
@@ -318,7 +375,7 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    native.cc_binary(
+    cc_binary(
         name = name,
         srcs = srcs,
         deps = deps,
@@ -352,7 +409,7 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    native.cc_test(
+    cc_test(
         name = name,
         srcs = srcs,
         deps = deps,

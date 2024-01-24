@@ -1,0 +1,5 @@
+# Use bzlmod
+common --enable_bzlmod
+
+# Not needed after https://github.com/bazelbuild/bazel/issues/7260 is closed
+build --incompatible_enable_cc_toolchain_resolution

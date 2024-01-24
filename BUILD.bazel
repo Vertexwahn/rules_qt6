@@ -1,4 +1,5 @@
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_python//python:pip.bzl", "compile_pip_requirements")
 
 config_setting(
     name = "osx_arm64",
@@ -47,4 +48,10 @@ cc_library(
     name = "qt",
     visibility = ["//visibility:public"],
     deps = all_qt_libs + [":qt_hdrs"],
+)
+
+compile_pip_requirements(
+    name = "requirements",
+    src = "requirements.in",
+    requirements_txt = "requirements_lock.txt",
 )

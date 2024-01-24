@@ -1,6 +1,6 @@
 QtToolchainInfo = provider(
     doc = "Information about how to invoke qt tools.",
-    fields = ["rcc_path", "uic_path", "moc_path"],
+    fields = ["rcc_path", "uic_path", "moc_path", "data"],
 )
 
 def _qt_toolchain_impl(ctx):
@@ -12,6 +12,7 @@ def _qt_toolchain_impl(ctx):
             rcc_path = expand_rcc_path,
             uic_path = expand_uic_path,
             moc_path = expand_moc_path,
+            data = ctx.attr.data,
         ),
     )
     return [toolchain_info]

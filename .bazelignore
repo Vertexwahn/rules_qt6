@@ -1,0 +1,5 @@
+tests
+bazel-out
+bazel-bin
+bazel-rules_qt6
+bazel-testlogs
