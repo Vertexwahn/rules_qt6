@@ -25,7 +25,7 @@ def fetch_qt6():
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
-            "https://github.com/Sayter99/rules_qt6/raw/main/prebuilt/qt_6.5.1_linux_desktop_gcc_64.zip?download=",
+            "https://dl.dropboxusercontent.com/scl/fi/1oscofwpr6kg0esb3ud9v/qt_6.5.1_linux_desktop_gcc_64.zip?rlkey=tmof818pcx8jl5lk2wznaowcs&dl=0",
         ],
         sha256 = "43e11369e6639244028fbb7e7e13480a6c6044f6879de24da672c083a0680424",
         strip_prefix = "6.5.1/gcc_64",
