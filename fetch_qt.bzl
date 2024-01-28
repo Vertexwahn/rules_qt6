@@ -9,10 +9,10 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-            "https://vertexwahn.de/lfs/v1/qt_6.4.0_windows_desktop_win64_msvc2019_64.zip",
+            "https://dl.dropboxusercontent.com/scl/fi/hmttghb2k57vsacyyac9h/qt_6.5.1_windows_x64_msvc2022.zip?rlkey=b78l2th4cibc6z22lugswo34e&dl=0",
         ],
-        sha256 = "e3c20b441ddd8bb803e46de32bf2fc5563fda125409d62dcd12b5647ae5a9c7e",
-        strip_prefix = "6.4.0/msvc2019_64",
+        sha256 = "c9fa6ff6b4956aef8a83dd9bc0b9f9ba954c79fbaef13d14299a75f4dfae83e6",
+        strip_prefix = "6.5.1/msvc2022_64",
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
 
