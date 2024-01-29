@@ -9,9 +9,9 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/n1jdu41re9vla3h9y7kcf/qt_6.5.1_windows_msvc2022_64.zip?rlkey=sxuwub1oiabvansud311ynpyi&dl=0",
+            "https://dl.dropboxusercontent.com/scl/fi/s96ot2qirkjqx3g5nctds/qt_6.5.1_windows_msvc2022_64.zip?rlkey=qq7cswbhtxcxg88emfyzb2s1k&dl=0",
         ],
-        sha256 = "8e4c34e2ef1c62cedef9674433b1d4bc479fcf16b5394403379072d2b3b3d2de",
+        sha256 = "3e96d38afe95d32794fc98459379c063bb9f027379843b3d42ab58c68428e0e5",
         strip_prefix = "6.5.1/msvc2022_64",
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
