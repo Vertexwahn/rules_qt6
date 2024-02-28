@@ -27,7 +27,7 @@ def fetch_qt6():
         urls = [
             "https://dl.dropboxusercontent.com/scl/fi/1oscofwpr6kg0esb3ud9v/qt_6.5.1_linux_desktop_gcc_64.zip?rlkey=tmof818pcx8jl5lk2wznaowcs&dl=0",
         ],
-        sha256 = "43e11369e6639244028fbb7e7e13480a6c6044f6879de24da672c083a0680424",
+        sha256 = "cd7a0190390d2ca68b5c06ac95d36af22836993233565acf2ec73b0f74d7c914",
         strip_prefix = "6.5.1/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
