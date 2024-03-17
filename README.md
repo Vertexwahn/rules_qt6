@@ -31,8 +31,8 @@ The following tools should be installed:
 *All platforms:*
 
 ```shell
-git clone https://github.com/Vertexwahn/rules_qt6
-cd tests
+git clone https://github.com/Vertexwahn/rules_qt6 &&
+cd rules_qt6/tests
 ```
 
 *Run Hello World demo with Windows 10/11 x64 with Visual Studio 2019:*
