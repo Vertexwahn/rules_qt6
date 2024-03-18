@@ -9,9 +9,16 @@ This document explains how the archive of the prebuilt version is generated.
 *Powershell*
 
 ```shell
-python3 -m pip install aqtinstall
-aqt list-qt windows desktop --arch 6.4.0
-aqt install-qt windows desktop 6.4.0 win64_msvc2019_64 -m all
+mkdir Qt
+cd Qt
+pip install -U pip
+pip install aqtinstall
+# List available architectures
+aqt list-qt windows desktop --arch 6.6.1
+# Install qt with all modules
+aqt install-qt windows desktop 6.6.1 win64_msvc2019_64 -m all
+# does not work sicne Compress-Archive does not support archives > 2GB
+#Compress-Archive -Path "6.6.1" -DestinationPath qt_6.6.1_windows_desktop_win64_msvc2019_64.zip
 ```
 
 *Bash using Ubuntu to prepare Qt for Windows build*
@@ -32,9 +39,11 @@ cd ~
 mkdir Qt
 pip3 install aqtinstall
 cd $HOME/Qt
-aqt list-qt linux desktop --arch 6.4.0
-python3 -m aqt install --outputdir $HOME/Qt 6.4.0 linux desktop
-tar cf - "6.4.0" | xz -z - > qt_linux_x86_64.tar.xz
+aqt list-qt linux desktop
+aqt list-qt linux desktop --modules 6.6.1 gcc_64
+aqt install-qt linux desktop 6.6.1
+aqt install-qt linux desktop 6.6.1 -m debug_info qt3d qt5compat qtcharts qtconnectivity qtdatavis3d qtgraphs qtgrpc qthttpserver qtimageformats qtlanguageserver qtlocation qtlottie qtmultimedia qtnetworkauth qtpdf qtpositioning qtquick3d qtquick3dphysics qtquickeffectmaker qtquicktimeline qtremoteobjects qtscxml qtsensors qtserialbus qtserialport qtshadertools qtspeech qtvirtualkeyboard qtwaylandcompositor qtwebchannel qtwebengine qtwebsockets qtwebview
+tar cf - "6.6.1" | xz -z - > qt_6.6.1_linux_desktop_gcc_64.tar.xz
 ```
 
 ## macOS 12 Intel

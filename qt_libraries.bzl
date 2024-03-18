@@ -107,6 +107,7 @@ QT_LIBRARIES = [
     ("quick_widgets", "QtQuickWidgets", "Qt6QuickWidgets", [":qt_quick", ":qt_qml", ":qt_widgets", ":qt_opengl", ":qt_gui", ":qt_core"]),
     ("quick_3d", "QtQuick3D", "Qt6Quick3D", [":qt_quick_3d_runtime_render", ":qt_quick", ":qt_qml_models", ":qt_qml", ":qt_quick_3d_utils", ":qt_gui", ":qt_core"]),
     ("quick_sensors", "QtSensorsQuick", "Qt6SensorsQuick", [":qt_sensors", ":qt_qml", ":qt_core"]),
+    ("quick_web_channel", "QtWebChannelQuick", "Qt6WebChannelQuick", [":qt_quick", ":qt_qml", ":qt_web_view", ":qt_gui", ":qt_core"]), # not sure if this is correct
     ("quick_web_view", "QtWebViewQuick", "Qt6WebViewQuick", [":qt_quick", ":qt_qml", ":qt_web_view", ":qt_gui", ":qt_core"]),
     ("3d_quick", "Qt3DQuick", "Qt63DQuick", [":qt_3d_core", ":qt_quick", ":qt_gui", ":qt_qml_models", ":qt_qml", ":qt_core"]),
     ("3d_quick_anomation", "Qt3DQuickAnimation", "Qt63DQuickAnimation", [":qt_3d_animation", ":qt_qml", ":qt_3d_core", ":qt_core"]),
