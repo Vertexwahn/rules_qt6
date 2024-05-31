@@ -236,7 +236,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
         native.genrule(
             name = moc_name,
             srcs = [hdr],
-            outs = [moc_name + ".cc"],
+            outs = [moc_name + ".cpp"],
             cmd = select({
                 "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
