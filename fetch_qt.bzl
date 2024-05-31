@@ -46,14 +46,14 @@ def fetch_qt6():
     # $ brew link qt@6
 
     # Check if path exists
-    native.new_local_repository(
-        name = "qt_mac_x86_64",
-        path = "/usr/local/opt/qt@6",  #"/usr/local/opt/qt@6",
-        build_file = "@rules_qt//:qt_mac_x86_64.BUILD",
-    )
+    # native.new_local_repository(
+    #     name = "qt_mac_x86_64",
+    #     path = "/usr/local/opt/qt@6",  #"/usr/local/opt/qt@6",
+    #     build_file = "@rules_qt//:qt_mac_x86_64.BUILD",
+    # )
 
-    native.new_local_repository(
-        name = "qt_mac_aarch64",
-        path = "/opt/homebrew/",  # after brew link, is't ok just use /opt/homebrew
-        build_file = "@rules_qt//:qt_mac_aarch64.BUILD",
-    )
+    # native.new_local_repository(
+    #     name = "qt_mac_aarch64",
+    #     path = "/opt/homebrew/",  # after brew link, is't ok just use /opt/homebrew
+    #     build_file = "@rules_qt//:qt_mac_aarch64.BUILD",
+    # )
