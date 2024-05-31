@@ -232,7 +232,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     _moc_srcs = []
     for hdr in hdrs:
         header_path = "%s/%s" % (native.package_name(), hdr) if len(native.package_name()) > 0 else hdr
-        moc_name = "%s_moc" % hdr.replace(".", "_")
+        moc_name = "moc_%s" % hdr.rsplit(".", 1)[0]
         native.genrule(
             name = moc_name,
             srcs = [hdr],
@@ -256,6 +256,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
+        textual_hdrs = _moc_srcs,
         deps = deps,
         copts = copts + select({
             "@platforms//os:windows": [],
