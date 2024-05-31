@@ -5,3 +5,16 @@ module(
 )
 
 bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+
+qt = use_extension("@rules_qt//:extensions.bzl", "qt")
+qt.fetch()
+use_repo(
+    qt,
+    "qt_linux_x86_64",
+    "qt_windows_x86_64",
+)
+register_toolchains(
+    "@rules_qt//tools:all",
+    dev_dependency = True,
+)
