@@ -9,10 +9,9 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/z00b2gu5gtuiqrbg3w2ew/qt_6.5.3_windows_msvc2022_64.zip?rlkey=sfnbnx4md9fms5o7mmpe1lqlg&dl=0",
+            "https://dl.dropboxusercontent.com/scl/fi/5u79o4iqx7ija38h075rd/qt_6.7.3_windows_msvc2022_64_gamepad.zip?rlkey=c3gg9a4xw5s8ewyrnqz5gh82p&dl=0",
         ],
-        sha256 = "74e5d4e5dccad28d7e32cd4f9ea659b22143c4dca2dfb4eb98cc0c06372efe35",
-        strip_prefix = "6.5.3/msvc2022_64",
+        sha256 = "6cfec811307a9dea55fc11d24f6c6f828a8cacf39e12ff13740efb0b227cb2c1",
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
 
@@ -25,10 +24,10 @@ def fetch_qt6():
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/sjwx30o914oxm4rdxrkas/qt_6.5.1_linux_desktop_gcc_64.zip?rlkey=xulfkmvkrj9mdfbkv5928sjjk&dl=0",
+            "https://dl.dropboxusercontent.com/scl/fi/0qf3lcph52a3dfsf9gszb/qt_6.7.3_linux_desktop_gcc_64_gamepad.tar.xz?rlkey=aya7qoj1354ep1iunddgu8f6m&dl=0",
         ],
-        sha256 = "cd7a0190390d2ca68b5c06ac95d36af22836993233565acf2ec73b0f74d7c914",
-        strip_prefix = "6.5.1/gcc_64",
+        sha256 = "101dfab81e1b41d582476df5bf27c355871754b94597a72ad3eefe711aea43af",
+        strip_prefix = "Qt-6.7.3",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
 

@@ -72,3 +72,8 @@ filegroup(
     srcs = glob(["qml/**/*"]),
     visibility = ["//visibility:public"],
 )
+
+exports_files(
+    ["qml", "plugins", "lib"],
+    visibility = ["//visibility:public"],
+)
