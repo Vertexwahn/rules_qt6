@@ -69,6 +69,7 @@ QT_LIBRARIES = [
     ("qml_remote_objects", "QtRemoteObjectsQml", "Qt6RemoteObjectsQml", [":qt_remote_objects", ":qt_qml", ":qt_core"]),
     ("qml_scxml", "QtScxmlQml", "Qt6ScxmlQml", [":qt_scxml", ":qt_qml", ":qt_core"]),
     ("qml_state_machine", "QtStateMachineQml", "Qt6StateMachineQml", [":qt_state_machine", ":qt_qml", ":qt_core"]),
+    ("qml_meta", "QtQmlMeta", "Qt6QmlMeta", [":qt_qml"]),
     ## qt quick
     ("quick", "QtQuick", "Qt6Quick", [":qt_gui", ":qt_qml"]),
     # ("quick_pdf", "QtPdfQuick", "Qt6PdfQuick", [":qt_quick", ":qt_pdf", ":qt_gui", ":qt_qml", ":qt_core"]),
