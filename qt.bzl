@@ -1,5 +1,9 @@
 """qt common rules"""
 
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+
 def _gen_ui_header(ctx):
     info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
@@ -46,7 +50,7 @@ def qt_ui_library(name, ui, deps, target_compatible_with = [], **kwargs):
         target_compatible_with = target_compatible_with,
         tags = ["local"],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
@@ -170,7 +174,7 @@ def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with = [], **kw
         target_compatible_with = target_compatible_with,
         tags = ["local"],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -207,7 +211,7 @@ def qt_resource(name, files, target_compatible_with = [], **kwargs):
             "local",
         ],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -252,7 +256,7 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             target_compatible_with = target_compatible_with,
         )
         _moc_srcs.append(":" + moc_name)
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
@@ -350,7 +354,7 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         }),
     )
     env_file.append("qt_env.ini")
-    native.cc_binary(
+    cc_binary(
         name = name,
         srcs = srcs,
         deps = deps,
@@ -384,7 +388,7 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    native.cc_test(
+    cc_test(
         name = name,
         srcs = srcs,
         deps = deps,
