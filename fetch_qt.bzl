@@ -9,19 +9,20 @@ def fetch_qt6():
     http_archive(
         name = "qt_windows_x86_64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/a75eyqtu0542t203eyie2/qt_6.8.0_windows_msvc2022_64_gamepad.zip?rlkey=l2ucxa4by8c8tp3xioqoamm89&dl=0",
+            "https://vertexwahn.de/lfs/v1/qt_6.4.0_windows_desktop_win64_msvc2019_64.zip",
         ],
-        sha256 = "59aa42d34a1b5f15dfc915830a1dbebd90c7b418cf1b726eff8d0fa2766d9827",
+        sha256 = "e3c20b441ddd8bb803e46de32bf2fc5563fda125409d62dcd12b5647ae5a9c7e",
+        strip_prefix = "6.4.0/msvc2019_64",
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
 
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/n5aelrs4qg6lweuitb795/qt_6.8.0_linux_desktop_gcc_64_gamepad.tar.xz?rlkey=miuhkfeat53z7xk85y8abi7o3&dl=0",
+            "https://vertexwahn.de/lfs/v1/qt_6.4.0_linux_desktop_gcc_64.tar.xz",
         ],
-        sha256 = "fc18569262fa23c19009a66cfe39ce5761c8e99bc161820cb971be0beec0bb8b",
-        strip_prefix = "Qt-6.8.0",
+        sha256 = "809919895e2ac0567df9290676d4ec6cd1ed39c432dc5da0722b3104681fd376",
+        strip_prefix = "6.4.0/gcc_64",
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
 

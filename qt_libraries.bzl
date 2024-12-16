@@ -15,7 +15,7 @@ QT_LIBRARIES = [
     ("designer", "QtDesigner", "Qt6Designer", [":qt_xml", ":qt_opengl_widgets", ":qt_widgets", ":qt_gui", ":qt_core"]),
     ("designer_components", "QtDesigner", "Qt6Designer", [":qt_designer", ":qt_xml", ":qt_widgets", ":qt_gui", ":qt_core"]),
     ("help", "QtHelp", "Qt6Help", [":qt_sql", ":qt_widgets", ":qt_gui", ":qt_core"]),
-    ("location", "QtLocation", "Qt6Location", [":qt_core"]),
+    #("location", "QtLocation", "Qt6Location", [":qt_core"]),
     # ("json_rpc", "QtJsonRpc", "Qt6JsonRpc", [":qt_core"]),
     # ("language_server", "QtLanguageServer", "Qt6LanguageServer", [":qt_json_rpc", ":qt_core"]),
     ("multimedia", "QtMultimedia", "Qt6Multimedia", [":qt_network", ":qt_gui", ":qt_core"]),
@@ -69,7 +69,7 @@ QT_LIBRARIES = [
     ("qml_remote_objects", "QtRemoteObjectsQml", "Qt6RemoteObjectsQml", [":qt_remote_objects", ":qt_qml", ":qt_core"]),
     ("qml_scxml", "QtScxmlQml", "Qt6ScxmlQml", [":qt_scxml", ":qt_qml", ":qt_core"]),
     ("qml_state_machine", "QtStateMachineQml", "Qt6StateMachineQml", [":qt_state_machine", ":qt_qml", ":qt_core"]),
-    ("qml_meta", "QtQmlMeta", "Qt6QmlMeta", [":qt_qml"]),
+    #("qml_meta", "QtQmlMeta", "Qt6QmlMeta", [":qt_qml"]),
     ## qt quick
     ("quick", "QtQuick", "Qt6Quick", [":qt_gui", ":qt_qml"]),
     # ("quick_pdf", "QtPdfQuick", "Qt6PdfQuick", [":qt_quick", ":qt_pdf", ":qt_gui", ":qt_qml", ":qt_core"]),
@@ -82,9 +82,9 @@ QT_LIBRARIES = [
     ("quick_web_engine", "QtWebEngineQuick", "Qt6WebEngineQuick", [
         ":qt_web_engine_core", ":qt_quick", ":qt_gui", ":qt_web_channel", ":qt_qml", ":qt_network", ":qt_core"
     ]),
-    ("quick_web_channel", "QtWebChannelQuick", "Qt6WebChannelQuick", [
-        ":qt_web_engine_core", ":qt_quick", ":qt_gui", ":qt_web_channel", ":qt_qml", ":qt_network", ":qt_core"
-    ]),
+    #("quick_web_channel", "QtWebChannelQuick", "Qt6WebChannelQuick", [
+    #    ":qt_web_engine_core", ":qt_quick", ":qt_gui", ":qt_web_channel", ":qt_qml", ":qt_network", ":qt_core"
+    #]),
     ("quick_3d_effects", "QtQuick3DEffects", "Qt6Quick3DEffects", [":qt_qml", ":qt_core"]),
     # ("quick_3d_glsl_parser", "QtQuick3DGlslParser", "Qt6Quick3DGlslParser", [":qt_core"]),
     ("quick_3d_helpers", "QtQuick3DHelpers", "Qt6Quick3DHelpers", [":qt_quick_3d", ":qt_gui", ":qt_qml", ":qt_core"]),
@@ -95,17 +95,17 @@ QT_LIBRARIES = [
     ("quick_3d_runtime_render", "QtQuick3DRuntimeRender", "Qt6Quick3DRuntimeRender", [":qt_quick_3d_utils", ":qt_quick", ":qt_shader_tools", ":qt_gui", ":qt_core"]),
     ("quick_3d_utils", "QtQuick3DUtils", "Qt6Quick3DUtils", [":qt_gui", ":qt_core"]),
     ("quick_controls2", "QtQuickControls2", "Qt6QuickControls2", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_basic", "QtQuickControls2Basic", "Qt6QuickControls2Basic", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_fusion", "QtQuickControls2Fusion", "Qt6QuickControls2Fusion", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_material", "QtQuickControls2Material", "Qt6QuickControls2Material", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_material_style_impl", "QtQuickControls2MaterialStyleImpl", "Qt6QuickControls2MaterialStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    #("quick_controls2_basic", "QtQuickControls2Basic", "Qt6QuickControls2Basic", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    #("quick_controls2_fusion", "QtQuickControls2Fusion", "Qt6QuickControls2Fusion", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    #("quick_controls2_material", "QtQuickControls2Material", "Qt6QuickControls2Material", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    #("quick_controls2_material_style_impl", "QtQuickControls2MaterialStyleImpl", "Qt6QuickControls2MaterialStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_impl", "QtQuickControls2Impl", "Qt6QuickControls2Impl", [":qt_quick_templates2", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_dialogs2", "QtQuickDialogs2", "Qt6QuickDialogs2", [":qt_quick_dialogs2_quick_impl", ":qt_quick_dialogs2_utils", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_dialogs2_quick_impl", "Qt6QuickDialogs2QuickImpl", "Qt6QuickDialogs2QuickImpl", [
-        ":qt_quick_templates2",
-        ":qt_quick_controls2_impl",
-        ":qt_quick", ":qt_gui", ":qt_qml", ":qt_quick_dialogs2_utils", ":qt_core",
-    ]),
+    #("quick_dialogs2", "QtQuickDialogs2", "Qt6QuickDialogs2", [":qt_quick_dialogs2_quick_impl", ":qt_quick_dialogs2_utils", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_core"]),
+    #("quick_dialogs2_quick_impl", "Qt6QuickDialogs2QuickImpl", "Qt6QuickDialogs2QuickImpl", [
+    #    ":qt_quick_templates2",
+    #    ":qt_quick_controls2_impl",
+    #    ":qt_quick", ":qt_gui", ":qt_qml", ":qt_quick_dialogs2_utils", ":qt_core",
+    #]),
     ("quick_dialogs2_utils", "QtQuickDialogs2Utils", "Qt6QuickDialogs2Utils", [":qt_gui", ":qt_core"]),
     ("quick_layouts", "QtQuickLayouts", "Qt6QuickLayouts", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_particles", "Qt6QuickParticles", "Qt6QuickParticles", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
@@ -133,6 +133,6 @@ QT_LIBRARIES = [
     ("labs_shared_image", "QtLabsSharedImage", "Qt6LabsSharedImage", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("labs_wave_front_mesh", "QtLabsWavefrontMesh", "Qt6LabsWavefrontMesh", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ## legacy
-    ("gamepad_legacy", "QtGamepadLegacy", "Qt6GamepadLegacy", [":qt_core"]),
-    ("gamepad_legacy_quick", "QtGamepadLegacyQuick", "Qt6GamepadLegacyQuick", [":qt_quick", ":qt_qml"]),
+    #("gamepad_legacy", "QtGamepadLegacy", "Qt6GamepadLegacy", [":qt_core"]),
+    #("gamepad_legacy_quick", "QtGamepadLegacyQuick", "Qt6GamepadLegacyQuick", [":qt_quick", ":qt_qml"]),
 ]
