@@ -5,30 +5,30 @@ on:
    push: {}
 
 jobs:
-  # build_and_test_ubuntu20:
-  #   name: Linux Ubuntu 20.04 build <GCC 9.4.0>
-  #   runs-on: ubuntu-20.04
+  build_and_test_ubuntu20:
+    name: Linux Ubuntu 20.04 build <GCC 9.4.0>
+    runs-on: ubuntu-20.04
 
-  #   steps:
-  #   - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v4.2.2
 
-  #   - name: Mount bazel cache
-  #     uses: actions/cache@v3
-  #     with:
-  #       path: "/home/runner/.cache/bazel"
-  #       key: bazel
+    - name: Mount bazel cache
+      uses: actions/cache@v3
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel
 
-  #   - name: Build
-  #     run: |
-  #       cd tests
-  #       bazelisk build --config=gcc9 //...
+    - name: Build
+      run: |
+        cd tests
+        bazelisk build --config=gcc9 //...
 
   build_and_test_ubuntu22:
-    name: Linux Ubuntu 22.04 build <GCC 11.3.0>
+    name: Linux Ubuntu 22.04 build <GCC 11.4.0>
     runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.2.2
 
     - name: Mount bazel cache
       uses: actions/cache@v3
@@ -41,30 +41,48 @@ jobs:
         cd tests
         bazelisk build --config=gcc11 //...
 
-  # build_and_test_windows10:
-  #   name: Windows Server 2019 build <Visual Studio 2019>
-  #   runs-on: windows-2019
+  build_and_test_ubuntu24:
+    name: Linux Ubuntu 24.04 build <GCC 13.2.0>
+    runs-on: ubuntu-24.04
 
-  #   steps:
-  #   - uses: actions/checkout@v3
+    steps:
+    - uses: actions/checkout@v4.2.2
 
-  #   - name: Mount bazel cache
-  #     uses: actions/cache@v3
-  #     with:
-  #       path: "/home/runner/.cache/bazel"
-  #       key: bazel
+    - name: Mount bazel cache
+      uses: actions/cache@v3
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel-ubuntu24
 
-  #   - name: Build
-  #     run: |
-  #       cd tests
-  #       bazelisk build --config=vs2019 //...
+    - name: Build
+      run: |
+        cd tests
+        bazelisk build --config=gcc13 //...
+
+  build_and_test_windows10:
+    name: Windows Server 2019 build <Visual Studio 2019>
+    runs-on: windows-2019
+
+    steps:
+    - uses: actions/checkout@v4.2.2
+
+    - name: Mount bazel cache
+      uses: actions/cache@v3
+      with:
+        path: "/home/runner/.cache/bazel"
+        key: bazel
+
+    - name: Build
+      run: |
+        cd tests
+        bazelisk build --config=vs2019 //...
 
   build_and_test_windows11:
     name: Windows Server 2022 build <Visual Studio 2022>
     runs-on: windows-2022
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4.2.2
 
     - name: Mount bazel cache
       uses: actions/cache@v3
@@ -82,7 +100,7 @@ jobs:
   #   runs-on: macOS-11
 
   #   steps:
-  #   - uses: actions/checkout@v3
+  #   - uses: actions/checkout@v4.2.2
 
   #   - name: Mount bazel cache
   #     uses: actions/cache@v3
@@ -110,7 +128,7 @@ jobs:
   #   runs-on: macOS-12
 
   #   steps:
-  #   - uses: actions/checkout@v3
+  #   - uses: actions/checkout@v4.2.2
 
   #   - name: Mount bazel cache
   #     uses: actions/cache@v3
@@ -133,12 +151,12 @@ jobs:
   #       cd tests
   #       bazelisk build --config=macos //...
 
-  build_and_test_macos13:
-    name: macOS 13 Bazel build <Apple Clang14>
-    runs-on: macOS-13
+  build_and_test_macos14:
+    name: macOS 14 Bazel build <Apple Clang14>
+    runs-on: macOS-14
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.2.2
 
       - name: Mount bazel cache
         uses: actions/cache@v3
