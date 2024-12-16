@@ -12,12 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4.2.2
 
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel-ubuntu20
-
     - name: Build
       run: |
         cd tests
@@ -29,12 +23,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.2.2
-
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel-ubuntu22
 
     - name: Build
       run: |
@@ -48,12 +36,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4.2.2
 
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel-ubuntu24
-
     - name: Build
       run: |
         cd tests
@@ -65,12 +47,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4.2.2
-
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel
 
     - name: Build
       run: |
@@ -84,12 +60,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4.2.2
 
-    - name: Mount bazel cache
-      uses: actions/cache@v3
-      with:
-        path: "/home/runner/.cache/bazel"
-        key: bazel
-
     - name: Build
       run: |
         cd tests
@@ -102,12 +72,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - name: Mount bazel cache
-        uses: actions/cache@v3
-        with:
-          path: "/home/runner/.cache/bazel"
-          key: bazel
-
       - name: Print info
         run: |
           echo "OS info:"
@@ -118,8 +82,6 @@ jobs:
 
       - name: Build
         run: |
-          #brew install qt@6
-          #brew link qt@6
           cd tests
           bazelisk build --config=macos //...
 
@@ -130,12 +92,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - name: Mount bazel cache
-        uses: actions/cache@v3
-        with:
-          path: "/home/runner/.cache/bazel"
-          key: bazel
-
       - name: Print info
         run: |
           echo "OS info:"
@@ -146,8 +102,6 @@ jobs:
 
       - name: Build
         run: |
-          #brew install qt@6
-          #brew link qt@6
           cd tests
           bazelisk build --config=macos //...
 
@@ -158,12 +112,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - name: Mount bazel cache
-        uses: actions/cache@v3
-        with:
-          path: "/home/runner/.cache/bazel"
-          key: bazel
-
       - name: Print info
         run: |
           echo "OS info:"
@@ -174,7 +122,5 @@ jobs:
 
       - name: Build
         run: |
-          #brew install qt@6
-          #brew link qt@6
           cd tests
           bazelisk build --config=macos //...
