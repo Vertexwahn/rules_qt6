@@ -1,4 +1,4 @@
-build --incompatible_disallow_empty_glob=false
+build --noincompatible_disallow_empty_glob
 
 # Setup compiler flags - required for Qt6 is at least C++17
 build:gcc9 --cxxopt=-std=c++2a

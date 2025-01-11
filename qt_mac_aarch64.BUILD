@@ -11,7 +11,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         additional_linker_inputs = [":lib"],
         linkopts = ["-F $(location :lib)"] + [
             "-framework %s" % library_name.replace("6", ""),  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
-            "-rpath $(location :lib)",
+            "-rpath $(rootpath :lib)",
         ],
         include_prefix = "%s" % include_folder,
         strip_include_prefix = "lib/%s.framework/Headers" % include_folder,
