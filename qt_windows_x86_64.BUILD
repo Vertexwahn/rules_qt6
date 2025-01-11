@@ -1,3 +1,4 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
@@ -70,5 +71,10 @@ filegroup(
 filegroup(
     name = "qml_files",
     srcs = glob(["qml/**/*"]),
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["qml", "plugins", "lib"],
     visibility = ["//visibility:public"],
 )

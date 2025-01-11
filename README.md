@@ -31,7 +31,7 @@ The following tools should be installed:
 *All platforms:*
 
 ```shell
-git clone https://github.com/Vertexwahn/rules_qt6 &&
+git clone https://github.com/Vertexwahn/rules_qt6
 cd rules_qt6/tests
 ```
 
@@ -57,6 +57,12 @@ bazel run --config=gcc9 //hello_world:hello_world
 
 ```shell
 bazel run --config=gcc11 //hello_world:hello_world
+```
+
+*Run Hello World demo with Ubuntu 24.04:*
+
+```shell
+bazel run --config=gcc13 //hello_world:hello_world
 ```
 
 *Run Hello World demo with macOS 11/12:*

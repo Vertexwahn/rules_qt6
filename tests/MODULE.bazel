@@ -1,0 +1,20 @@
+bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "rules_qt")
+local_path_override(
+    module_name = "rules_qt",
+    path = "..",
+)
+
+qt = use_extension("@rules_qt//:extensions.bzl", "qt")
+qt.fetch()
+use_repo(
+    qt,
+    "qt_linux_x86_64",
+    "qt_mac_aarch64",
+    "qt_windows_x86_64",
+)
+
+register_toolchains(
+    "@rules_qt//tools:all",
+    dev_dependency = True,
+)

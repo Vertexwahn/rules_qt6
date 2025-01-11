@@ -1,5 +1,9 @@
 """qt common rules"""
 
+load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load("@rules_cc//cc:cc_test.bzl", "cc_test")
+
 def _gen_ui_header(ctx):
     info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
 
@@ -46,7 +50,7 @@ def qt_ui_library(name, ui, deps, target_compatible_with = [], **kwargs):
         target_compatible_with = target_compatible_with,
         tags = ["local"],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         hdrs = [":%s_uic" % name],
         deps = deps,
@@ -170,7 +174,7 @@ def qt_resource_via_qrc(name, qrc_file, files, target_compatible_with = [], **kw
         target_compatible_with = target_compatible_with,
         tags = ["local"],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -207,7 +211,7 @@ def qt_resource(name, files, target_compatible_with = [], **kwargs):
             "local",
         ],
     )
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = [outfile],
         alwayslink = 1,
@@ -232,11 +236,11 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     _moc_srcs = []
     for hdr in hdrs:
         header_path = "%s/%s" % (native.package_name(), hdr) if len(native.package_name()) > 0 else hdr
-        moc_name = "%s_moc" % hdr.replace(".", "_")
+        moc_name = "moc_%s" % hdr.rsplit(".", 1)[0]
         native.genrule(
             name = moc_name,
             srcs = [hdr],
-            outs = [moc_name + ".cc"],
+            outs = [moc_name + ".cpp"],
             cmd = select({
                 "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
@@ -252,10 +256,11 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             target_compatible_with = target_compatible_with,
         )
         _moc_srcs.append(":" + moc_name)
-    native.cc_library(
+    cc_library(
         name = name,
         srcs = srcs + _moc_srcs,
         hdrs = hdrs + normal_hdrs,
+        textual_hdrs = _moc_srcs,
         deps = deps,
         copts = copts + select({
             "@platforms//os:windows": [],
@@ -266,10 +271,15 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_linux_x86_64//:plugin_files", "@qt_linux_x86_64//:qml_files"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
-    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
-    "@platforms//os:windows": ["@qt_windows_x86_64//:plugin_files", "@qt_windows_x86_64//:qml_files"],
+    "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:lib"],
+    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:lib"],
+    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:lib"],
+    "@platforms//os:windows": [
+        "@qt_windows_x86_64//:plugins",
+        "@qt_windows_x86_64//:qml",
+        "@qt_windows_x86_64//:plugin_files",
+        "@qt_windows_x86_64//:qml_files",
+    ],
 })
 
 def update_dict(source, env):
@@ -279,27 +289,27 @@ def update_dict(source, env):
     return result
 
 LINUX_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_linux_x86_64/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_linux_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_linux_x86_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)/platforms",
+    "QML2_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
+    "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
 }
 
 MAC_X64_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_x86_64/share/qt/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_mac_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_mac_x86_64/share/qt/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)/platforms",
+    "QML2_IMPORT_PATH": "$(location @qt_mac_x86_64//:qml)",
+    "QT_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)",
 }
 
 WINDOWS_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_windows_x86_64/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_windows_x86_64/qml",
-    "QT_PLUGIN_PATH": "external/qt_windows_x86_64/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)/platforms",
+    "QML2_IMPORT_PATH": "$(location @qt_windows_x86_64//:qml)",
+    "QT_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)",
 }
 
 MAC_M1_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_aarch64/share/qt/plugins/platforms",
-    "QML2_IMPORT_PATH": "external/qt_mac_aarch64/qml",
-    "QT_PLUGIN_PATH": "external/qt_mac_aarch64/share/qt/plugins",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_aarch64//:plugins)/platforms",
+    "QML2_IMPORT_PATH": "$(location @qt_mac_aarch64//:qml)",
+    "QT_PLUGIN_PATH": "$(location @qt_mac_aarch64//:plugins)",
 }
 
 def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
@@ -318,7 +328,33 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    native.cc_binary(
+    env_file = []
+    native.genrule(
+        name = name + "_env",
+        tools = qt_plugin_data,
+        outs = ["qt_env.ini"],
+        cmd = select({
+            "@platforms//os:linux":
+                "echo $$\"LD_LIBRARY_PATH: $(location @qt_linux_x86_64//:lib)\" > $@ \
+                    $$\"\r\nQT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)/platforms\" > $@ \
+                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_linux_x86_64//:qml)\" > $@ \
+                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)\" > $@",
+            "@rules_qt//:osx_x86_64":
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)/platforms\" > $@ \
+                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_x86_64//:qml)\" > $@ \
+                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)\" > $@",
+            "@rules_qt//:osx_arm64":
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)/platforms\" > $@ \
+                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_aarch64//:qml)\" > $@ \
+                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)\" > $@",
+            "@platforms//os:windows":
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)/platforms\" > $@ \
+                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_windows_x86_64//:qml)\" > $@ \
+                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)\" > $@",
+        }),
+    )
+    env_file.append("qt_env.ini")
+    cc_binary(
         name = name,
         srcs = srcs,
         deps = deps,
@@ -326,7 +362,7 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
             "@platforms//os:windows": [],
             "//conditions:default": ["-fPIC"],
         }),
-        data = qt_plugin_data + data,
+        data = qt_plugin_data + env_file + data,
         env = select({
             "@platforms//os:linux": linux_env_data,
             "@rules_qt//:osx_x86_64": mac_x64_env_data,
@@ -352,7 +388,7 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    native.cc_test(
+    cc_test(
         name = name,
         srcs = srcs,
         deps = deps,

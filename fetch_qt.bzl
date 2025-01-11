@@ -16,12 +16,6 @@ def fetch_qt6():
         build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     )
 
-    #native.new_local_repository(
-    #    name = "qt_windows_x86_64",
-    #    path = "C:\\Qt\\6.4.0\\msvc2019_64",
-    #    build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
-    #)
-
     http_archive(
         name = "qt_linux_x86_64",
         urls = [
@@ -32,28 +26,12 @@ def fetch_qt6():
         build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
     )
 
-    #http_archive(
-    #    name = "qt_mac_x86_64",
-    #    urls = ["https://vertexwahn.de/lfs/v1/qt_mac_x86_64.zip"],
-    #    sha256 = "9543aa178a6fe6aa138e4319fb07a106375b7fef11be150d154d5c1b8a321721",
-    #    strip_prefix = "6.2.4/macos",
-    #    build_file = "@rules_qt////:qt_mac_x86_64.BUILD",
-    #)
-
-    # On macOS we make use of an system installed Qt6
-    # installation works via:
-    # $ brew install qt@6
-    # $ brew link qt@6
-
-    # Check if path exists
-    native.new_local_repository(
-        name = "qt_mac_x86_64",
-        path = "/usr/local/opt/qt@6",  #"/usr/local/opt/qt@6",
-        build_file = "@rules_qt//:qt_mac_x86_64.BUILD",
-    )
-
-    native.new_local_repository(
+    http_archive(
         name = "qt_mac_aarch64",
-        path = "/opt/homebrew/",  # after brew link, is't ok just use /opt/homebrew
+        urls = [
+            "https://dl.dropboxusercontent.com/scl/fi/8io4wc9cx2kd2vfwswjmg/qt_6.8.0_mac_aarch64_gamepad.tar.xz?rlkey=afkk9qrub9i1gmelv7vktgtci&dl=0",
+        ],
+        sha256 = "07be3436bfb31b3a2e629907ca39a8652febe563046094cdc7373b7ff28228c4",
+        strip_prefix = "Qt-6.8.0",
         build_file = "@rules_qt//:qt_mac_aarch64.BUILD",
     )
