@@ -29,7 +29,7 @@ def fetch_qt6():
     http_archive(
         name = "qt_mac_aarch64",
         urls = [
-            "https://dl.dropboxusercontent.com/scl/fi/8io4wc9cx2kd2vfwswjmg/qt_6.8.0_mac_aarch64_gamepad.tar.xz?rlkey=afkk9qrub9i1gmelv7vktgtci&dl=0",
+            "https://vertexwahn.de/lfs/v1/qt_6.8.0_mac_aarch64_gamepad.tar.xz",
         ],
         sha256 = "07be3436bfb31b3a2e629907ca39a8652febe563046094cdc7373b7ff28228c4",
         strip_prefix = "Qt-6.8.0",
