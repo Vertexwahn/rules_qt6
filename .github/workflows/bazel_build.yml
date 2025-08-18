@@ -41,19 +41,7 @@ jobs:
         cd tests
         bazelisk build --config=gcc13 //...
 
-  build_and_test_windows10:
-    name: Windows Server 2019 build <Visual Studio 2019>
-    runs-on: windows-2019
-
-    steps:
-    - uses: actions/checkout@v5.0.0
-
-    - name: Build
-      run: |
-        cd tests
-        bazelisk build --config=vs2019 //...
-
-  build_and_test_windows11:
+  build_and_test_windows2022:
     name: Windows Server 2022 build <Visual Studio 2022>
     runs-on: windows-2022
 
@@ -64,6 +52,18 @@ jobs:
       run: |
         cd tests
         bazelisk build --config=vs2022 //...
+
+  build_and_test_windows2025:
+    name: Windows Server 2025 build <Visual Studio 2022>
+    runs-on: windows-2025
+
+    steps:
+      - uses: actions/checkout@v5.0.0
+
+      - name: Build
+        run: |
+          cd tests
+          bazelisk build --config=vs2022 //...
 
   build_and_test_macos13:
     name: macOS 13 Bazel build <Apple Clang14>
