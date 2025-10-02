@@ -5,25 +5,27 @@ on:
    push: {}
 
 jobs:
-  build_and_test_macos13:
-    name: macOS 13 Bazel build <Apple Clang14>
-    runs-on: macOS-13
+  # This job was comment out since there is currently no prebuild version of macOS Intel that I can reference.
+  # If you can provide one I am happey to reenable this job.
+  # build_and_test_macos13:
+  #   name: macOS 13 Bazel build <Apple Clang14> 
+  #   runs-on: macOS-13
 
-    steps:
-      - uses: actions/checkout@v5
+  #   steps:
+  #     - uses: actions/checkout@v5
 
-      - name: Print info
-        run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
+  #     - name: Print info
+  #       run: |
+  #         echo "OS info:"
+  #         sw_vers
+  #         uname
+  #         echo "Compiler info:"
+  #         clang --version
 
-      - name: Build
-        run: |
-          cd tests
-          bazelisk build --config=macos //...
+  #     - name: Build
+  #       run: |
+  #         cd tests
+  #         bazelisk build --config=macos //...
 
   build_and_test_macos14:
     name: macOS 14 Bazel build <Apple Clang14>
