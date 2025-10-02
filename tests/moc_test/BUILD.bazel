@@ -1,0 +1,55 @@
+load("@rules_qt//:qt.bzl", "qt_cc_binary", "qt_cc_library", "qt_resource")
+
+#qt_cc_library(
+#    name = "foo",
+#    srcs = [
+#        "foo.cpp",
+#    ],
+#    hdrs = [
+#        "foo.hpp",
+#    ],
+#    deps = [
+#        "@rules_qt//:qt",
+#    ],
+#)
+
+#qt_cc_library(
+#    name = "bar",
+#    srcs = [
+#        "bar.cpp",
+#    ],
+#    hdrs = [
+#        "bar.hpp",
+#    ],
+#    deps = [
+#        "@rules_qt//:qt",
+#    ],
+#)
+
+qt_cc_library(
+    name = "combined",
+    srcs = [
+        "bar.cpp",
+        "foo.cpp",
+    ],
+    hdrs = [
+        "bar.hpp",
+        "foo.hpp",
+    ],
+    deps = [
+        "@rules_qt//:qt",
+    ],
+)
+
+qt_cc_binary(
+    name = "main",
+    srcs = [
+        "main.cpp",
+    ],
+    deps = [
+        #":bar",
+        #":foo",
+        ":combined",
+        "@rules_qt//:qt",
+    ],
+)

@@ -1,6 +1,12 @@
 # How to run?
 
-## Visual Studio 2022
+## macOS
+
+```shell
+bazel run --config=macos //horch:main
+```
+
+## Windows
 
 ```shell
 bazel run --config=vs2022 //horch:main

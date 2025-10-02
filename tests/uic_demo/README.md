@@ -1,6 +1,12 @@
 # How to run?
 
-## Visual Studio 2022
+## macOS
+
+```shell
+bazel run --config=macos //uic_demo:main
+```
+
+## Windows
 
 ```shell
 bazel run --config=vs2022 //uic_demo:main
