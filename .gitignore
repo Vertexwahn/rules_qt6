@@ -1,3 +1,10 @@
-bazel-*
+# VSCode related
 .vscode
+
+# Bazel related
+
+bazel-*
 *.bazel.lock
+
+# macOS related
+.DS_Store
