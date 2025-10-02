@@ -1,6 +1,6 @@
 
 <!--
-SPDX-FileCopyrightText: 2022 Julian Amann <dev@vertexwahn.de>
+SPDX-FileCopyrightText: 2022-2025 Julian Amann <dev@vertexwahn.de>
 SPDX-License-Identifier: Apache-2.0
 -->
 
@@ -11,7 +11,7 @@ SPDX-License-Identifier: Apache-2.0
 ## Goal 
 
 The goal of these rules is to be able to build [Qt6](https://www.qt.io/product/qt6) applications using [Bazel](https://bazel.build/) on Windows, 
-Linux and macOS without the need to preinstall Qt6. 
+Linux, and macOS without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
 ## Quick start
@@ -47,12 +47,6 @@ bazel run --config=vs2019 //hello_world:hello_world
 bazel run --config=vs2022 //hello_world:hello_world
 ```
 
-*Run Hello World demo with Ubuntu 20.04:*
-
-```shell
-bazel run --config=gcc9 //hello_world:hello_world
-```
-
 *Run Hello World demo with Ubuntu 22.04:*
 
 ```shell
@@ -65,13 +59,9 @@ bazel run --config=gcc11 //hello_world:hello_world
 bazel run --config=gcc13 //hello_world:hello_world
 ```
 
-*Run Hello World demo with macOS 11/12:*
+*Run Hello World demo with macOS:*
 
 ```shell
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-brew install qt@6 # Unfortunately a preinstalled version of Qt6 is still needed on macOS 
-brew link qt@6
 bazel run --config=macos //hello_world:hello_world
 ```
 
@@ -97,16 +87,12 @@ More examples can be found in the [tests](tests) directory.
 
 ## Current status
 
-Currently, on macOS, these rules need a preinstalled version of Qt on the system (`brew install qt@6 && brew link qt@6`).
-On Windows and Linux it should be possible to run `bazel run --config=[gcc9|gcc11|vs2019|vs2022] //hello_world:hello_world` without the need to preinstall Bazel.
-
-These rules require at least Bazel 4.0.0 to work.
-With some small modifications, you can get work these rules also on earlier versions of Bazel.
+These rules where tested with Bazel 8.x to work.
 
 A prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/).
 Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
 
-I created a [`.bazelrc`](tests/.bazelrc) file that contains a config for `vs2019`, `vs2022`, `gcc9`, `gcc11`, and ``macos`. 
+I created a [`.bazelrc`](tests/.bazelrc) file that contains a config for `vs2019`, `vs2022`, `gcc11`, `gcc13`, and ``macos`. 
 This is needed since Qt6 needs at least C++17 standard enabled and different C++ compilers need different flags to enable this.
 
 ## Contributions

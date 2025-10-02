@@ -1,10 +1,5 @@
 build --noincompatible_disallow_empty_glob
 
-# Setup compiler flags - required for Qt6 is at least C++17
-build:gcc9 --cxxopt=-std=c++2a
-build:gcc9 --cxxopt=-Wall
-build:gcc9 --cxxopt=-Werror
-
 # GCC 11.2
 #build:gcc11 --cxxopt=-std=c++23 # blocked by emsdk
 build:gcc11 --cxxopt=-std=c++20
