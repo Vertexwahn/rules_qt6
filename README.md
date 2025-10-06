@@ -10,8 +10,7 @@ SPDX-License-Identifier: Apache-2.0
 
 ## Goal 
 
-The goal of these rules is to be able to build [Qt6](https://www.qt.io/product/qt6) applications using [Bazel](https://bazel.build/) on Windows, 
-Linux, and macOS without the need to preinstall Qt6. 
+The goal of these rules is to be able to build [Qt6](https://www.qt.io/product/qt6) applications using [Bazel](https://bazel.build/) on **Linux**, **macOS** and **Windows** without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
 ## Quick start
@@ -109,9 +108,16 @@ If you name no specific license I assume you are fine with the current used lice
 
 ## Similar projects
 
-- [aabtop/rules_qt](https://github.com/aabtop/rules_qt)
-- [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example)
-- [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt)
+| Project                                                                                               | Bzlmod Support | Platform Support      | Build Type  | Last Commit       |
+| ----------------------------------------------------------------------------------------------------- | -------------- | --------------------- | ----------- | ----------------- |
+| [aabtop/rules_qt](https://github.com/aabtop/rules_qt)                                                 | no             | Windows, Linux        | Prebuild    | June 21, 2021     |
+| [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example)                         | no             | Linux                 | Prebuild    | April 5, 2020     |
+| [FirasRomaneh/QT5WithBazel](https://github.com/FirasRomaneh/QT5WithBazel)                             | no             | Linux                 | Prebuild    | August 2, 2022    |
+| [gwkawano/bazel_qt](https://github.com/gwkawano/bazel_qt)                                             | no             | Linux                 | Prebuild    | June 5, 2020      |
+| [jheaff1/rules_qt](https://github.com/jheaff1/rules_qt)                                               | no             | Linux, macOS, Windows | Prebuild    | June 19, 2023     |
+| [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt)                         | no             | Linux, macOS, Windows | Prebuild    | November 13, 2024 |
+| [kklochkov/rules_qt](https://github.com/kklochkov/rules_qt)                                           | no             | Linux, macOS          | Prebuild    | February 21, 2024 |
+| [The-OpenROAD-Project/qt_bazel_prebuilts](https://github.com/The-OpenROAD-Project/qt_bazel_prebuilts) | yes            | ???                   | From Source | Jul 15, 2025      |
 
 ## License
 
