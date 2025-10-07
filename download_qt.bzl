@@ -8,7 +8,7 @@ load("@bazel_skylib//lib:paths.bzl", "paths")
 def _download_qt_impl(rctx):
     # First, download and install aqt
     aqt_result = rctx.execute([
-        rctx.which("python"), "-m", "pip", "install", "aqtinstall==3.1.11"
+        rctx.which("python"), "-m", "pip", "install", "aqtinstall==3.3.0"
     ])
     if aqt_result.return_code != 0:
         fail("Failed to install aqtinstall: {}".format(aqt_result.stderr))
@@ -41,9 +41,11 @@ def _download_qt_impl(rctx):
     if install_result.return_code != 0:
         fail("Failed to install Qt: {}".format(install_result.stderr))
 
-    # Determine the installed Qt path based on OS
+    # Determine the installed Qt path based on OS and architecture
     if rctx.attr.os == "windows":
-        qt_path = "{}/msvc2019_64".format(rctx.attr.version)
+        # Extract the actual directory from the architecture (e.g., win64_msvc2022_64 -> msvc2022_64)
+        arch_dir = arch.replace("win64_", "")
+        qt_path = "{}/{}".format(rctx.attr.version, arch_dir)
     elif rctx.attr.os == "linux":
         qt_path = "{}/gcc_64".format(rctx.attr.version)
     elif rctx.attr.os == "mac":

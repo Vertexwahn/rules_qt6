@@ -8,7 +8,7 @@ bazel_dep(name = "aspect_bazel_lib", version = "2.7.0")
 bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.9")
-bazel_dep(name = "rules_python", version = "0.27.1")
+bazel_dep(name = "rules_python", version = "1.6.3")
 
 # Python toolchain for aqt
 python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
@@ -41,11 +41,11 @@ use_repo(
 qt_aqt = use_extension("@rules_qt//:extensions.bzl", "qt_aqt")
 qt_aqt.install(
     name = "qt_windows_x86_64",
-    version = "6.4.0",
+    version = "6.9.0",
     os = "windows",
     target_sdk = "desktop",
     build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
-    windows_architecture = "win64_msvc2019_64",
+    windows_architecture = "win64_msvc2022_64",
 )
 use_repo(qt_aqt, "qt_windows_x86_64")
 
