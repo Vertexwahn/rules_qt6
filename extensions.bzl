@@ -1,4 +1,5 @@
 load("@rules_qt//:fetch_qt.bzl", "fetch_qt6")
+load("@rules_qt//:extensions/qt.bzl", "aqt_install")
 
 def _qt_impl(ctx):
     for mod in ctx.modules:
@@ -13,3 +14,6 @@ qt = module_extension(
         "fetch": _fetch,
     },
 )
+
+# Export the aqt_install extension for Windows builds
+qt_aqt = aqt_install

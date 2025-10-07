@@ -5,14 +5,26 @@ local_path_override(
     path = "..",
 )
 
+# Legacy Qt fetching for Linux and macOS
 qt = use_extension("@rules_qt//:extensions.bzl", "qt")
 qt.fetch()
 use_repo(
     qt,
     "qt_linux_x86_64",
     "qt_mac_aarch64",
-    "qt_windows_x86_64",
 )
+
+# aqt-based Qt fetching for Windows
+qt_aqt = use_extension("@rules_qt//:extensions.bzl", "qt_aqt")
+qt_aqt.install(
+    name = "qt_windows_x86_64",
+    version = "6.4.0",
+    os = "windows",
+    target_sdk = "desktop",
+    build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
+    windows_architecture = "win64_msvc2019_64",
+)
+use_repo(qt_aqt, "qt_windows_x86_64")
 
 register_toolchains(
     "@rules_qt//tools:all",

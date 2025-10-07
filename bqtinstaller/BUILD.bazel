@@ -1,0 +1,9 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@pip//:requirements.bzl", "requirement")
+
+py_binary(
+    name = "bqtinstaller",
+    srcs = ["bqtinstaller.py"],
+    deps = [requirement("aqtinstall")],
+    visibility = ["//visibility:public"],
+)

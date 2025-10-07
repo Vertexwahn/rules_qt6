@@ -1,4 +1,15 @@
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_qt//:qt_installer.bzl", "qt_installer")
+
+# Generate qt_modules.bzl for Windows
+qt_installer(
+    name = "qt_modules_windows",
+    os = "windows",
+    target_sdk = "desktop",
+    version = "6.4.0",
+    bzl_out = "qt_modules.bzl",
+    modules = [],
+)
 
 config_setting(
     name = "osx_arm64",
@@ -22,7 +33,7 @@ config_setting(
         visibility = ["//visibility:public"],
         deps = dependencies + select({
             "@platforms//os:linux": ["@qt_linux_x86_64//:qt_%s_linux" % name],
-            ":osx_x86_64": ["@qt_mac_x86_64//:qt_%s_mac" % name],
+            ":osx_x86_64": ["@qt_mac_aarch64//:qt_%s_mac" % name],
             ":osx_arm64": ["@qt_mac_aarch64//:qt_%s_mac" % name],
             "@platforms//os:windows": ["@qt_windows_x86_64//:qt_%s_windows" % name],
         }),
@@ -35,7 +46,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = select({
         "@platforms//os:linux": ["@qt_linux_x86_64//:qt_hdrs"],
-        ":osx_x86_64": ["@qt_mac_x86_64//:qt_hdrs"],
+        ":osx_x86_64": ["@qt_mac_aarch64//:qt_hdrs"],
         ":osx_arm64": ["@qt_mac_aarch64//:qt_hdrs"],
         "@platforms//os:windows": ["@qt_windows_x86_64//:qt_hdrs"],
     }),

@@ -4,18 +4,50 @@ module(
     compatibility_level = 1,
 )
 
+bazel_dep(name = "aspect_bazel_lib", version = "2.7.0")
 bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.9")
+bazel_dep(name = "rules_python", version = "0.27.1")
 
+# Python toolchain for aqt
+python = use_extension("@rules_python//python/extensions:python.bzl", "python", dev_dependency = True)
+python.toolchain(
+    configure_coverage_tool = True,
+    is_default = True,
+    python_version = "3.10",
+)
+use_repo(python, "python_3_10", "python_versions")
+
+# Python dependencies for aqt
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip", dev_dependency = True)
+pip.parse(
+    hub_name = "pip",
+    python_version = "3.10",
+    requirements_lock = "//:requirements_lock.txt",
+)
+use_repo(pip, "pip")
+
+# Legacy Qt fetching for Linux and macOS
 qt = use_extension("@rules_qt//:extensions.bzl", "qt")
 qt.fetch()
 use_repo(
     qt,
     "qt_linux_x86_64",
     "qt_mac_aarch64",
-    "qt_windows_x86_64",
 )
+
+# aqt-based Qt fetching for Windows
+qt_aqt = use_extension("@rules_qt//:extensions.bzl", "qt_aqt")
+qt_aqt.install(
+    name = "qt_windows_x86_64",
+    version = "6.4.0",
+    os = "windows",
+    target_sdk = "desktop",
+    build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
+    windows_architecture = "win64_msvc2019_64",
+)
+use_repo(qt_aqt, "qt_windows_x86_64")
 
 register_toolchains(
     "@rules_qt//tools:all",
