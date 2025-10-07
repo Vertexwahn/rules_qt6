@@ -1,6 +1,10 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
+# Get list of available DLLs
+AVAILABLE_DLLS = glob(["bin/*.dll"])
+
+# Create cc_import for libraries that have DLLs
 [
     cc_import(
         name = "qt_%s_windows_import" % name,
@@ -14,8 +18,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         target_compatible_with = ["@platforms//os:windows"],
     )
     for name, include_folder, library_name, _ in QT_LIBRARIES
+    if "bin/%s.dll" % library_name in AVAILABLE_DLLS
 ]
 
+# Create cc_library for all Qt modules
 [
     cc_library(
         name = "qt_%s_windows" % name,
@@ -30,9 +36,9 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         ],
         target_compatible_with = ["@platforms//os:windows"],
         visibility = ["//visibility:public"],
-        deps = [":qt_%s_windows_import" % name],
+        deps = [":qt_%s_windows_import" % name] if "bin/%s.dll" % library_name in AVAILABLE_DLLS else [],
     )
-    for name, include_folder, _, _ in QT_LIBRARIES
+    for name, include_folder, library_name, _ in QT_LIBRARIES
 ]
 
 cc_library(
@@ -74,7 +80,16 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "bin_files",
+    srcs = glob(
+        ["bin/**/*"],
+        allow_empty = True,
+    ),
+    visibility = ["//visibility:public"],
+)
+
 exports_files(
-    ["qml", "plugins", "lib"],
+    ["qml", "plugins", "lib", "bin"],
     visibility = ["//visibility:public"],
 )

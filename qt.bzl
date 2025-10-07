@@ -277,8 +277,10 @@ qt_plugin_data = select({
     "@platforms//os:windows": [
         "@qt_windows_x86_64//:plugins",
         "@qt_windows_x86_64//:qml",
+        "@qt_windows_x86_64//:bin",
         "@qt_windows_x86_64//:plugin_files",
         "@qt_windows_x86_64//:qml_files",
+        "@qt_windows_x86_64//:bin_files",
     ],
 })
 
@@ -304,6 +306,7 @@ WINDOWS_ENV_DATA = {
     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)/platforms",
     "QML2_IMPORT_PATH": "$(location @qt_windows_x86_64//:qml)",
     "QT_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)",
+    "PATH": "$(location @qt_windows_x86_64//:bin)",
 }
 
 MAC_M1_ENV_DATA = {
