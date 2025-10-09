@@ -1,8 +1,9 @@
 #include <QThread>
-#include <QtCore/QVariant>
-#include <QtWidgets/QApplication>
+#include <QVariant>
+#include <QApplication>
 #include <QLabel>
-#include <QtWidgets/QStylePainter>
+#include <QStylePainter>
+#include <QWidget>
 
 class MyWidget : public QWidget
 {
