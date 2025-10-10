@@ -39,6 +39,17 @@ $qt5compatComponent = "{qt5compat}"
 
 Write-Host "Downloading Qt 6.10.0 components from official download.qt.io repository..."
 
+# Install 7-Zip if not available (needed for Windows Server 2022 which has tar without LZMA support)
+$7zipPath = "C:\\Program Files\\7-Zip\\7z.exe"
+if (-not (Test-Path $7zipPath)) {{
+    Write-Host "Installing 7-Zip..."
+    $7zipInstaller = "7z-installer.exe"
+    Invoke-WebRequest -Uri "https://www.7-zip.org/a/7z2408-x64.exe" -OutFile $7zipInstaller -UseBasicParsing
+    Start-Process -FilePath $7zipInstaller -ArgumentList "/S" -Wait
+    Remove-Item $7zipInstaller -Force
+    Write-Host "7-Zip installed successfully"
+}}
+
 # Download and extract each component
 for ($i = 0; $i -lt $components.Length; $i++) {{
     $component = $components[$i]
@@ -64,8 +75,8 @@ for ($i = 0; $i -lt $components.Length; $i++) {{
     }} while ($retryCount -lt $maxRetries)
     
     Write-Host "Extracting: $component"
-    # Extract directly - Qt archives already have the correct structure (bin/, lib/, include/, etc.)
-    & tar -xf $archive
+    # Use 7-Zip instead of tar for reliable 7z extraction
+    & $7zipPath x $archive -y
     
     Remove-Item $archive -Force
 }}
@@ -91,7 +102,7 @@ do {{
 }} while ($retryCount -lt $maxRetries)
 
 Write-Host "Extracting Qt5Compat: $qt5compatComponent"
-& tar -xf $qt5compatComponent
+& $7zipPath x $qt5compatComponent -y
 Remove-Item $qt5compatComponent -Force
 
 # Verify critical DLLs are present

@@ -43,7 +43,8 @@ QT_LIBRARIES = [
     ("quick_controls2", "QtQuickControls2", "Qt6QuickControls2", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_basic", "QtQuickControls2Basic", "Qt6QuickControls2Basic", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_basic_style_impl", "QtQuickControls2BasicStyleImpl", "Qt6QuickControls2BasicStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_fluent_win_ui3_style_impl", "QtQuickControls2FluentWinUI3StyleImpl", "Qt6QuickControls2FluentWinUI3StyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    # Note: Windows-specific style implementations are excluded as they're not available on macOS/Linux
+    # ("quick_controls2_fluent_win_ui3_style_impl", "QtQuickControls2FluentWinUI3StyleImpl", "Qt6QuickControls2FluentWinUI3StyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_fusion", "QtQuickControls2Fusion", "Qt6QuickControls2Fusion", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_fusion_style_impl", "QtQuickControls2FusionStyleImpl", "Qt6QuickControls2FusionStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_imagine", "QtQuickControls2Imagine", "Qt6QuickControls2Imagine", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
@@ -53,7 +54,8 @@ QT_LIBRARIES = [
     ("quick_controls2_material_style_impl", "QtQuickControls2MaterialStyleImpl", "Qt6QuickControls2MaterialStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_universal", "QtQuickControls2Universal", "Qt6QuickControls2Universal", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_controls2_universal_style_impl", "QtQuickControls2UniversalStyleImpl", "Qt6QuickControls2UniversalStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
-    ("quick_controls2_windows_style_impl", "QtQuickControls2WindowsStyleImpl", "Qt6QuickControls2WindowsStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
+    # Note: Windows-specific style implementation excluded as it's not available on macOS/Linux
+    # ("quick_controls2_windows_style_impl", "QtQuickControls2WindowsStyleImpl", "Qt6QuickControls2WindowsStyleImpl", [":qt_quick_templates2", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_dialogs2", "QtQuickDialogs2", "Qt6QuickDialogs2", [":qt_quick_dialogs2_quick_impl", ":qt_quick_dialogs2_utils", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_dialogs2_quick_impl", "QtQuickDialogs2QuickImpl", "Qt6QuickDialogs2QuickImpl", [":qt_quick_templates2", ":qt_quick_controls2_impl", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_quick_dialogs2_utils", ":qt_core"]),
     ("quick_dialogs2_utils", "QtQuickDialogs2Utils", "Qt6QuickDialogs2Utils", [":qt_gui", ":qt_core"]),
