@@ -271,12 +271,10 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:qml_files", "@qt_linux_x86_64//:plugin_files"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
-    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
+    "@platforms//os:linux": ["@qt_linux_x86_64//:qml_files", "@qt_linux_x86_64//:plugin_files"],
+    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
+    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
     "@platforms//os:windows": [
-        "@qt_windows_x86_64//:plugins",
-        "@qt_windows_x86_64//:qml",
         "@qt_windows_x86_64//:plugin_files",
         "@qt_windows_x86_64//:qml_files",
     ],
@@ -289,27 +287,27 @@ def update_dict(source, env):
     return result
 
 LINUX_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)/platforms",
-    "QML2_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
-    "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_linux_x86_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_linux_x86_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_linux_x86_64/plugins",
 }
 
 MAC_X64_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)/platforms",
-    "QML2_IMPORT_PATH": "$(location @qt_mac_x86_64//:qml)",
-    "QT_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_x86_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_mac_x86_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_mac_x86_64/plugins",
 }
 
 WINDOWS_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)/platforms",
-    "QML2_IMPORT_PATH": "$(location @qt_windows_x86_64//:qml)",
-    "QT_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_windows_x86_64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_windows_x86_64/qml",
+    "QT_PLUGIN_PATH": "external/qt_windows_x86_64/plugins",
 }
 
 MAC_M1_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_aarch64//:plugins)/platforms",
-    "QML2_IMPORT_PATH": "$(location @qt_mac_aarch64//:qml)",
-    "QT_PLUGIN_PATH": "$(location @qt_mac_aarch64//:plugins)",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "external/qt_mac_aarch64/plugins/platforms",
+    "QML2_IMPORT_PATH": "external/qt_mac_aarch64/qml",
+    "QT_PLUGIN_PATH": "external/qt_mac_aarch64/plugins",
 }
 
 def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
@@ -331,26 +329,29 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
     env_file = []
     native.genrule(
         name = name + "_env",
-        tools = qt_plugin_data,
+        srcs = qt_plugin_data + select({
+            "@platforms//os:linux": ["@qt_linux_x86_64//:lib"],
+            "//conditions:default": [],
+        }),
         outs = ["qt_env.ini"],
         cmd = select({
             "@platforms//os:linux":
-                "echo $$\"LD_LIBRARY_PATH: $(location @qt_linux_x86_64//:lib)\" > $@ \
-                    $$\"\r\nQT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_linux_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)\" > $@",
+                "echo $$\"LD_LIBRARY_PATH: external/qt_linux_x86_64/lib\" > $@ ; \
+                echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: external/qt_linux_x86_64/plugins/platforms\" >> $@ ; \
+                echo $$\"QML2_IMPORT_PATH: external/qt_linux_x86_64/qml\" >> $@ ; \
+                echo $$\"QT_PLUGIN_PATH: external/qt_linux_x86_64/plugins\" >> $@",
             "@rules_qt//:osx_x86_64":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)\" > $@",
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: external/qt_mac_x86_64/plugins/platforms\" > $@ ; \
+                echo $$\"QML2_IMPORT_PATH: external/qt_mac_x86_64/qml\" >> $@ ; \
+                echo $$\"QT_PLUGIN_PATH: external/qt_mac_x86_64/plugins\" >> $@",
             "@rules_qt//:osx_arm64":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_aarch64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)\" > $@",
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: external/qt_mac_aarch64/plugins/platforms\" > $@ ; \
+                echo $$\"QML2_IMPORT_PATH: external/qt_mac_aarch64/qml\" >> $@ ; \
+                echo $$\"QT_PLUGIN_PATH: external/qt_mac_aarch64/plugins\" >> $@",
             "@platforms//os:windows":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_windows_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)\" > $@",
+                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: external/qt_windows_x86_64/plugins/platforms\" > $@ ; \
+                echo $$\"QML2_IMPORT_PATH: external/qt_windows_x86_64/qml\" >> $@ ; \
+                echo $$\"QT_PLUGIN_PATH: external/qt_windows_x86_64/plugins\" >> $@",
         }),
     )
     env_file.append("qt_env.ini")

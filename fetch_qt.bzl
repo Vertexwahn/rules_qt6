@@ -94,6 +94,25 @@ Write-Host "Extracting Qt5Compat: $qt5compatComponent"
 & tar -xf $qt5compatComponent
 Remove-Item $qt5compatComponent -Force
 
+# Verify critical DLLs are present
+Write-Host "Verifying Qt installation..."
+$criticalDlls = @("Qt6Core.dll", "Qt6Gui.dll", "Qt6Widgets.dll", "Qt6Qml.dll", "Qt6Quick.dll")
+$missingDlls = @()
+foreach ($dll in $criticalDlls) {{
+    $dllPath = Join-Path "bin" $dll
+    if (-not (Test-Path $dllPath)) {{
+        $missingDlls += $dll
+        Write-Host "ERROR: Missing critical DLL: $dll at $dllPath"
+    }} else {{
+        Write-Host "Found: $dll"
+    }}
+}}
+
+if ($missingDlls.Count -gt 0) {{
+    Write-Host "ERROR: Qt installation incomplete. Missing DLLs: $($missingDlls -join ', ')"
+    exit 1
+}}
+
 Write-Host "Qt 6.10.0 installation complete with Qt5Compat addon - files extracted with original structure!"
 """.format(
         base_url=base_url,
