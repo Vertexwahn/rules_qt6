@@ -271,9 +271,9 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:lib"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:lib"],
-    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:lib"],
+    "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:qml_files", "@qt_linux_x86_64//:plugin_files"],
+    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:plugin_files", "@qt_mac_x86_64//:qml_files"],
+    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:plugin_files", "@qt_mac_aarch64//:qml_files"],
     "@platforms//os:windows": [
         "@qt_windows_x86_64//:plugins",
         "@qt_windows_x86_64//:qml",

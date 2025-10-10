@@ -15,6 +15,8 @@ QT_LIBRARIES = [
     ("widgets", "QtWidgets", "Qt6Widgets", [":qt_core", ":qt_gui"]),
     ("xml", "QtXml", "Qt6Xml", [":qt_core"]),
 
+    ("core5_compat", "QtCore5Compat", "Qt6Core5Compat", [":qt_core"]),
+
     ## qttools libraries  
     ("designer", "QtDesigner", "Qt6Designer", [":qt_xml", ":qt_opengl_widgets", ":qt_widgets", ":qt_gui", ":qt_core"]),
     ("designer_components", "QtDesignerComponents", "Qt6DesignerComponents", [":qt_designer", ":qt_xml", ":qt_widgets", ":qt_gui", ":qt_core"]),

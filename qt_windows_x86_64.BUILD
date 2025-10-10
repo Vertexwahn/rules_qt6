@@ -71,7 +71,7 @@ filegroup(
 
 filegroup(
     name = "qml_files",
-    srcs = glob(["qml/**/*"], allow_empty = True),
+    srcs = glob(["qml/**/*"]),
     visibility = ["//visibility:public"],
 )
 
