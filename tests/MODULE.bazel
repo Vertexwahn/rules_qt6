@@ -6,17 +6,28 @@ local_path_override(
     path = "..",
 )
 
-# Legacy Qt fetching for Linux and macOS
-qt = use_extension("@rules_qt//:extensions.bzl", "qt")
-qt.fetch()
-use_repo(
-    qt,
-    "qt_linux_x86_64",
-    "qt_mac_aarch64",
+# aqt-based Qt fetching for all platforms
+qt_aqt = use_extension("@rules_qt//:extensions.bzl", "qt_aqt")
+
+# Linux x86_64
+qt_aqt.install(
+    name = "qt_linux_x86_64",
+    version = "6.9.0",
+    os = "linux",
+    target_sdk = "desktop",
+    build_file = "@rules_qt//:qt_linux_x86_64.BUILD",
 )
 
-# aqt-based Qt fetching for Windows
-qt_aqt = use_extension("@rules_qt//:extensions.bzl", "qt_aqt")
+# macOS aarch64 (Apple Silicon)
+qt_aqt.install(
+    name = "qt_mac_aarch64",
+    version = "6.9.0",
+    os = "mac",
+    target_sdk = "desktop",
+    build_file = "@rules_qt//:qt_mac_aarch64.BUILD",
+)
+
+# Windows x86_64
 qt_aqt.install(
     name = "qt_windows_x86_64",
     version = "6.9.0",
@@ -25,7 +36,8 @@ qt_aqt.install(
     build_file = "@rules_qt//:qt_windows_x86_64.BUILD",
     windows_architecture = "win64_msvc2022_64",
 )
-use_repo(qt_aqt, "qt_windows_x86_64")
+
+use_repo(qt_aqt, "qt_linux_x86_64", "qt_mac_aarch64", "qt_windows_x86_64")
 
 register_toolchains(
     "@rules_qt//tools:all",
