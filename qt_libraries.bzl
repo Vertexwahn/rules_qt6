@@ -59,16 +59,19 @@ QT_LIBRARIES = [
     ("quick_dialogs2", "QtQuickDialogs2", "Qt6QuickDialogs2", [":qt_quick_dialogs2_quick_impl", ":qt_quick_dialogs2_utils", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_core"]),
     ("quick_dialogs2_quick_impl", "QtQuickDialogs2QuickImpl", "Qt6QuickDialogs2QuickImpl", [":qt_quick_templates2", ":qt_quick_controls2_impl", ":qt_quick", ":qt_gui", ":qt_qml", ":qt_quick_dialogs2_utils", ":qt_core"]),
     ("quick_dialogs2_utils", "QtQuickDialogs2Utils", "Qt6QuickDialogs2Utils", [":qt_gui", ":qt_core"]),
-    ("quick_effects", "QtQuickEffects", "Qt6QuickEffects", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # Note: QtQuickEffects is new in Qt 6.10.0 and not available in Qt 6.8.0 (macOS)
+    # ("quick_effects", "QtQuickEffects", "Qt6QuickEffects", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_layouts", "QtQuickLayouts", "Qt6QuickLayouts", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_particles", "QtQuickParticles", "Qt6QuickParticles", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_shapes", "QtQuickShapes", "Qt6QuickShapes", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
-    ("quick_shapes_design_helpers", "QtQuickShapesDesignHelpers", "Qt6QuickShapesDesignHelpers", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # Note: The following libraries are new in Qt 6.10.0 and not available in Qt 6.8.0 (macOS)
+    # ("quick_shapes_design_helpers", "QtQuickShapesDesignHelpers", "Qt6QuickShapesDesignHelpers", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_templates2", "QtQuickTemplates2", "Qt6QuickTemplates2", [":qt_quick", ":qt_qml", ":qt_qml_models", ":qt_gui", ":qt_core"]),
     ("quick_test", "QtQuickTest", "Qt6QuickTest", [":qt_quick", ":qt_gui", ":qt_qml", ":qt_test", ":qt_core"]),
-    ("quick_vector_image", "QtQuickVectorImage", "Qt6QuickVectorImage", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
-    ("quick_vector_image_generator", "QtQuickVectorImageGenerator", "Qt6QuickVectorImageGenerator", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
-    ("quick_vector_image_helpers", "QtQuickVectorImageHelpers", "Qt6QuickVectorImageHelpers", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # Note: QuickVectorImage libraries are new in Qt 6.10.0 and not available in Qt 6.8.0 (macOS)
+    # ("quick_vector_image", "QtQuickVectorImage", "Qt6QuickVectorImage", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # ("quick_vector_image_generator", "QtQuickVectorImageGenerator", "Qt6QuickVectorImageGenerator", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # ("quick_vector_image_helpers", "QtQuickVectorImageHelpers", "Qt6QuickVectorImageHelpers", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("quick_widgets", "QtQuickWidgets", "Qt6QuickWidgets", [":qt_quick", ":qt_qml", ":qt_widgets", ":qt_opengl", ":qt_gui", ":qt_core"]),
 
     ## Qt Labs (from qtdeclarative)
