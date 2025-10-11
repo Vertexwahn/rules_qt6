@@ -91,6 +91,13 @@ There is a chance that you get this also working with Bazel 7.x.
 If you need support for older version of Bazel please checkout an older state of this repository.
 Initially, this repository had support for Bazel 4.x.
 
+**Supported Platforms:**
+- Linux (x86_64) - Qt 6.4.0
+- Windows (x86_64) - Qt 6.4.0  
+- macOS (ARM64/M1+) - Qt 6.8.0
+
+**Note:** macOS Intel (x86_64) is currently not supported due to the lack of a prebuild Qt version.
+
 When using these rules, 
 a prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/).
 Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
