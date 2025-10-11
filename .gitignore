@@ -8,3 +8,6 @@ bazel-*
 
 # macOS related
 .DS_Store
+
+# aqtinstall related
+aqtinstall.log
