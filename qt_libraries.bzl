@@ -81,6 +81,7 @@ QT_LIBRARIES = [
     ("labs_qml_models", "QtLabsQmlModels", "Qt6LabsQmlModels", [":qt_qml_models", ":qt_qml", ":qt_core"]),
     ("labs_settings", "QtLabsSettings", "Qt6LabsSettings", [":qt_qml", ":qt_core"]),
     ("labs_shared_image", "QtLabsSharedImage", "Qt6LabsSharedImage", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
-    ("labs_synchronizer", "QtLabsSynchronizer", "Qt6LabsSynchronizer", [":qt_qml", ":qt_core"]),
-    ("labs_wavefront_mesh", "QtLabsWavefrontMesh", "Qt6LabsWavefrontMesh", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
+    # Note: QtLabsSynchronizer and QtLabsWavefrontMesh are new in Qt 6.10.0
+    # ("labs_synchronizer", "QtLabsSynchronizer", "Qt6LabsSynchronizer", [":qt_qml", ":qt_core"]),
+    # ("labs_wavefront_mesh", "QtLabsWavefrontMesh", "Qt6LabsWavefrontMesh", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
 ]
