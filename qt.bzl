@@ -244,14 +244,12 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             cmd = select({
                 "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
-                "@rules_qt//:osx_x86_64": "$(location @qt_mac_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@rules_qt//:osx_arm64": "$(location @qt_mac_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
                 "@platforms//os:linux": ["@qt_linux_x86_64//:moc"],
                 "@platforms//os:windows": ["@qt_windows_x86_64//:moc"],
                 "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:moc"],
-                "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:moc"],
             }),
             target_compatible_with = target_compatible_with,
         )
@@ -272,7 +270,6 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
 
 qt_plugin_data = select({
     "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:lib"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:lib"],
     "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:lib"],
     "@platforms//os:windows": [
         "@qt_windows_x86_64//:plugins",
@@ -294,11 +291,12 @@ LINUX_ENV_DATA = {
     "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
 }
 
-MAC_X64_ENV_DATA = {
-    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)/platforms",
-    "QML2_IMPORT_PATH": "$(location @qt_mac_x86_64//:qml)",
-    "QT_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)",
-}
+# macOS x86_64 is not supported due to lack of prebuild Qt version
+# MAC_X64_ENV_DATA = {
+#     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)/platforms",
+#     "QML2_IMPORT_PATH": "$(location @qt_mac_x86_64//:qml)",
+#     "QT_PLUGIN_PATH": "$(location @qt_mac_x86_64//:plugins)",
+# }
 
 WINDOWS_ENV_DATA = {
     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_windows_x86_64//:plugins)/platforms",
@@ -325,7 +323,6 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
       **kwargs: Any additional arguments are passed to the cc_library rule.
     """
     linux_env_data = update_dict(LINUX_ENV_DATA, env)
-    mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
     env_file = []
@@ -339,10 +336,6 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
                     $$\"\r\nQT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)/platforms\" > $@ \
                     $$\"\r\nQML2_IMPORT_PATH: $(location @qt_linux_x86_64//:qml)\" > $@ \
                     $$\"\r\nQT_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)\" > $@",
-            "@rules_qt//:osx_x86_64":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)\" > $@",
             "@rules_qt//:osx_arm64":
                 "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)/platforms\" > $@ \
                     $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_aarch64//:qml)\" > $@ \
@@ -365,7 +358,6 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         data = qt_plugin_data + env_file + data,
         env = select({
             "@platforms//os:linux": linux_env_data,
-            "@rules_qt//:osx_x86_64": mac_x64_env_data,
             "@rules_qt//:osx_arm64": mac_m1_env_data,
             "@platforms//os:windows": windows_env_data,
         }),
@@ -385,7 +377,6 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
       **kwargs: Any additional arguments are passed to the cc_test rule.
     """
     linux_env_data = update_dict(LINUX_ENV_DATA, env)
-    mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
     cc_test(
@@ -399,7 +390,6 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
         data = qt_plugin_data + data,
         env = select({
             "@platforms//os:linux": linux_env_data,
-            "@rules_qt//:osx_x86_64": mac_x64_env_data,
             "@rules_qt//:osx_arm64": mac_m1_env_data,
             "@platforms//os:windows": windows_env_data,
         }),
