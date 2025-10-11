@@ -28,18 +28,18 @@ qt_toolchain(
     uic_cmd = "$(location @qt_windows_x86_64//:uic)",
 )
 
-## osx current use pre installed qt, when ready, change to use download version like linux and windows
-qt_toolchain(
-    name = "qt_osx",
-    data = [
-        "@qt_mac_x86_64//:moc",
-        "@qt_mac_x86_64//:rcc",
-        "@qt_mac_x86_64//:uic",
-    ],
-    moc_cmd = "$(location @qt_mac_x86_64//:moc)",
-    rcc_cmd = "$(location @qt_mac_x86_64//:rcc)",
-    uic_cmd = "$(location @qt_mac_x86_64//:uic)",
-)
+## osx x86_64 is currently not supported due to lack of prebuild Qt version
+# qt_toolchain(
+#     name = "qt_osx",
+#     data = [
+#         "@qt_mac_x86_64//:moc",
+#         "@qt_mac_x86_64//:rcc",
+#         "@qt_mac_x86_64//:uic",
+#     ],
+#     moc_cmd = "$(location @qt_mac_x86_64//:moc)",
+#     rcc_cmd = "$(location @qt_mac_x86_64//:rcc)",
+#     uic_cmd = "$(location @qt_mac_x86_64//:uic)",
+# )
 
 qt_toolchain(
     name = "qt_osx_M1",
@@ -79,18 +79,19 @@ toolchain(
     toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
-toolchain(
-    name = "qt_osx_toolchain",
-    exec_compatible_with = [
-        "@platforms//os:osx",
-    ],
-    target_compatible_with = [
-        "@platforms//os:osx",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":qt_osx",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
-)
+# macOS x86_64 toolchain is currently not supported due to lack of prebuild Qt version
+# toolchain(
+#     name = "qt_osx_toolchain",
+#     exec_compatible_with = [
+#         "@platforms//os:osx",
+#     ],
+#     target_compatible_with = [
+#         "@platforms//os:osx",
+#         "@platforms//cpu:x86_64",
+#     ],
+#     toolchain = ":qt_osx",
+#     toolchain_type = "@rules_qt//tools:toolchain_type",
+# )
 
 toolchain(
     name = "qt_osx_M1_toolchain",
