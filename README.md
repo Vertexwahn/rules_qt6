@@ -88,17 +88,17 @@ More examples can be found in the [tests](tests) directory.
 
 ## Current status
 
-These rules where tested with Bazel 8.x.
-There is a chance that you get this also working with Bazel 7.x.
-If you need support for older version of Bazel please checkout an older state of this repository.
+These rules were tested with Bazel 8.x.
+There is a chance that you also get this working with Bazel 7.x.
+If you need support for older versions of Bazel, please check out an older state of this repository.
 Initially, this repository had support for Bazel 4.x.
 
-When using these rules, 
+When using these rules,
 a prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/).
 Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
 
 I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
-This is necessary since Qt6 requires at least C++17 standard enabled, and different C++ compilers require different flags to enable this.
+This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
 
 ## Contributions
 

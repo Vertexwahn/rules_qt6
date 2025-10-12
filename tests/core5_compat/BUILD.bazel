@@ -5,8 +5,8 @@ qt_cc_library(
     srcs = ["test_core5_compat.cpp"],
     hdrs = ["test_core5_compat.h"],
     deps = [
-        "@rules_qt//:core5_compat",
         "@rules_qt//:qt_core",
+        "@rules_qt//:qt_core5_compat",
         "@rules_qt//:qt_test",
     ],
 )
