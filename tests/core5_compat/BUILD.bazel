@@ -1,0 +1,20 @@
+load("@rules_qt//:qt.bzl", "qt_cc_library", "qt_cc_test")
+
+qt_cc_library(
+    name = "test_lib",
+    srcs = ["test_core5_compat.cpp"],
+    hdrs = ["test_core5_compat.h"],
+    deps = [
+        "@rules_qt//:core5_compat",
+        "@rules_qt//:qt_core",
+        "@rules_qt//:qt_test",
+    ],
+)
+
+qt_cc_test(
+    name = "main",
+    srcs = [],
+    deps = [
+        ":test_lib",
+    ],
+)
