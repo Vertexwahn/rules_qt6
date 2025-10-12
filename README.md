@@ -86,6 +86,14 @@ The expected output should be similar (depending on your platform) to the follow
 
 More examples can be found in the [tests](tests) directory.
 
+## Why rules and not a simple dependency=
+
+To get Qt working with C++, you need different tools, e.g., the Meta-Object Compiler (moc).
+This is needed since Qt introduces some language extensions to C++, such as the signal, slot concept.
+There is also the User Interface Compiler (uic), Resource Compiler (rcc), and translation tools.
+To get all of those things working, Qt is a bit more than a simple third-party dependency.
+The idea of this project is to introduce own rules that simplify the usage of Qt using Bazel.
+
 ## Current status
 
 These rules were tested with Bazel 8.x.
