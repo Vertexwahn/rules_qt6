@@ -11,22 +11,30 @@ set -o errexit -o nounset -o pipefail
 # https://docs.github.com/en/actions/learn-github-actions/environment-variables#default-environment-variables
 TAG=${GITHUB_REF_NAME}
 # The prefix is chosen to match what GitHub generates for source archives
-PREFIX="rules_qt6-${TAG:1}"
+PREFIX="rules_qt6-${TAG}"
 ARCHIVE="rules_qt6-$TAG.tar.gz"
 git archive --format=tar --prefix=${PREFIX}/ ${TAG} | gzip > $ARCHIVE
 SHA=$(shasum -a 256 $ARCHIVE | awk '{print $1}')
 
 cat << EOF
-## Using WORKSPACE
-Paste this snippet into your `WORKSPACE.bazel` file:
+## Using Bzlmod
+Add to your `MODULE.bazel` file:
 \`\`\`starlark
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-http_archive(
-    name = "rules_qt6",
-    sha256 = "${SHA}",
-    strip_prefix = "${PREFIX}",
-    url = "https://github.com/Vertexwahn/rules_qt6/releases/download/${TAG}/${ARCHIVE}",
+bazel_dep(name = "rules_qt", version = "${TAG}")
+
+qt = use_extension("@rules_qt//:extensions.bzl", "qt")
+qt.fetch()
+use_repo(
+    qt,
+    "qt_linux_x86_64",
+    "qt_mac_aarch64",
+    "qt_windows_x86_64",
 )
+
+register_toolchains(
+    "@rules_qt//tools:all"
+)
+
 EOF
 
 #awk 'f;/--SNIP--/{f=1}' e2e/smoke/WORKSPACE.bazel
