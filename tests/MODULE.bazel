@@ -15,6 +15,5 @@ use_repo(
 )
 
 register_toolchains(
-    "@rules_qt//tools:all",
-    dev_dependency = True,
+    "@rules_qt//tools:all"
 )
