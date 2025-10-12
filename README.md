@@ -86,7 +86,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 More examples can be found in the [tests](tests) directory.
 
-## Why rules and not a simple dependency=
+## Why rules and not a simple dependency?
 
 To get Qt working with C++, you need different tools, e.g., the Meta-Object Compiler (moc).
 This is needed since Qt introduces some language extensions to C++, such as the signal, slot concept.
@@ -114,7 +114,7 @@ Any improvements to the Qt6 build experience using Bazel are welcome.
 Maybe you have solved this problem already. 
 In this case, 
 I would appreciate it if you could share your efforts under some permissive license.
-If you name no specific license I assume you are fine with the current used license of this project (Apache 2.0 License).
+If you name no specific license, I assume you are fine with the current used license of this project (Apache 2.0 License).
 
 ## Similar projects
 
