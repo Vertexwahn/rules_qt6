@@ -1,4 +1,5 @@
 #include "test_regex.h"
+
 #include <QtTest/QtTest>
 #include <QRegularExpression>
 
