@@ -4,9 +4,11 @@ SPDX-FileCopyrightText: 2022-2025 Julian Amann <dev@vertexwahn.de>
 SPDX-License-Identifier: Apache-2.0
 -->
 
-[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine)
+
+[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine) [<img src="bazel_logo.svg" alt="Bazel logo" width="25" height="24" />](https://bazel.build/)
 
 # Bazel rules for Qt6
+
 
 ## Goal 
 
