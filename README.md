@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 -->
 
 
-[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine) [<img src="bazel_logo.svg" alt="Bazel logo" width="25" height="24" />](https://bazel.build/)
+[![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine) [<img src="docs/logo/bazel_logo.svg" alt="Bazel logo" width="24" height="24" />](https://bazel.build/) [<img src="docs/logo/qt-svgrepo-com.svg" alt="Qt logo" width="24" height="24" />](https://www.qt.io/product/qt6)
 
 # Bazel rules for Qt6
 
