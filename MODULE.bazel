@@ -29,15 +29,9 @@ pip_rules_qt.parse(
     hub_name = "pypi_rules_qt",
     python_version = PYTHON_VERSION,
     requirements_lock = "//bqtinstaller:requirements_lock.txt",
-    #requirements_darwin = "//bazel/module/python:requirements_darwin.txt",
-    #requirements_linux = "//bazel/module/python:requirements_linux.txt",
-    #requirements_windows = "//bazel/module/python:requirements_windows.txt",
 )
 
 use_repo(pip_rules_qt, "pypi_rules_qt")
-
-# Note:
-# bazel run //:requirements.update # to update requirements files
 
 #----------------------------------------------------------------------
 
