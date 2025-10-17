@@ -1,4 +1,5 @@
-load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
+load(":qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(
@@ -6,12 +7,10 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         srcs = glob([
             "lib/lib%s.so*" % library_name,
             "lib/libicu*.so*",
-        ], allow_empty = True),
-        data = glob([
-            "lib/lib%s.so*" % library_name,
-            "lib/libicu*.so*",
-        ], allow_empty = True),
-        hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
+        ]),
+        hdrs = glob([
+            "include/%s/**" % include_folder,
+        ]),
         includes = [
             "include",
             "include/%s" % include_folder,
@@ -24,7 +23,9 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
 cc_library(
     name = "qt_hdrs",
-    hdrs = glob(["include/**"]),
+    hdrs = glob([
+        "include/**",
+    ]),
     includes = [
         "include",
     ],
@@ -58,5 +59,10 @@ filegroup(
 filegroup(
     name = "qml_files",
     srcs = glob(["qml/**/*"]),
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["qml", "plugins", "lib"],
     visibility = ["//visibility:public"],
 )

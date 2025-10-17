@@ -1,4 +1,4 @@
-load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load("@qt_linux_x86_64//:qt_libraries.bzl", "QT_LIBRARIES")
 
 config_setting(
     name = "osx_arm64",

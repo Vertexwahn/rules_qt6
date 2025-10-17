@@ -1,5 +1,4 @@
 import Qt.labs.platform 1.0 as Platform
-import Qt.labs.settings 1.0
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Controls.Material 2.12
