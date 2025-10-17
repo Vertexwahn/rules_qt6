@@ -355,17 +355,20 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], **kwargs):
             "//conditions:default": ["-fPIC"],
         }),
         data = qt_plugin_data + data,
+        env = select({
+            "@platforms//os:windows": WINDOWS_ENV_DATA,
+            "//conditions:default": {},
+        }),
         **kwargs
     )
     
-    # Create a wrapper script that sets up environment variables
+    # Create a wrapper script for Linux that sets up environment variables
     wrapper_script = name + "_wrapper.sh"
     native.genrule(
         name = name + "_gen_wrapper",
         srcs = [binary_name] + qt_plugin_data,
         outs = [wrapper_script],
-        cmd = select({
-            "@platforms//os:linux": """
+        cmd = """
 cat > $@ << 'WRAPPER_EOF'
 #!/bin/bash
 # Find the runfiles directory
@@ -411,14 +414,24 @@ exec "$$RUNFILES_DIR/_main/""" + binary_runfiles_path + """" "$$@"
 WRAPPER_EOF
 chmod +x $@
 """,
-            "//conditions:default": "echo '#!/bin/sh' > $@ && echo 'echo \"Wrapper not implemented for this platform\"' >> $@ && echo 'exit 1' >> $@ && chmod +x $@",
-        }),
+        target_compatible_with = ["@platforms//os:linux"],
     )
     
     native.sh_binary(
-        name = name,
+        name = name + "_sh",
         srcs = [wrapper_script],
         data = [binary_name] + qt_plugin_data + data,
+        target_compatible_with = ["@platforms//os:linux"],
+    )
+    
+    # On Windows, alias directly to the binary (env is set in cc_binary)
+    # On Linux, use the wrapper script
+    native.alias(
+        name = name,
+        actual = select({
+            "@platforms//os:linux": ":" + name + "_sh",
+            "@platforms//os:windows": ":" + binary_name,
+        }),
     )
 
 def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
