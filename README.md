@@ -108,6 +108,14 @@ Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
 I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
 This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
 
+## Future
+
+Currently, these rules support only Qt 6.4, which is downloaded from vertexwahn.de.
+The future plan is to make use of aqtinstaller to download Qt 6.10.
+An alternative would be to download directly from download.qt.io and its mirrors.
+
+![Future of rules_qt](/docs/future/future_rules_qt.svg)
+
 ## Contributions
 
 Any improvements to the Qt6 build experience using Bazel are welcome. 
