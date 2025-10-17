@@ -8,7 +8,7 @@ bazel_dep(name = "bazel_skylib", version = "1.8.2")
 bazel_dep(name = "platforms", version = "1.0.0")
 bazel_dep(name = "rules_cc", version = "0.2.9")
 
-qt = use_extension("//extension:qt.bzl", "aqt_install")
+qt = use_extension("//extension:qt.bzl", "fetch")
 qt.install(
     name = "qt_linux_x86_64",
     build_file = "//extension:qt/6.8.3/linux_x86_64.BUILD",

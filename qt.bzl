@@ -387,7 +387,7 @@ TEMP_QML_DIR="/tmp/qt_qml_override_$$$$"
 mkdir -p "$$TEMP_QML_DIR/Qt/labs/settings"
 
 # Copy the Qt.labs.settings qmldir without the 'prefer' directive and make plugin required
-QML_SRC="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/qml/Qt/labs/settings"
+QML_SRC="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml/Qt/labs/settings"
 if [ -f "$$QML_SRC/qmldir" ]; then
     grep -v '^prefer :/' "$$QML_SRC/qmldir" | sed 's/^optional plugin/plugin/' > "$$TEMP_QML_DIR/Qt/labs/settings/qmldir"
     # Create symlinks to the actual plugin files
@@ -396,15 +396,15 @@ if [ -f "$$QML_SRC/qmldir" ]; then
 fi
 
 # Set Qt environment variables using runfiles paths
-export LD_LIBRARY_PATH="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/lib:$$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/lib:$$LD_LIBRARY_PATH"
 export QT_QPA_PLATFORM="xcb"
-export QT_QPA_PLATFORM_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/plugins/platforms"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins/platforms"
 # Put our override directory first in the import path
-export QML_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/qml"
-export QML2_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/qml"
-export QT_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/plugins"
-export QT_MODULES_DIR="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/modules"
-export QT_METATYPES_DIR="$$RUNFILES_DIR/rules_qt++aqt_install+qt_linux_x86_64/metatypes"
+export QML_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
+export QML2_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
+export QT_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins"
+export QT_MODULES_DIR="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/modules"
+export QT_METATYPES_DIR="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/metatypes"
 # Disable Qt embedded resources for QML to force filesystem loading
 export QT_QML_DISABLE_DISK_CACHE=1
 export QT_DISABLE_QML_RESOURCE=1

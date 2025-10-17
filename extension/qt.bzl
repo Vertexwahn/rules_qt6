@@ -1,6 +1,6 @@
 load("//extension:download_qt.bzl", "download_qt")
 
-def _aqt_install_impl(mctx):
+def _fetch_impl(mctx):
     # Track repositories already created to avoid duplicates
     repos_created = {}
 
@@ -36,7 +36,7 @@ _tag_classes = {
     "install": _install,
 }
 
-aqt_install = module_extension(
-    implementation = _aqt_install_impl,
+fetch = module_extension(
+    implementation = _fetch_impl,
     tag_classes = _tag_classes,
 )
