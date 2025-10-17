@@ -318,6 +318,10 @@ QT_MODULES = {
             "url": "https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.win64_msvc2022_64/6.8.3-0-202503201308qtsvg-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
             "sha256": "",
         },
+        "qt5compat": {
+            "url": "https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt5compat.win64_msvc2022_64/6.8.3-0-202503201308qt5compat-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
+            "sha256": "",
+        },
     },
 },
 }
