@@ -1,0 +1,9 @@
+load("@rules_qt//:qt.bzl", "qt_cc_binary")
+
+qt_cc_binary(
+    name = "version_test",
+    srcs = ["version_test.cpp"],
+    deps = [
+        "@rules_qt//:qt_core",
+    ],
+)
