@@ -282,11 +282,15 @@ qt_plugin_data = select({
         "@qt_mac_x86_64//:plugins",
         "@qt_mac_x86_64//:qml",
         "@qt_mac_x86_64//:lib",
+        "@qt_mac_x86_64//:modules_files",
+        "@qt_mac_x86_64//:metatypes_files",
     ],
     "@rules_qt//:osx_arm64": [
         "@qt_mac_aarch64//:plugins",
         "@qt_mac_aarch64//:qml",
         "@qt_mac_aarch64//:lib",
+        "@qt_mac_aarch64//:modules_files",
+        "@qt_mac_aarch64//:metatypes_files",
     ],
     "@platforms//os:windows": [
         "@qt_windows_x86_64//:plugins",
@@ -303,14 +307,10 @@ def update_dict(source, env):
     return result
 
 LINUX_ENV_DATA = {
-    "LD_LIBRARY_PATH": "$(location @qt_linux_x86_64//:lib)",
-    "QT_QPA_PLATFORM": "xcb",  # Use X11 platform plugin (works via XWayland on Wayland)
+    "QT_QPA_PLATFORM": "xcb",
     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)/platforms",
-    "QML_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
     "QML2_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
     "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
-    "QT_MODULES_DIR": "$(location @qt_linux_x86_64//:lib)/../modules",
-    "QT_METATYPES_DIR": "$(location @qt_linux_x86_64//:lib)/../metatypes",
 }
 
 MAC_X64_ENV_DATA = {
@@ -331,7 +331,7 @@ MAC_M1_ENV_DATA = {
     "QT_PLUGIN_PATH": "$(location @qt_mac_aarch64//:plugins)",
 }
 
-def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], **kwargs):
+def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):
     """ cc_binary which depend on qt_cc_library or want to use qt tools
 
     Args:
@@ -340,9 +340,17 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], **kwargs):
       deps: cc_library dependencies for the library.
       copts: cc_library copts
       data: which data need to depend
+      env: environment value
       **kwargs: Any additional arguments are passed to the cc_library rule.
     """
-    binary_name = name + "_bin"
+    linux_env_data = update_dict(LINUX_ENV_DATA, env)
+    mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
+    windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
+    mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
+    
+    # On Linux, we need a wrapper to set LD_LIBRARY_PATH at runtime
+    # because $(location) in env doesn't work correctly for dynamic library loading
+    binary_name = name + "_bin" if select({"@platforms//os:linux": True, "//conditions:default": False}) else name
     pkg = native.package_name()
     binary_runfiles_path = pkg + "/" + binary_name if pkg else binary_name
     
@@ -356,13 +364,15 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], **kwargs):
         }),
         data = qt_plugin_data + data,
         env = select({
-            "@platforms//os:windows": WINDOWS_ENV_DATA,
-            "//conditions:default": {},
+            "@platforms//os:linux": linux_env_data,
+            "@rules_qt//:osx_x86_64": mac_x64_env_data,
+            "@rules_qt//:osx_arm64": mac_m1_env_data,
+            "@platforms//os:windows": windows_env_data,
         }),
         **kwargs
     )
     
-    # Create a wrapper script for Linux that sets up environment variables
+    # Only create wrapper for Linux to set LD_LIBRARY_PATH
     wrapper_script = name + "_wrapper.sh"
     native.genrule(
         name = name + "_gen_wrapper",
@@ -371,45 +381,25 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], **kwargs):
         cmd = """
 cat > $@ << 'WRAPPER_EOF'
 #!/bin/bash
-# Find the runfiles directory
 SCRIPT_DIR="$$(cd "$$(dirname "$$0")" && pwd)"
 if [ -e "$$SCRIPT_DIR/""" + name + """.runfiles" ]; then
-    export RUNFILES_DIR="$$SCRIPT_DIR/""" + name + """.runfiles"
+    RUNFILES_DIR="$$SCRIPT_DIR/""" + name + """.runfiles"
 elif [ -e "$$0.runfiles" ]; then
-    export RUNFILES_DIR="$$0.runfiles"
+    RUNFILES_DIR="$$0.runfiles"
 else
-    export RUNFILES_DIR="$$SCRIPT_DIR"
+    RUNFILES_DIR="$$SCRIPT_DIR"
 fi
 
-# Create a temporary QML override directory with patched qmldir files
-# This works around Qt 6.8.3's preference for resource-based QML modules
-TEMP_QML_DIR="/tmp/qt_qml_override_$$$$"
-mkdir -p "$$TEMP_QML_DIR/Qt/labs/settings"
-
-# Copy the Qt.labs.settings qmldir without the 'prefer' directive and make plugin required
-QML_SRC="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml/Qt/labs/settings"
-if [ -f "$$QML_SRC/qmldir" ]; then
-    grep -v '^prefer :/' "$$QML_SRC/qmldir" | sed 's/^optional plugin/plugin/' > "$$TEMP_QML_DIR/Qt/labs/settings/qmldir"
-    # Create symlinks to the actual plugin files
-    ln -sf "$$QML_SRC/libqmlsettingsplugin.so" "$$TEMP_QML_DIR/Qt/labs/settings/libqmlsettingsplugin.so"
-    ln -sf "$$QML_SRC/plugins.qmltypes" "$$TEMP_QML_DIR/Qt/labs/settings/plugins.qmltypes" 2>/dev/null || true
-fi
+# Set LD_LIBRARY_PATH for QML plugin loading (required for dynamic library loading)
+export LD_LIBRARY_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/lib:$$LD_LIBRARY_PATH"
 
 # Set Qt environment variables using runfiles paths
-export LD_LIBRARY_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/lib:$$LD_LIBRARY_PATH"
 export QT_QPA_PLATFORM="xcb"
 export QT_QPA_PLATFORM_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins/platforms"
-# Put our override directory first in the import path
-export QML_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
-export QML2_IMPORT_PATH="$$TEMP_QML_DIR:$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
+export QML2_IMPORT_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
 export QT_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins"
-export QT_MODULES_DIR="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/modules"
-export QT_METATYPES_DIR="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/metatypes"
-# Disable Qt embedded resources for QML to force filesystem loading
-export QT_QML_DISABLE_DISK_CACHE=1
-export QT_DISABLE_QML_RESOURCE=1
 
-# Run the actual binary
+# Run the binary
 exec "$$RUNFILES_DIR/_main/""" + binary_runfiles_path + """" "$$@"
 WRAPPER_EOF
 chmod +x $@
@@ -424,13 +414,12 @@ chmod +x $@
         target_compatible_with = ["@platforms//os:linux"],
     )
     
-    # On Windows, alias directly to the binary (env is set in cc_binary)
-    # On Linux, use the wrapper script
+    # Use wrapper on Linux, direct binary on other platforms
     native.alias(
         name = name,
         actual = select({
             "@platforms//os:linux": ":" + name + "_sh",
-            "@platforms//os:windows": ":" + binary_name,
+            "//conditions:default": ":" + binary_name,
         }),
     )
 
