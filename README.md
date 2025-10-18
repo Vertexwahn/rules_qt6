@@ -36,22 +36,10 @@ git clone https://github.com/Vertexwahn/rules_qt6
 cd rules_qt6/tests
 ```
 
-*Run Hello World demo with Windows 10/11 x64 with Visual Studio 2019:*
-
-```shell
-bazel run --config=vs2019 //hello_world:hello_world
-```
-
 *Run Hello World demo with Windows 10/11 x64 with Visual Studio 2022:*
 
 ```shell
 bazel run --config=vs2022 //hello_world:hello_world
-```
-
-*Run Hello World demo with Ubuntu 22.04:*
-
-```shell
-bazel run --config=gcc11 //hello_world:hello_world
 ```
 
 *Run Hello World demo with Ubuntu 24.04:*
@@ -108,14 +96,6 @@ Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
 I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
 This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
 
-## Future
-
-Currently, these rules support only Qt 6.4, which is downloaded from vertexwahn.de.
-The future plan is to make use of aqtinstaller to download Qt 6.10.
-An alternative would be to download directly from download.qt.io and its mirrors.
-
-![Future of rules_qt](/docs/future/future_rules_qt.svg)
-
 ## Contributions
 
 Any improvements to the Qt6 build experience using Bazel are welcome. 
@@ -143,8 +123,7 @@ This work is published under Apache 2.0 License.
 
 This work builds on top of [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt) which is also licensed under Apache 2.0 and 
 was forked from [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example).
-See here for details: https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors
-
+See [here](https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors) for details.
 ## Thanks to all contributors ❤
 
  <a href = "https://github.com/Vertexwahn/rules_qt6/graphs/contributors">

@@ -30,3 +30,15 @@ You should also be able to run this binary:
 ```shell
 bazel run --config=gcc13 //moc_test:main
 ```
+
+The following command should print the current used version of Qt:
+
+```shell
+bazel run --config=gcc13 //version_test:version_test
+```
+
+Furhtermore, the follow test should succeed:
+
+```shell
+bazel test --config=gcc13 //...
+```

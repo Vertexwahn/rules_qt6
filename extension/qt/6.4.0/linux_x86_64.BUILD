@@ -1,5 +1,5 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
+load(":qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(

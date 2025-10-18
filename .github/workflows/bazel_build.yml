@@ -27,73 +27,6 @@ jobs:
   #         cd tests
   #         bazel build --config=macos //...
 
-  build_and_test_macos14:
-    name: macOS 14 Bazel build <Apple Clang14>
-    runs-on: macOS-14
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Print info
-        run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=macos //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=macos //...
-
-  build_and_test_macos15:
-    name: macOS 15 Bazel build <Apple Clang14>
-    runs-on: macOS-15
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Print info
-        run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=macos //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=macos //...
-
-  build_and_test_ubuntu22:
-    name: Linux Ubuntu 22.04 build <GCC 11.4.0>
-    runs-on: ubuntu-22.04
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=gcc11 //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=gcc11 //...
-
   build_and_test_ubuntu24:
     name: Linux Ubuntu 24.04 build <GCC 13.2.0>
     runs-on: ubuntu-24.04
@@ -110,23 +43,6 @@ jobs:
         run: |
           cd tests
           bazel test --config=gcc13 //...
-
-  build_and_test_windows2022:
-    name: Windows Server 2022 build <Visual Studio 2022>
-    runs-on: windows-2022
-
-    steps:
-      - uses: actions/checkout@v5
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=vs2022 //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=vs2022 //...
 
   build_and_test_windows2025:
     name: Windows Server 2025 build <Visual Studio 2022>
