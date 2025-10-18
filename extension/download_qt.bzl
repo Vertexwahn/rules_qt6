@@ -9,6 +9,7 @@ load("//extension:qt_modules.bzl", "QT_MODULES")
 # Qt 6.4.0 and earlier use these paths
 _PATHS_6_4_0 = {
     "mac": "macos",
+    "macos": "macos",
     "linux": "gcc_64",
     "win64_mingw": "mingw_64",
     "win64_msvc2022": "msvc2022_64",
@@ -17,6 +18,7 @@ _PATHS_6_4_0 = {
 # Qt 6.8.3 and later use these paths
 _PATHS_6_8_3 = {
     "mac": "macos",
+    "macos": "macos",
     "linux": "linux_gcc_64",
     "win64_mingw": "mingw_64",
     "win64_msvc2022": "win64_msvc2022_64",
@@ -39,8 +41,24 @@ def _download_qt_impl(rctx):
     if rctx.os.name.startswith("windows"):
         # On Windows, use 7z.exe from standard installation location
         archiver_bin = "C:\\Program Files\\7-Zip\\7z.exe"
+    elif rctx.os.name.startswith("mac"):
+        # On macOS, try to use system 7zz first
+        result = rctx.execute(["which", "7zz"])
+        if result.return_code == 0:
+            archiver_bin = rctx.path(result.stdout.strip())
+        else:
+            # Fallback: download 7z
+            host_platform = "{}-{}".format(rctx.os.name, rctx.os.arch)
+            _url = rctx.attr.url_7z[host_platform]
+            _sha = rctx.attr.sha256_7z[host_platform]
+            rctx.download_and_extract(
+                url = _url,
+                sha256 = _sha,
+                output = "archiver_7z",
+            )
+            archiver_bin = rctx.path("archiver_7z/7zz")
     else:
-        # On Linux/Mac, download and extract 7z
+        # On Linux, download and extract 7z
         host_platform = "{}-{}".format(rctx.os.name, rctx.os.arch)
         _url = rctx.attr.url_7z[host_platform]
         _sha = rctx.attr.sha256_7z[host_platform]
@@ -155,10 +173,14 @@ download_qt = repository_rule(
         "url_7z": attr.string_dict(default = {
             "linux-amd64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-linux-x64.tar.xz",
             "linux-aarch64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-linux-arm64.tar.xz",
+            "mac os x-aarch64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-mac.tar.xz",
+            "mac os x-x86_64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-mac.tar.xz",
         }),
         "sha256_7z": attr.string_dict(default = {
             "linux-amd64": "23babcab045b78016e443f862363e4ab63c77d75bc715c0b3463f6134cbcf318",
             "linux-aarch64": "34e938fc4ba8ca6a835239733d9c1542ad8442cc037f43ca143a119bdf322b63",
+            "mac os x-aarch64": "b3cd1bb2e195e7cee42420f3ca0ac305b2b99c4f6ec465a4d40d434fccaf6fc8",
+            "mac os x-x86_64": "b3cd1bb2e195e7cee42420f3ca0ac305b2b99c4f6ec465a4d40d434fccaf6fc8",
         }),
         "_qt_libraries": attr.label(default = None, allow_single_file = True),
     },

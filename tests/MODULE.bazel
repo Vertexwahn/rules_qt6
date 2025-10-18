@@ -19,7 +19,13 @@ qt.install(
     version = "6.8.3",
     windows_architecture = "win64_msvc2022",
 )
-use_repo(qt, "qt_linux_x86_64", "qt_windows_x86_64")
+qt.install(
+    name = "qt_mac_aarch64",
+    build_file = "@rules_qt//extension:qt/6.8.3/mac_aarch64.BUILD",
+    os = "macos",
+    version = "6.8.3",
+)
+use_repo(qt, "qt_linux_x86_64", "qt_windows_x86_64", "qt_mac_aarch64")
 
 register_toolchains(
     "@rules_qt//tools:all",

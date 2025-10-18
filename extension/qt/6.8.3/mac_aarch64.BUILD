@@ -1,16 +1,20 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(
         name = "qt_%s_mac" % name,
-        hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
+        hdrs = glob(["lib/%s.framework/Headers/**" % include_folder], allow_empty = True),
         includes = [
-            "include",
-            "include/%s" % include_folder,
+            "lib/%s.framework/Headers" % include_folder,
         ],
-        linkopts = ["-F/opt/homebrew/lib"] + [
+        additional_linker_inputs = [":lib"],
+        linkopts = ["-F $(location :lib)"] + [
             "-framework %s" % library_name.replace("6", ""),  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
+            "-rpath $(rootpath :lib)",
         ],
+        include_prefix = "%s" % include_folder,
+        strip_include_prefix = "lib/%s.framework/Headers" % include_folder,
         target_compatible_with = ["@platforms//os:osx"],
         visibility = ["//visibility:public"],
     )
@@ -28,49 +32,47 @@ cc_library(
 
 filegroup(
     name = "uic",
-    srcs = ["share/qt/libexec/uic"],
+    srcs = ["libexec/uic"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "moc",
-    srcs = ["share/qt/libexec/moc"],
+    srcs = ["libexec/moc"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "rcc",
-    srcs = ["share/qt/libexec/rcc"],
+    srcs = ["libexec/rcc"],
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "plugin_files",
-    srcs = glob(["share/qt/plugins/**/*"], allow_empty = True),
+    srcs = glob(["plugins/**/*"], allow_empty = True),
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "qml_files",
-    srcs = glob(["qml/**/*"]),
+    srcs = glob(["qml/**/*"], allow_empty = True),
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "modules_files",
-    srcs = glob([
-        "modules/**/*",
-        "share/qt/modules/**/*",
-    ], allow_empty = True),
+    srcs = glob(["modules/**/*"], allow_empty = True),
     visibility = ["//visibility:public"],
 )
 
 filegroup(
     name = "metatypes_files",
-    srcs = glob([
-        "metatypes/**/*",
-        "lib/metatypes/**/*",
-        "share/qt/metatypes/**/*",
-    ], allow_empty = True),
+    srcs = glob(["metatypes/**/*"], allow_empty = True),
+    visibility = ["//visibility:public"],
+)
+
+exports_files(
+    ["qml", "plugins", "lib", "share"],
     visibility = ["//visibility:public"],
 )

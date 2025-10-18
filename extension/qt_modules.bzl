@@ -290,6 +290,26 @@ QT_MODULES = {
         },
     },
 },
+"macos": {
+    "6.8.3": {
+        "qtbase": {
+            "url": "https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
+            "sha256": "",
+        },
+        "qtdeclarative": {
+            "url": "https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
+            "sha256": "",
+        },
+        "qtsvg": {
+            "url": "https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
+            "sha256": "",
+        },
+        "qt5compat": {
+            "url": "https://download.qt.io/online/qtsdkrepository/mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt5compat.clang_64/6.8.3-0-202503201723qt5compat-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
+            "sha256": "",
+        },
+    },
+},
 "windows": {
     "6.4.0": {
         "qtbase": {
