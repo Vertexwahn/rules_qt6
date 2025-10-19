@@ -95,7 +95,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 *Ubuntu*
 
-![Screenshot of HelloWorld demo on Ubuntu 22.04](/docs/screenshots/hello_world_Ubuntu22.04.png)
+![Screenshot of HelloWorld demo on Ubuntu 24.04](/docs/screenshots/hello_world_Ubuntu24.04.png)
 
 *macOS*
 
