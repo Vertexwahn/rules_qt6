@@ -4,6 +4,7 @@
 
 ```shell
 bazel run --config=macos //moc_test:main
+```
 
 ## Ubuntu 24.04
 
