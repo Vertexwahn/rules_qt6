@@ -15,6 +15,37 @@ SPDX-License-Identifier: Apache-2.0
 The goal of these rules is to be able to build [Qt6](https://www.qt.io/product/qt6) applications using [Bazel](https://bazel.build/) on **Linux**, **macOS** and **Windows** without the need to preinstall Qt6. 
 All the magic to set up Qt6 should be done by Bazel with as little effort as possible.
 
+## Why rules and not a simple dependency?
+
+To get Qt working with C++, you need different tools, e.g., the Meta-Object Compiler (moc).
+This is needed since Qt introduces some language extensions to C++, such as the signal, slot concept.
+There is also the User Interface Compiler (uic), Resource Compiler (rcc), and translation tools.
+To get all of those things working, Qt is a bit more than a simple third-party dependency.
+The idea of this project is to introduce own rules that simplify the usage of Qt using Bazel.
+
+## Current status
+
+These rules were tested with Bazel 8.x.
+There is a chance that you also get this working with Bazel 7.x.
+If you need support for older versions of Bazel, please check out an older state of this repository.
+Initially, this repository had support for Bazel 4.x.
+
+When using these rules,
+a prebuild version of Qt is fetched from [download.qt.io](https://download.qt.io/).
+Previously a prebuild version of Qt was fetched from [vertexwahn.de](https://vertexwahn.de/) (this approach was taken for example in release 0.0.4 of these rules).
+There is a vaiable `QT_BASE_DOWNLOAD_URL` that you can change to fetch qt from a different source.
+
+I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
+This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
+
+The current targeted version of these rules is Qt 6.8.3. Qt 6.8 is the latest LTS version. 
+Also, there is the idea that these rules can support different versions of Qt, 
+but currently, only version 6.8.3 is tested and supported. When checking the code of these rules, 
+you can also find version 6.4.0 and get a rough idea of how different versions of Qt can be supported at the same time using these rules.
+Anyways, due to some differences between different Qt versions, 
+it is not always trivial to get everything working easily. 
+The release 0.0.4 of these rules supports only Qt version 6.4.0.
+
 ## Quick start
 
 This project uses [Bazel](https://bazel.build/) as a build system. 
@@ -73,28 +104,6 @@ The expected output should be similar (depending on your platform) to the follow
 **More Examples**
 
 More examples can be found in the [tests](tests) directory.
-
-## Why rules and not a simple dependency?
-
-To get Qt working with C++, you need different tools, e.g., the Meta-Object Compiler (moc).
-This is needed since Qt introduces some language extensions to C++, such as the signal, slot concept.
-There is also the User Interface Compiler (uic), Resource Compiler (rcc), and translation tools.
-To get all of those things working, Qt is a bit more than a simple third-party dependency.
-The idea of this project is to introduce own rules that simplify the usage of Qt using Bazel.
-
-## Current status
-
-These rules were tested with Bazel 8.x.
-There is a chance that you also get this working with Bazel 7.x.
-If you need support for older versions of Bazel, please check out an older state of this repository.
-Initially, this repository had support for Bazel 4.x.
-
-When using these rules,
-a prebuild version of Qt is fetched from [vertexwahn.de](https://vertexwahn.de/).
-Implementation details can be found in [fetch_qt.bzl](fetch_qt.bzl).
-
-I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
-This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
 
 ## Contributions
 
