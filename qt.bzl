@@ -271,9 +271,27 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": ["@qt_linux_x86_64//:qml", "@qt_linux_x86_64//:plugins", "@qt_linux_x86_64//:lib"],
-    "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:plugins", "@qt_mac_x86_64//:qml", "@qt_mac_x86_64//:lib"],
-    "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:plugins", "@qt_mac_aarch64//:qml", "@qt_mac_aarch64//:lib"],
+    "@platforms//os:linux": [
+        "@qt_linux_x86_64//:qml",
+        "@qt_linux_x86_64//:plugins",
+        "@qt_linux_x86_64//:lib",
+        "@qt_linux_x86_64//:modules_files",
+        "@qt_linux_x86_64//:metatypes_files",
+    ],
+    "@rules_qt//:osx_x86_64": [
+        "@qt_mac_x86_64//:plugins",
+        "@qt_mac_x86_64//:qml",
+        "@qt_mac_x86_64//:lib",
+        "@qt_mac_x86_64//:modules_files",
+        "@qt_mac_x86_64//:metatypes_files",
+    ],
+    "@rules_qt//:osx_arm64": [
+        "@qt_mac_aarch64//:plugins",
+        "@qt_mac_aarch64//:qml",
+        "@qt_mac_aarch64//:lib",
+        "@qt_mac_aarch64//:modules_files",
+        "@qt_mac_aarch64//:metatypes_files",
+    ],
     "@platforms//os:windows": [
         "@qt_windows_x86_64//:plugins",
         "@qt_windows_x86_64//:qml",
@@ -289,6 +307,7 @@ def update_dict(source, env):
     return result
 
 LINUX_ENV_DATA = {
+    "QT_QPA_PLATFORM": "xcb",
     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)/platforms",
     "QML2_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
     "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
@@ -328,41 +347,22 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    env_file = []
-    native.genrule(
-        name = name + "_env",
-        tools = qt_plugin_data,
-        outs = ["qt_env.ini"],
-        cmd = select({
-            "@platforms//os:linux":
-                "echo $$\"LD_LIBRARY_PATH: $(location @qt_linux_x86_64//:lib)\" > $@ \
-                    $$\"\r\nQT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_linux_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_linux_x86_64//:plugins)\" > $@",
-            "@rules_qt//:osx_x86_64":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_x86_64//:plugins)\" > $@",
-            "@rules_qt//:osx_arm64":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_mac_aarch64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_mac_aarch64//:plugins)\" > $@",
-            "@platforms//os:windows":
-                "echo $$\"QT_QPA_PLATFORM_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)/platforms\" > $@ \
-                    $$\"\r\nQML2_IMPORT_PATH: $(location @qt_windows_x86_64//:qml)\" > $@ \
-                    $$\"\r\nQT_PLUGIN_PATH: $(location @qt_windows_x86_64//:plugins)\" > $@",
-        }),
-    )
-    env_file.append("qt_env.ini")
+    
+    # On Linux, we need a wrapper to set LD_LIBRARY_PATH at runtime
+    # because $(location) in env doesn't work correctly for dynamic library loading
+    binary_name = name + "_bin" if select({"@platforms//os:linux": True, "//conditions:default": False}) else name
+    pkg = native.package_name()
+    binary_runfiles_path = pkg + "/" + binary_name if pkg else binary_name
+    
     cc_binary(
-        name = name,
+        name = binary_name,
         srcs = srcs,
         deps = deps,
         copts = copts + select({
             "@platforms//os:windows": [],
             "//conditions:default": ["-fPIC"],
         }),
-        data = qt_plugin_data + env_file + data,
+        data = qt_plugin_data + data,
         env = select({
             "@platforms//os:linux": linux_env_data,
             "@rules_qt//:osx_x86_64": mac_x64_env_data,
@@ -370,6 +370,57 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
             "@platforms//os:windows": windows_env_data,
         }),
         **kwargs
+    )
+    
+    # Only create wrapper for Linux to set LD_LIBRARY_PATH
+    wrapper_script = name + "_wrapper.sh"
+    native.genrule(
+        name = name + "_gen_wrapper",
+        srcs = [binary_name] + qt_plugin_data,
+        outs = [wrapper_script],
+        cmd = """
+cat > $@ << 'WRAPPER_EOF'
+#!/bin/bash
+SCRIPT_DIR="$$(cd "$$(dirname "$$0")" && pwd)"
+if [ -e "$$SCRIPT_DIR/""" + name + """.runfiles" ]; then
+    RUNFILES_DIR="$$SCRIPT_DIR/""" + name + """.runfiles"
+elif [ -e "$$0.runfiles" ]; then
+    RUNFILES_DIR="$$0.runfiles"
+else
+    RUNFILES_DIR="$$SCRIPT_DIR"
+fi
+
+# Set LD_LIBRARY_PATH for QML plugin loading (required for dynamic library loading)
+export LD_LIBRARY_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/lib:$$LD_LIBRARY_PATH"
+
+# Set Qt environment variables using runfiles paths
+export QT_QPA_PLATFORM="xcb"
+export QT_QPA_PLATFORM_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins/platforms"
+export QML2_IMPORT_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/qml"
+export QT_PLUGIN_PATH="$$RUNFILES_DIR/rules_qt++fetch+qt_linux_x86_64/plugins"
+
+# Run the binary
+exec "$$RUNFILES_DIR/_main/""" + binary_runfiles_path + """" "$$@"
+WRAPPER_EOF
+chmod +x $@
+""",
+        target_compatible_with = ["@platforms//os:linux"],
+    )
+    
+    native.sh_binary(
+        name = name + "_sh",
+        srcs = [wrapper_script],
+        data = [binary_name] + qt_plugin_data + data,
+        target_compatible_with = ["@platforms//os:linux"],
+    )
+    
+    # Use wrapper on Linux, direct binary on other platforms
+    native.alias(
+        name = name,
+        actual = select({
+            "@platforms//os:linux": ":" + name + "_sh",
+            "//conditions:default": ":" + binary_name,
+        }),
     )
 
 def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwargs):

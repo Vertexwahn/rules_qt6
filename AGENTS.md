@@ -20,7 +20,7 @@ the project in the tests folder can be build without any problems, i.e.:
 ```shell
 bazel build --config=gcc13 //hello_world:hello_world
 bazel build --config=gcc13 //horch:main
-bazel build --config=gcc13 //moc_test:main
+bazel run --config=gcc13 //moc_test:main
 bazel build --config=gcc13 //qml_demo:qt_demo
 bazel build --config=gcc13 //uic_demo:main
 ```
@@ -30,3 +30,24 @@ You should also be able to run this binary:
 ```shell
 bazel run --config=gcc13 //moc_test:main
 ```
+
+The following command should print the current used version of Qt:
+
+```shell
+bazel run --config=gcc13 //version_test:version_test
+```
+
+Furhtermore, the follow test should succeed:
+
+```shell
+bazel test --config=gcc13 //...
+```
+
+You can also run the following targets:
+
+```shell
+bazel run --config=gcc13 //hello_world:hello_world
+```
+
+This should show a Window that shows the current used Qt version.
+Once the user closes the Windows the application will end.
