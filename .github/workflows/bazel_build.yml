@@ -29,7 +29,7 @@ jobs:
 
   build_and_test_macos14:
     name: macOS 14 Bazel build <Apple Clang14>
-    runs-on: macOS-14
+    runs-on: macOS-14  # macOS 14 Arm64 - see https://github.com/actions/runner-images
 
     steps:
       - uses: actions/checkout@v5
@@ -54,7 +54,7 @@ jobs:
 
   build_and_test_macos15:
     name: macOS 15 Bazel build <Apple Clang14>
-    runs-on: macOS-15
+    runs-on: macOS-15  # macOS 15 Arm64 - see https://github.com/actions/runner-images
 
     steps:
       - uses: actions/checkout@v5
@@ -79,7 +79,7 @@ jobs:
 
   build_and_test_macos26:
     name: macOS 26 Bazel build <Apple Clang14>
-    runs-on: macOS-26
+    runs-on: macOS-26  # macOS 26 Arm64 - see https://github.com/actions/runner-images
 
     steps:
       - uses: actions/checkout@v5
