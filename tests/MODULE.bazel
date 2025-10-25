@@ -25,7 +25,7 @@ qt.install(
     os = "macos",
     version = "6.8.3",
 )
-use_repo(qt, "qt_linux_x86_64", "qt_windows_x86_64", "qt_mac_aarch64")
+use_repo(qt, "qt_linux_x86_64", "qt_mac_aarch64", "qt_windows_x86_64")
 
 register_toolchains(
     "@rules_qt//tools:all",

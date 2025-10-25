@@ -82,13 +82,13 @@ def _download_qt_impl(rctx):
     # Get modules for the specified version and platform
     version = rctx.attr.version
     platform = rctx.attr.os
-    
+
     if platform not in QT_MODULES:
         fail("Platform {} not found in QT_MODULES. Available platforms: {}".format(
             platform,
             ", ".join(QT_MODULES.keys()),
         ))
-    
+
     if version not in QT_MODULES[platform]:
         available_versions = list(QT_MODULES[platform].keys())
         fail("Qt version {} not found for platform {}. Available versions: {}".format(

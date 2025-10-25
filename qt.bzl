@@ -3,6 +3,7 @@
 load("@rules_cc//cc:cc_binary.bzl", "cc_binary")
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_cc//cc:cc_test.bzl", "cc_test")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 def _gen_ui_header(ctx):
     info = ctx.toolchains["@rules_qt//tools:toolchain_type"].qtinfo
@@ -347,13 +348,13 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
-    
+
     # On Linux, we need a wrapper to set LD_LIBRARY_PATH at runtime
     # because $(location) in env doesn't work correctly for dynamic library loading
     binary_name = name + "_bin" if select({"@platforms//os:linux": True, "//conditions:default": False}) else name
     pkg = native.package_name()
     binary_runfiles_path = pkg + "/" + binary_name if pkg else binary_name
-    
+
     cc_binary(
         name = binary_name,
         srcs = srcs,
@@ -371,7 +372,7 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         }),
         **kwargs
     )
-    
+
     # Only create wrapper for Linux to set LD_LIBRARY_PATH
     wrapper_script = name + "_wrapper.sh"
     native.genrule(
@@ -406,14 +407,13 @@ chmod +x $@
 """,
         target_compatible_with = ["@platforms//os:linux"],
     )
-    
-    native.sh_binary(
+    sh_binary(
         name = name + "_sh",
         srcs = [wrapper_script],
         data = [binary_name] + qt_plugin_data + data,
         target_compatible_with = ["@platforms//os:linux"],
     )
-    
+
     # Use wrapper on Linux, direct binary on other platforms
     native.alias(
         name = name,
