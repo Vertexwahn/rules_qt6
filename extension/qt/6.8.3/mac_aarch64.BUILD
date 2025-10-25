@@ -1,6 +1,15 @@
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
 
+# Create a mapping of available frameworks by checking for header files in each framework
+# We look for any file in the Headers directory to determine if a framework exists
+_all_framework_headers = glob(["lib/*.framework/Headers/*"], allow_empty = True)
+# Extract unique framework names from the header paths
+_available_framework_names = {hdr.split("/")[1].replace(".framework", ""): True for hdr in _all_framework_headers}.keys()
+
+# Convert Qt6XXX library names to QtXXX framework names (e.g., Qt6Core -> QtCore, Qt63DCore -> Qt3DCore)
+_framework_names = {library_name: ("Qt" + library_name[3:] if library_name.startswith("Qt6") else library_name) for _, _, library_name, _ in QT_LIBRARIES}
+
 [
     cc_library(
         name = "qt_%s_mac" % name,
@@ -10,7 +19,7 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         ],
         additional_linker_inputs = [":lib"],
         linkopts = ["-F $(location :lib)"] + [
-            "-framework %s" % library_name.replace("6", ""),  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
+            "-framework %s" % _framework_names[library_name],  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore
             "-rpath $(rootpath :lib)",
         ],
         include_prefix = "%s" % include_folder,
@@ -19,6 +28,20 @@ load("@rules_qt//:qt_libraries.bzl", "QT_LIBRARIES")
         visibility = ["//visibility:public"],
     )
     for name, include_folder, library_name, _ in QT_LIBRARIES
+    if _framework_names[library_name] in _available_framework_names
+]
+
+# Create stub libraries for Qt modules that don't exist on macOS
+# This prevents build failures when code depends on `:qt` which includes all modules
+[
+    cc_library(
+        name = "qt_%s_mac" % name,
+        target_compatible_with = ["@platforms//os:osx"],
+        visibility = ["//visibility:public"],
+        tags = ["manual"],  # Don't build unless explicitly requested
+    )
+    for name, include_folder, library_name, _ in QT_LIBRARIES
+    if _framework_names[library_name] not in _available_framework_names
 ]
 
 cc_library(
