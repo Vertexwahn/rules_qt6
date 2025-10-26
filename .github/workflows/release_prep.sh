@@ -22,17 +22,30 @@ Add to your `MODULE.bazel` file:
 \`\`\`starlark
 bazel_dep(name = "rules_qt", version = "${TAG}")
 
-qt = use_extension("@rules_qt//:extensions.bzl", "qt")
-qt.fetch()
-use_repo(
-    qt,
-    "qt_linux_x86_64",
-    "qt_mac_aarch64",
-    "qt_windows_x86_64",
+qt = use_extension("@rules_qt//extension:qt.bzl", "fetch")
+qt.install(
+    name = "qt_linux_x86_64",
+    build_file = "@rules_qt//extension:qt/6.8.3/linux_x86_64.BUILD",
+    os = "linux",
+    version = "6.8.3",
 )
+qt.install(
+    name = "qt_windows_x86_64",
+    build_file = "@rules_qt//extension:qt/6.8.3/windows_x86_64.BUILD",
+    os = "windows",
+    version = "6.8.3",
+    windows_architecture = "win64_msvc2022",
+)
+qt.install(
+    name = "qt_mac_aarch64",
+    build_file = "@rules_qt//extension:qt/6.8.3/mac_aarch64.BUILD",
+    os = "macos",
+    version = "6.8.3",
+)
+use_repo(qt, "qt_linux_x86_64", "qt_mac_aarch64", "qt_windows_x86_64")
 
 register_toolchains(
-    "@rules_qt//tools:all"
+    "@rules_qt//tools:all",
 )
 
 EOF
