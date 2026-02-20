@@ -33,7 +33,7 @@ Initially, this repository had support for Bazel 4.x.
 When using these rules,
 a prebuild version of Qt is fetched from [download.qt.io](https://download.qt.io/).
 Previously a prebuild version of Qt was fetched from [vertexwahn.de](https://vertexwahn.de/) (this approach was taken for example in release 0.0.4 of these rules).
-There is a vaiable `QT_BASE_DOWNLOAD_URL` that you can change to fetch qt from a different source location.
+There is a variable `QT_BASE_DOWNLOAD_URL` that you can change to fetch Qt from a different source location.
 
 I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
 This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this. 
@@ -143,4 +143,4 @@ See [here](https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors) f
  </a>
 
 This would not have been possible without all the effort from the contributors of this and the related projects.
-Some inital work of the related projects dates back more than ten years by now.
+Some initial work of the related projects dates back more than ten years by now.
