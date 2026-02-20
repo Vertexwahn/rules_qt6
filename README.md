@@ -18,32 +18,34 @@ All the magic to set up Qt6 should be done by Bazel with as little effort as pos
 ## Why rules and not a simple dependency?
 
 To get Qt working with C++, you need different tools, e.g., the Meta-Object Compiler (moc).
-This is needed since Qt introduces some language extensions to C++, such as the signal, slot concept.
+This is needed since Qt introduces some language extensions to C++, such as the signal & slot concept.
 There is also the User Interface Compiler (uic), Resource Compiler (rcc), and translation tools.
 To get all of those things working, Qt is a bit more than a simple third-party dependency.
 The idea of this project is to introduce own rules that simplify the usage of Qt using Bazel.
 
 ## Current status
 
-These rules were tested with Bazel 8.x.
-There is a chance that you also get this working with Bazel 7.x.
+These rules were tested with Bazel 9.x.
+There is a chance that you also get this working with Bazel 7.x, and 8.x.
 If you need support for older versions of Bazel, please check out an older state of this repository.
 Initially, this repository had support for Bazel 4.x.
 
 When using these rules,
 a prebuild version of Qt is fetched from [download.qt.io](https://download.qt.io/).
 Previously a prebuild version of Qt was fetched from [vertexwahn.de](https://vertexwahn.de/) (this approach was taken for example in release 0.0.4 of these rules).
-There is a vaiable `QT_BASE_DOWNLOAD_URL` that you can change to fetch qt from a different source.
+There is a vaiable `QT_BASE_DOWNLOAD_URL` that you can change to fetch qt from a different source location.
 
 I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
-This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this.
+This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this. 
+Default C++ toolchains of Bazel 8 and newer have C++17 support. 
+Therefore, when not working with older versions the `.bazelrc` and the above configs could be dropped.
 
 The current targeted version of these rules is Qt 6.8.3. Qt 6.8 is the latest LTS version. 
 Also, there is the idea that these rules can support different versions of Qt, 
 but currently, only version 6.8.3 is tested and supported. When checking the code of these rules, 
 you can also find version 6.4.0 and get a rough idea of how different versions of Qt can be supported at the same time using these rules.
 Anyways, due to some differences between different Qt versions, 
-it is not always trivial to get everything working easily. 
+it is not always trivial to get everything working easily.
 The release 0.0.4 of these rules supports only Qt version 6.4.0.
 
 ## Quick start
@@ -105,17 +107,17 @@ The expected output should be similar (depending on your platform) to the follow
 
 More examples can be found in the [tests](tests) directory.
 
-## Contributions
+## Contributions are welcomed
 
-Any improvements to the Qt6 build experience using Bazel are welcome. 
+Any improvements to the Qt6 build experience using Bazel are always welcome.
 Maybe you have solved this problem already. 
 In this case, 
 I would appreciate it if you could share your efforts under some permissive license.
 If you name no specific license, I assume you are fine with the current used license of this project (Apache 2.0 License).
 
-## Similar projects
+## Related projects
 
-| Project                                                                                               | Bzlmod Support | Platform Support      | Build Type  | Last Commit       |
+| Project                                                                                               | Bzlmod Support | Platform Support      | Build Type  | Last Commit Checked      |
 | ----------------------------------------------------------------------------------------------------- | -------------- | --------------------- | ----------- | ----------------- |
 | [aabtop/rules_qt](https://github.com/aabtop/rules_qt)                                                 | no             | Windows, Linux        | Prebuild    | June 21, 2021     |
 | [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example)                         | no             | Linux                 | Prebuild    | April 5, 2020     |
@@ -133,8 +135,12 @@ This work is published under Apache 2.0 License.
 This work builds on top of [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt) which is also licensed under Apache 2.0 and 
 was forked from [bbreslauer/qt-bazel-example](https://github.com/bbreslauer/qt-bazel-example).
 See [here](https://github.com/justbuchanan/bazel_rules_qt/graphs/contributors) for details.
+
 ## Thanks to all contributors ❤
 
  <a href = "https://github.com/Vertexwahn/rules_qt6/graphs/contributors">
    <img src = "https://contrib.rocks/image?repo=Vertexwahn/rules_qt6"/>
  </a>
+
+This would not have been possible without all the effort from the contributors of this and the related projects.
+Some inital work of the related projects dates back more than ten years by now.
