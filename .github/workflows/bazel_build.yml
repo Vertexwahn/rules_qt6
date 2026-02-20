@@ -12,7 +12,7 @@ jobs:
   #   runs-on: macOS-13
 
   #   steps:
-  #     - uses: actions/checkout@v5
+  #     - uses: actions/checkout@v6
 
   #     - name: Print info
   #       run: |
@@ -32,7 +32,7 @@ jobs:
     runs-on: macOS-14  # macOS 14 Arm64 - see https://github.com/actions/runner-images
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Print info
         run: |
@@ -57,7 +57,7 @@ jobs:
     runs-on: macOS-15  # macOS 15 Arm64 - see https://github.com/actions/runner-images
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Print info
         run: |
@@ -82,7 +82,7 @@ jobs:
     runs-on: macOS-26  # macOS 26 Arm64 - see https://github.com/actions/runner-images
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Print info
         run: |
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Build
         run: |
@@ -124,7 +124,7 @@ jobs:
     runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Build
         run: |
@@ -141,7 +141,7 @@ jobs:
     runs-on: windows-2022
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Build
         run: |
@@ -158,7 +158,7 @@ jobs:
     runs-on: windows-2025
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Build
         run: |

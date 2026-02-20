@@ -92,6 +92,12 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
+filegroup(
+    name = "dll_files",
+    srcs = glob(["bin/*.dll"]),
+    visibility = ["//visibility:public"],
+)
+
 exports_files(
     ["qml", "plugins", "lib"],
     visibility = ["//visibility:public"],

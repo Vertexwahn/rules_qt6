@@ -1,3 +1,4 @@
+load("@rules_cc//cc:cc_library.bzl", "cc_library")
 load(":qt_libraries.bzl", "QT_LIBRARIES")
 
 [

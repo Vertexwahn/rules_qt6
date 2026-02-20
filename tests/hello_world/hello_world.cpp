@@ -1,8 +1,6 @@
-#include <QThread>
-#include <QtCore/QVariant>
-#include <QtWidgets/QApplication>
+#include <QApplication>
 #include <QLabel>
-#include <QtWidgets/QStylePainter>
+#include <QWidget>
 
 class MyWidget : public QWidget
 {
@@ -13,8 +11,6 @@ public:
 
         setWindowTitle("Hello World");
     }
-private:
-   
 };
 
 int main(int argc, char ** argv) {
