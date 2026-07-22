@@ -26,9 +26,10 @@ qt_toolchain = rule(
     },
 )
 
-def register_qt_toolchains():
+def register_qt_toolchains(name = "register_qt_toolchains"):
     native.register_toolchains(
-        "@rules_qt//tools:qt_linux_toolchain",
+        "@rules_qt//tools:qt_linux_x86_64_toolchain",
+        "@rules_qt//tools:qt_linux_aarch64_toolchain",
         "@rules_qt//tools:qt_windows_toolchain",
         "@rules_qt//tools:qt_osx_toolchain",
         "@rules_qt//tools:qt_osx_M1_toolchain",

@@ -5,7 +5,7 @@ package(default_visibility = ["//visibility:public"])
 toolchain_type(name = "toolchain_type")
 
 qt_toolchain(
-    name = "qt_linux",
+    name = "qt_linux_x86_64",
     data = [
         "@qt_linux_x86_64//:moc",
         "@qt_linux_x86_64//:rcc",
@@ -66,7 +66,7 @@ qt_toolchain(
 )
 
 toolchain(
-    name = "qt_linux_toolchain",
+    name = "qt_linux_x86_64_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
     ],
@@ -74,7 +74,7 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    toolchain = ":qt_linux",
+    toolchain = ":qt_linux_x86_64",
     toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
