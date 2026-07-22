@@ -7,6 +7,7 @@ config_setting(
         "@platforms//os:osx",
         "@platforms//cpu:aarch64",
     ],
+    visibility = ["//visibility:public"]
 )
 
 config_setting(
@@ -15,6 +16,7 @@ config_setting(
         "@platforms//os:osx",
         "@platforms//cpu:x86_64",
     ],
+    visibility = ["//visibility:public"]
 )
 
 config_setting(
@@ -23,6 +25,7 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
     ],
+    visibility = ["//visibility:public"]
 )
 
 config_setting(
@@ -31,6 +34,7 @@ config_setting(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
+    visibility = ["//visibility:public"]
 )
 
 [
