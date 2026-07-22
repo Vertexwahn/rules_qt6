@@ -8,7 +8,7 @@
 QT_BASE_DOWNLOAD_URL = "https://download.qt.io/online/qtsdkrepository/"
 
 QT_MODULES = {
-    "linux": {
+    "linux_x86_64": {
         "6.4.0": {
             "qt3d": {
                 "url": QT_BASE_DOWNLOAD_URL + "linux_x64/desktop/qt6_640/qt.qt6.640.addons.qt3d.gcc_64/6.4.0-0-202209270704qt3d-Linux-RHEL_8_4-GCC-Linux-RHEL_8_4-X86_64.7z",
@@ -294,139 +294,351 @@ QT_MODULES = {
             },
         },
     },
+    "linux_aarch64": {
+        "6.8.3": {
+            "qt3d": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt3d.linux_gcc_arm64/6.8.3-0-202503201345qt3d-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "a72263da476c0a175c1b0482eb9c55b8dd123fb29b4aefb1813e437537606ee3",
+            },
+            "qtcharts": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtcharts.linux_gcc_arm64/6.8.3-0-202503201345qtcharts-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "de1c3733d19fd81f1e456240d0382cb0c2e839d61f1d6ad3fe1104cceac41394",
+            },
+            "qtdatavis3d": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtdatavis3d.linux_gcc_arm64/6.8.3-0-202503201345qtdatavis3d-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "32e9f8b82ee62d53d1862978656a731013c790b64c0d4cb28e9ec137ec755e4d",
+            },
+            "qtlottie": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlottie.linux_gcc_arm64/6.8.3-0-202503201345qtlottie-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "1bde925b7f8e0ede9b1e388aed21cf27eb332cb0fae9ed3d179461728c314c50",
+            },
+            "qtscxml": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtscxml.linux_gcc_arm64/6.8.3-0-202503201345qtscxml-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "7fe04df103c64f7e347c0938c4bcc40cf259e4ac67c3be6ae32ed6fee27f564c",
+            },
+            "qtvirtualkeyboard": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtvirtualkeyboard.linux_gcc_arm64/6.8.3-0-202503201345qtvirtualkeyboard-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "b1a64765313a1362ff5520c23079cfc5fe6d8257057b6b8ed6aae174c03e3a1b",
+            },
+            "qtwebchannel": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebchannel.linux_gcc_arm64/6.8.3-0-202503201345qtwebchannel-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "fc914395b22817a68fd127b335bc7030859e0058326c4efe7f7b5379baf52eb9",
+            },
+            "qtwebsockets": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebsockets.linux_gcc_arm64/6.8.3-0-202503201345qtwebsockets-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "8a8a11f5597398401f3447b6b2e5088cdacfa3fa486687554a6f14577902931e",
+            },
+            "qtimageformats": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtimageformats.linux_gcc_arm64/6.8.3-0-202503201345qtimageformats-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "926d864ede84e75fc6fadfff82d083e20dc193d8cfacefc38e6cfeda7793b37b",
+            },
+            "qtnetworkauth": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtnetworkauth.linux_gcc_arm64/6.8.3-0-202503201345qtnetworkauth-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "d5b75601d8185d3f0936fe5b27a132004eb08ef66701950096fff8baf2a73ab6",
+            },
+            "qtsensors": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtsensors.linux_gcc_arm64/6.8.3-0-202503201345qtsensors-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "191998327804215da2d5f6e07db2d4fb798b04c73a27ae66b08795bf019e3285",
+            },
+            "qtserialport": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtserialport.linux_gcc_arm64/6.8.3-0-202503201345qtserialport-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "49e0195f4d46967a8efeaed902ad3a49acd2c731623d4b37006dca8a2d812c93",
+            },
+            "qtserialbus": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtserialbus.linux_gcc_arm64/6.8.3-0-202503201345qtserialbus-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "0384e60a533cf987901987108c026f1fb1f18c6b7a118fd988fcc31213cc8f0d",
+            },
+            "qtpositioning": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtpositioning.linux_gcc_arm64/6.8.3-0-202503201345qtpositioning-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "aaabadcee4627db14c1b294b74f7690c8a9249f99ddf1535de616533bd7e51a8",
+            },
+            "qtconnectivity": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtconnectivity.linux_gcc_arm64/6.8.3-0-202503201345qtconnectivity-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "817c54f37c5097c00ce464bbea6240758386cd0352ba3fd7ab31954fa5273cdb",
+            },
+            "qtmultimedia": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtmultimedia.linux_gcc_arm64/6.8.3-0-202503201345qtmultimedia-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "49e2eabff0a6c97e9b39227da2e4a02b97f7920797f59e98ac21545e8e9f675a",
+            },
+            "qtremoteobjects": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtremoteobjects.linux_gcc_arm64/6.8.3-0-202503201345qtremoteobjects-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "5e5261c28fd2a3025f0b16960865c7e6ffc19dad96b3078ee54af816346f18cc",
+            },
+            "qtwebview": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebview.linux_gcc_arm64/6.8.3-0-202503201345qtwebview-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "2f1ab8a9f347b9c9e44b93a6e515b93a5c728ddec957edf93026621b1fceafcb",
+            },
+            "qt5compat": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt5compat.linux_gcc_arm64/6.8.3-0-202503201345qt5compat-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "5bf01ca6b7a14fea3b476aecf608e1b9ab232ec1a2a370ac951b4880680827c0",
+            },
+            "qtshadertools": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtshadertools.linux_gcc_arm64/6.8.3-0-202503201345qtshadertools-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "002c681d210100d5b4234f8744edca691e3460075778603229b74df7c0ef3df8",
+            },
+            "qtquicktimeline": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquicktimeline.linux_gcc_arm64/6.8.3-0-202503201345qtquicktimeline-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "7ff7ef94f8b91312ba4c45750de3ebdc8ea9ff2281fc1bbb74b02c26262240e0",
+            },
+            "qtquick3d": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquick3d.linux_gcc_arm64/6.8.3-0-202503201345qtquick3d-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "f1977e8799bd232b2c7936acaba43253f81ef2082d2b6312d2c7e816ab1215af",
+            },
+            "qtlanguageserver": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlanguageserver.linux_gcc_arm64/6.8.3-0-202503201345qtlanguageserver-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "227bf589738efe3eb16ab1e088f7ffd0808185b47088469db78b2a333ae5f2b8",
+            },
+            "qthttpserver": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qthttpserver.linux_gcc_arm64/6.8.3-0-202503201345qthttpserver-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "ef6c5643edbec9f243a2e7a0de2cd761dc7350135984f6915bff9337b27af81f",
+            },
+            "qtgrpc": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtgrpc.linux_gcc_arm64/6.8.3-0-202503201345qtgrpc-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "a8b3dba7163ddad05cf8be82cde9d603c21569612f677f53506c126d0f2c3b35",
+            },
+            "qtquick3dphysics": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquick3dphysics.linux_gcc_arm64/6.8.3-0-202503201345qtquick3dphysics-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "d53ad89462f4506c816981d9180f77414d538d82d8bb36512b301c9e02ebafcd",
+            },
+            "qtspeech": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtspeech.linux_gcc_arm64/6.8.3-0-202503201345qtspeech-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "071c121f853ac4b832cefec9ee2f3681a50ca8f61ce14f1eab97542e4aa8ea8e",
+            },
+            "qtlocation": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlocation.linux_gcc_arm64/6.8.3-0-202503201345qtlocation-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "6e709a868723ee55e98b74d3c741cc8b02824bc1edd7416f13b2cb4ba079e2b9",
+            },
+            "qtquickeffectmaker": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquickeffectmaker.linux_gcc_arm64/6.8.3-0-202503201345qtquickeffectmaker-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "6b6ee38c56e56e525b8e57b44c4bfafcbc3d8f788c87ebd2462a4371089c7a85",
+            },
+            "qtwaylandcompositor": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwaylandcompositor.linux_gcc_arm64/6.8.3-0-202503201345qtwayland-compositor-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "06faf408c3823ce41dfc4e1e99950a47178acf095ad41b4ac02ff5db563d4c1d",
+            },
+            "qtgraphs": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtgraphs.linux_gcc_arm64/6.8.3-0-202503201345qtgraphs-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "0d7cd4b60017cb97f8e9bfa902ac3117944fca6ea0e6e123817e724024ae5f47",
+            },
+            "icu": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_arm64/6.8.3-0-202503201345icu-linux-Debian11.6-arm64.7z",
+
+                "sha256": "f310c8a539c515703349e32147759df3c7da5012473442ac4ace7c7d6f6278ee",
+            },
+            "qtbase": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_arm64/6.8.3-0-202503201345qtbase-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "299c1286a9eb8f8e7f15dabdf16d8b805109973bb859898cc757b6a0d5a99e19",
+            },
+            "qtdeclarative": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_arm64/6.8.3-0-202503201345qtdeclarative-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "4d8339359bf783581de07b4e9f5643a9b23ebbb99295eaadb9148ae23165a15e",
+            },
+            "qtsvg": {
+                "url": QT_BASE_DOWNLOAD_URL + "linux_arm64/desktop/qt6_683/qt6_683/qt.qt6.683.linux_gcc_arm64/6.8.3-0-202503201345qtsvg-Linux-Ubuntu_24_04-GCC-Linux-Ubuntu_24_04-AARCH64.7z",
+
+                "sha256": "dfb46fe885fbb725a28cb8f3154ca73be8dc0c57e619bd627810c2fa5b53fb8d",
+            },
+        },
+    },
     "macos": {
         "6.8.3": {
             "qtbase": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtbase-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "c4dfc40f1be702eaa08e08cf87a749c44c55e5eb09e46a7933f18ab4b7ca7ac7",
             },
             "qtdeclarative": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtdeclarative-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "9b499244b4feafc9d5ff7cdb2ed8baf8ddbb7e71f6cd828c57707e37c8327beb",
             },
             "qtsvg": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.clang_64/6.8.3-0-202503201723qtsvg-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "14f0e28662ba3d2d6b297916746e5b45197cf5cca408de7c5249ce628aecdd02",
             },
             "qt5compat": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt5compat.clang_64/6.8.3-0-202503201723qt5compat-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "019ed04dc48c3cd92f5e37e4ce575c9de5e2bb52bdf9083ce071549505a4b523",
             },
             "qtconnectivity": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtconnectivity.clang_64/6.8.3-0-202503201723qtconnectivity-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "a17e8f4ec859176ba164798dd81ffa2bda14bc18d352ae35faa88433a8d80d9e",
             },
             "qt3d": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt3d.clang_64/6.8.3-0-202503201723qt3d-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "27430748d04bf7f5cefd74c2fb3e7578633b73e5a7bf09890ec53281270e2758",
             },
             "qtcharts": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtcharts.clang_64/6.8.3-0-202503201723qtcharts-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "92baad004179bf3d1e24b28015140ecdfa7daf44cf46d9595d64365dd3930b7b",
             },
             "qtdatavis3d": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtdatavis3d.clang_64/6.8.3-0-202503201723qtdatavis3d-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "7ff1aa47f26fdfb2e407fa64d48ef802e0e8f83c9a1d6e8f394a9dfe48fa9f7e",
             },
             "qtmultimedia": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtmultimedia.clang_64/6.8.3-0-202503201723qtmultimedia-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "947f0871b0b18c997b4ad4fb961f6e999ef0e252c896ee88a6f0642b6b2e2633",
             },
             "qtshadertools": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtshadertools.clang_64/6.8.3-0-202503201723qtshadertools-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "89718349bad70845f023012f426e984f08d2e67c7721d82545b120a93eda63c7",
             },
             "qtquick3d": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquick3d.clang_64/6.8.3-0-202503201723qtquick3d-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "5173ea13349b648944c2a26fe56f68a0ab5b8ef297ae44dc2d38d63bc7f59227",
             },
             "qtquicktimeline": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquicktimeline.clang_64/6.8.3-0-202503201723qtquicktimeline-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "b247df9babd7eee4fbf84ceaec4a298c2cc44c5118c741942e3a6c69ea050376",
             },
             "qtlottie": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlottie.clang_64/6.8.3-0-202503201723qtlottie-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "5a920584c7687f328210eac4a01c66cc6919eea6422671b9d62665d67b86e494",
             },
             "qtscxml": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtscxml.clang_64/6.8.3-0-202503201723qtscxml-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "8790ca2392adfc50e4a713079aad89d84c56f6f1935174b65c19c3b8640027c8",
             },
             "qtremoteobjects": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtremoteobjects.clang_64/6.8.3-0-202503201723qtremoteobjects-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "16f133f31dfd87293fe3eb5685eabcb750c59c2760f945543a30bcf76c63eef7",
             },
             "qtserialport": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtserialport.clang_64/6.8.3-0-202503201723qtserialport-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "9fe96afd94c87cf952bbf4bfdfb2f13fc66afef8ae70d4b9f96ad5c740715c8f",
             },
             "qtserialbus": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtserialbus.clang_64/6.8.3-0-202503201723qtserialbus-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "fd2a423974f8464f8ce55f8205217f6835577c75d77917dbe94a915f0f8f9957",
             },
             "qtsensors": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtsensors.clang_64/6.8.3-0-202503201723qtsensors-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "ee0e87ff12e1c896e47cd4a8de2c514deabb4f61bdf3cee54d292bf29dca328d",
             },
             "qtpositioning": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtpositioning.clang_64/6.8.3-0-202503201723qtpositioning-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "f3804682a1b1d5c52a8309e519a2b7ad201d0750a18c3d8cfdc3f9300ed05f33",
             },
             "qtnetworkauth": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtnetworkauth.clang_64/6.8.3-0-202503201723qtnetworkauth-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "64a5c2a8016476d2c224a7158d12a63878881d8524a2f87f45a28408ad223dda",
             },
             "qtimageformats": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtimageformats.clang_64/6.8.3-0-202503201723qtimageformats-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "aa22d0b0bb861f4ad54c7ee59e5f7728567c2a845b4d53b2a1d6550a6047c7a0",
             },
             "qthttpserver": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qthttpserver.clang_64/6.8.3-0-202503201723qthttpserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "855995ad9756e4cdd42a0955ad5180ed1ec45f0eb2e11abe375e076d9c290aeb",
             },
             "qtlanguageserver": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlanguageserver.clang_64/6.8.3-0-202503201723qtlanguageserver-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "7bdb7c4810972a3c3d4312663c18a0aeb3f0f27a0d14291cb09bd95d37b2e704",
             },
             "qtgrpc": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtgrpc.clang_64/6.8.3-0-202503201723qtgrpc-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "eccfbd62eff19fd60e004ec0180ad21bd3a1d21abd3a7d54a31b5f6ec5028e35",
             },
             "qtquick3dphysics": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquick3dphysics.clang_64/6.8.3-0-202503201723qtquick3dphysics-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "5d10965cf3b0be489f0e1d53a4f89a839656470218c4dd195437fffa7a37ac6c",
             },
             "qtspeech": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtspeech.clang_64/6.8.3-0-202503201723qtspeech-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "ad9167f78d7a000c6f2b11b7a7936bd9d02397d7b7ecd917b7c55586cbb7e0a5",
             },
             "qtlocation": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtlocation.clang_64/6.8.3-0-202503201723qtlocation-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "3b26ce0bdb3f131f4eda28ca986d949fdf7154209de33e459ed461ae79191acc",
             },
             "qtquickeffectmaker": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtquickeffectmaker.clang_64/6.8.3-0-202503201723qtquickeffectmaker-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "211fc3c9c66c6306f51d7d61fe419ba7052c4bf2b106006f05ba505d6896938b",
             },
             "qtgraphs": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtgraphs.clang_64/6.8.3-0-202503201723qtgraphs-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "411dfb884581394e727bfe8bf344576c7525540b6e14f40b33a3860f3e08a4af",
             },
             "qtvirtualkeyboard": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtvirtualkeyboard.clang_64/6.8.3-0-202503201723qtvirtualkeyboard-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "a9de0c6ed5a628cfe2ba88c2ec82e0a5374aa12c3c5a0cb70ade6f8fcf288316",
             },
             "qtwebchannel": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebchannel.clang_64/6.8.3-0-202503201723qtwebchannel-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "71b339c6668ff69ed771f62ac669561d3cf00704bb5ab78b2e82ba034c013b67",
             },
             "qtwebsockets": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebsockets.clang_64/6.8.3-0-202503201723qtwebsockets-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "d4d903cd291f3ac2c2c4bb0a515900c0567e8e6e9dffbe24a188518cd294e2d7",
             },
             "qtwebview": {
                 "url": QT_BASE_DOWNLOAD_URL + "mac_x64/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qtwebview.clang_64/6.8.3-0-202503201723qtwebview-MacOS-MacOS_14-Clang-MacOS-MacOS_14-X86_64-ARM64.7z",
-                "sha256": "",
+
+                "sha256": "ffddb95ca4732bc7d91026d7a23f19f489aaf6f5d029b7a2e5ec00d4fcc1da95",
             },
         },
     },
@@ -448,19 +660,23 @@ QT_MODULES = {
         "6.8.3": {
             "qtbase": {
                 "url": QT_BASE_DOWNLOAD_URL + "windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.win64_msvc2022_64/6.8.3-0-202503201308qtbase-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
-                "sha256": "",
+
+                "sha256": "41688269fac0565db956c66d9eecae777d16197e0c02cd81b88640c1f5d73d3f",
             },
             "qtdeclarative": {
                 "url": QT_BASE_DOWNLOAD_URL + "windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.win64_msvc2022_64/6.8.3-0-202503201308qtdeclarative-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
-                "sha256": "",
+
+                "sha256": "c2f9f481bf6e8fb004530f20b820fbc77d4ee6dcca24d1ea1d1863d99c5dabf1",
             },
             "qtsvg": {
                 "url": QT_BASE_DOWNLOAD_URL + "windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.win64_msvc2022_64/6.8.3-0-202503201308qtsvg-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
-                "sha256": "",
+
+                "sha256": "48d1d798894cbf8696a0010fcfdeafea652b35159c56ea2060ee85ce3d0048f7",
             },
             "qt5compat": {
                 "url": QT_BASE_DOWNLOAD_URL + "windows_x86/desktop/qt6_683/qt6_683/qt.qt6.683.addons.qt5compat.win64_msvc2022_64/6.8.3-0-202503201308qt5compat-Windows-Windows_11_23H2-MSVC2022-Windows-Windows_11_23H2-X86_64.7z",
-                "sha256": "",
+
+                "sha256": "415103bfb3d23e057f4c99062a7985ccedf76d23705d6c580ffd76e363d24439",
             },
         },
     },

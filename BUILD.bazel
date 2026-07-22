@@ -17,12 +17,29 @@ config_setting(
     ],
 )
 
+config_setting(
+    name = "linux_aarch64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+)
+
+config_setting(
+    name = "linux_x86_64",
+    constraint_values = [
+        "@platforms//os:linux",
+        "@platforms//cpu:x86_64",
+    ],
+)
+
 [
     cc_library(
         name = "qt_%s" % name,
         visibility = ["//visibility:public"],
         deps = dependencies + select({
-            "@platforms//os:linux": ["@qt_linux_x86_64//:qt_%s_linux" % name],
+            ":linux_x86_64": ["@qt_linux_x86_64//:qt_%s_linux" % name],
+            ":linux_aarch64": ["@qt_linux_aarch64//:qt_%s_linux" % name],
             ":osx_x86_64": ["@qt_mac_x86_64//:qt_%s_mac" % name],
             ":osx_arm64": ["@qt_mac_aarch64//:qt_%s_mac" % name],
             "@platforms//os:windows": ["@qt_windows_x86_64//:qt_%s_windows" % name],
@@ -35,7 +52,8 @@ cc_library(
     name = "qt_hdrs",
     visibility = ["//visibility:public"],
     deps = select({
-        "@platforms//os:linux": ["@qt_linux_x86_64//:qt_hdrs"],
+        ":linux_x86_64": ["@qt_linux_x86_64//:qt_hdrs"],
+        ":linux_aarch64": ["@qt_linux_aarch64//:qt_hdrs"],
         ":osx_x86_64": ["@qt_mac_x86_64//:qt_hdrs"],
         ":osx_arm64": ["@qt_mac_aarch64//:qt_hdrs"],
         "@platforms//os:windows": ["@qt_windows_x86_64//:qt_hdrs"],
