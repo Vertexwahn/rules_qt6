@@ -60,6 +60,31 @@ The following tools should be installed:
 - [Bazel](https://bazel.build/install)
 - A C++ compiler (GCC, Visual Studio, Clang, etc.)
 
+On Linux, the prebuilt binaries downloaded by this project require that your operating system ships with at least glibc 2.34 on x86_64 (eg. Ubuntu 22.04+ or Debian 12+) and 2.39 for aarch64 (Ubuntu 24.04+ or Debian 13+). You will also need to install these following system packages, which provide the necessary symbols needed for linking. 
+
+```
+sudo apt-get update && \
+sudo apt-get install -y  \
+  libegl-dev \
+  libegl1-mesa-dev \
+  libfontconfig1-dev \
+  libgl-dev \
+  libgl1-mesa-dev \
+  libpulse-dev \
+  libx11-xcb-dev \
+  libxcb-cursor-dev \
+  libxcb-icccm4-dev \
+  libxcb-image0-dev \
+  libxcb-keysyms1-dev \
+  libxcb-randr0-dev \
+  libxcb-render-util0-dev \
+  libxcb-shape0-dev \
+  libxcb-sync-dev \
+  libxcb-xfixes0-dev \
+  libxkbcommon-dev \
+  libxkbcommon-x11-dev
+```
+
 **Checkout, build, and run:**
 
 *All platforms:*

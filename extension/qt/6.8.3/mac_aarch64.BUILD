@@ -17,6 +17,10 @@ _framework_names = {library_name: ("Qt" + library_name[3:] if library_name.start
         includes = [
             "lib/%s.framework/Headers" % include_folder,
         ],
+        defines = select({
+            "@platforms//cpu:aarch64": ["__yield=__builtin_arm_yield"],
+            "//conditions:default": [],
+        }),
         additional_linker_inputs = [":lib"],
         linkopts = ["-F $(location :lib)"] + [
             "-framework %s" % _framework_names[library_name],  # macOS qt libs do not contain a 6 - e.g. instead of Qt6Core the lib is called QtCore

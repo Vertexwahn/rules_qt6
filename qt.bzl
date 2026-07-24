@@ -242,13 +242,15 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
             srcs = [hdr],
             outs = [moc_name + ".cpp"],
             cmd = select({
-                "@platforms//os:linux": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@rules_qt//:linux_x86_64": "$(location @qt_linux_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
+                "@rules_qt//:linux_aarch64": "$(location @qt_linux_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@platforms//os:windows": "$(location @qt_windows_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@rules_qt//:osx_x86_64": "$(location @qt_mac_x86_64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
                 "@rules_qt//:osx_arm64": "$(location @qt_mac_aarch64//:moc) $(locations %s) -o $@ -f'%s'" % (hdr, header_path),
             }),
             tools = select({
-                "@platforms//os:linux": ["@qt_linux_x86_64//:moc"],
+                "@rules_qt//:linux_x86_64": ["@qt_linux_x86_64//:moc"],
+                "@rules_qt//:linux_aarch64": ["@qt_linux_aarch64//:moc"],
                 "@platforms//os:windows": ["@qt_windows_x86_64//:moc"],
                 "@rules_qt//:osx_arm64": ["@qt_mac_aarch64//:moc"],
                 "@rules_qt//:osx_x86_64": ["@qt_mac_x86_64//:moc"],
@@ -271,12 +273,19 @@ def qt_cc_library(name, srcs, hdrs, normal_hdrs = [], deps = None, copts = [], t
     )
 
 qt_plugin_data = select({
-    "@platforms//os:linux": [
+    "@rules_qt//:linux_x86_64": [
         "@qt_linux_x86_64//:qml",
         "@qt_linux_x86_64//:plugins",
         "@qt_linux_x86_64//:lib",
         "@qt_linux_x86_64//:modules_files",
         "@qt_linux_x86_64//:metatypes_files",
+    ],
+    "@rules_qt//:linux_aarch64": [
+        "@qt_linux_aarch64//:qml",
+        "@qt_linux_aarch64//:plugins",
+        "@qt_linux_aarch64//:lib",
+        "@qt_linux_aarch64//:modules_files",
+        "@qt_linux_aarch64//:metatypes_files",
     ],
     "@rules_qt//:osx_x86_64": [
         "@qt_mac_x86_64//:plugins",
@@ -306,11 +315,18 @@ def update_dict(source, env):
     result.update(env)
     return result
 
-LINUX_ENV_DATA = {
+LINUX_X86_64_ENV_DATA = {
     "QT_QPA_PLATFORM": "xcb",
     "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)/platforms",
     "QML2_IMPORT_PATH": "$(location @qt_linux_x86_64//:qml)",
     "QT_PLUGIN_PATH": "$(location @qt_linux_x86_64//:plugins)",
+}
+
+LINUX_AARCH64_ENV_DATA = {
+    "QT_QPA_PLATFORM": "xcb",
+    "QT_QPA_PLATFORM_PLUGIN_PATH": "$(location @qt_linux_aarch64//:plugins)/platforms",
+    "QML2_IMPORT_PATH": "$(location @qt_linux_aarch64//:qml)",
+    "QT_PLUGIN_PATH": "$(location @qt_linux_aarch64//:plugins)",
 }
 
 MAC_X64_ENV_DATA = {
@@ -343,7 +359,8 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
       env: environment value
       **kwargs: Any additional arguments are passed to the cc_library rule.
     """
-    linux_env_data = update_dict(LINUX_ENV_DATA, env)
+    linux_x86_64_env_data = update_dict(LINUX_X86_64_ENV_DATA, env)
+    linux_aarch64_env_data = update_dict(LINUX_AARCH64_ENV_DATA, env)
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
@@ -358,7 +375,8 @@ def qt_cc_binary(name, srcs, deps = None, copts = [], data = [], env = {}, **kwa
         }),
         data = qt_plugin_data + data,
         env = select({
-            "@platforms//os:linux": linux_env_data,
+            "@rules_qt//:linux_x86_64": linux_x86_64_env_data,
+            "@rules_qt//:linux_aarch64": linux_aarch64_env_data,
             "@rules_qt//:osx_x86_64": mac_x64_env_data,
             "@rules_qt//:osx_arm64": mac_m1_env_data,
             "@platforms//os:windows": windows_env_data,
@@ -378,7 +396,8 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
       env: environment value
       **kwargs: Any additional arguments are passed to the cc_test rule.
     """
-    linux_env_data = update_dict(LINUX_ENV_DATA, env)
+    linux_x86_64_env_data = update_dict(LINUX_X86_64_ENV_DATA, env)
+    linux_aarch64_env_data = update_dict(LINUX_AARCH64_ENV_DATA, env)
     mac_x64_env_data = update_dict(MAC_X64_ENV_DATA, env)
     windows_env_data = update_dict(WINDOWS_ENV_DATA, env)
     mac_m1_env_data = update_dict(MAC_M1_ENV_DATA, env)
@@ -392,7 +411,8 @@ def qt_cc_test(name, srcs, deps = None, copts = [], data = [], env = {}, **kwarg
         }),
         data = qt_plugin_data + data,
         env = select({
-            "@platforms//os:linux": linux_env_data,
+            "@rules_qt//:linux_x86_64": linux_x86_64_env_data,
+            "@rules_qt//:linux_aarch64": linux_aarch64_env_data,
             "@rules_qt//:osx_x86_64": mac_x64_env_data,
             "@rules_qt//:osx_arm64": mac_m1_env_data,
             "@platforms//os:windows": windows_env_data,

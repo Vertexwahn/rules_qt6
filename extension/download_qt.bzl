@@ -10,7 +10,8 @@ load("//extension:qt_modules.bzl", "QT_MODULES")
 _PATHS_6_4_0 = {
     "mac": "macos",
     "macos": "macos",
-    "linux": "gcc_64",
+    "linux_x86_64": "gcc_64",
+    "linux_aarch64": "gcc_arm64",
     "win64_mingw": "mingw_64",
     "win64_msvc2022": "msvc2022_64",
 }
@@ -19,7 +20,8 @@ _PATHS_6_4_0 = {
 _PATHS_6_8_3 = {
     "mac": "macos",
     "macos": "macos",
-    "linux": "linux_gcc_64",
+    "linux_x86_64": "linux_gcc_64",
+    "linux_aarch64": "gcc_arm64",
     "win64_mingw": "mingw_64",
     "win64_msvc2022": "win64_msvc2022_64",
 }
@@ -176,7 +178,7 @@ download_qt = repository_rule(
     implementation = _download_qt_impl,
     attrs = {
         "version": attr.string(default = "6.4.0"),
-        "os": attr.string(default = "linux"),
+        "os": attr.string(default = "linux_x86_64"),
         "target_sdk": attr.string(default = "desktop"),
         "windows_architecture": attr.string(default = ""),
         "build_file": attr.label(default = "@rules_qt//:qt_linux_x86_64.BUILD"),

@@ -5,7 +5,7 @@ package(default_visibility = ["//visibility:public"])
 toolchain_type(name = "toolchain_type")
 
 qt_toolchain(
-    name = "qt_linux",
+    name = "qt_linux_x86_64",
     data = [
         "@qt_linux_x86_64//:moc",
         "@qt_linux_x86_64//:rcc",
@@ -14,6 +14,18 @@ qt_toolchain(
     moc_cmd = "$(location @qt_linux_x86_64//:moc)",
     rcc_cmd = "$(location @qt_linux_x86_64//:rcc)",
     uic_cmd = "$(location @qt_linux_x86_64//:uic)",
+)
+
+qt_toolchain(
+    name = "qt_linux_arm64",
+    data = [
+        "@qt_linux_aarch64//:moc",
+        "@qt_linux_aarch64//:rcc",
+        "@qt_linux_aarch64//:uic",
+    ],
+    moc_cmd = "$(location @qt_linux_aarch64//:moc)",
+    rcc_cmd = "$(location @qt_linux_aarch64//:rcc)",
+    uic_cmd = "$(location @qt_linux_aarch64//:uic)",
 )
 
 qt_toolchain(
@@ -54,7 +66,7 @@ qt_toolchain(
 )
 
 toolchain(
-    name = "qt_linux_toolchain",
+    name = "qt_linux_x86_64_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
     ],
@@ -62,7 +74,21 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    toolchain = ":qt_linux",
+    toolchain = ":qt_linux_x86_64",
+    toolchain_type = "@rules_qt//tools:toolchain_type",
+)
+
+toolchain(
+    name = "qt_linux_arm64_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+    target_compatible_with = [
+        "@platforms//os:linux",
+        "@platforms//cpu:aarch64",
+    ],
+    toolchain = ":qt_linux_arm64",
     toolchain_type = "@rules_qt//tools:toolchain_type",
 )
 
