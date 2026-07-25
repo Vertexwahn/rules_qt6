@@ -8,7 +8,7 @@ Publishing to the [Bazel Central Registry](https://registry.bazel.build/modules/
 2. Tag and push:
 
    ```shell
-   git tag -a 0.0.7 -m "Release 0.0.7"
+   git tag -a 0.0.7 -m "0.0.7"
    git push origin 0.0.7
    ```
 
