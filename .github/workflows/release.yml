@@ -35,3 +35,13 @@ jobs:
           body_path: release_notes.txt
           fail_on_unmatched_files: true
           files: rules_qt6-*.tar.gz
+
+  publish-to-bcr:
+    needs: build
+    uses: ./.github/workflows/publish.yaml
+    with:
+      tag_name: ${{ github.ref_name }}
+    permissions:
+      contents: write
+    secrets:
+      BCR_PUBLISH_TOKEN: ${{ secrets.BCR_PUBLISH_TOKEN }}
