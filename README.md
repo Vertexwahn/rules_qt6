@@ -144,7 +144,7 @@ If you name no specific license, I assume you are fine with the current used lic
 | [gwkawano/bazel_qt](https://github.com/gwkawano/bazel_qt)                                             | no             | Linux                 | Prebuild    | June 5, 2020      |
 | [jheaff1/rules_qt](https://github.com/jheaff1/rules_qt)                                               | no             | Linux, macOS, Windows | Prebuild    | June 19, 2023     |
 | [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt)                         | no             | Linux, macOS, Windows | Prebuild    | November 13, 2024 |
-| [kklochkov/rules_qt](https://github.com/kklochkov/rules_qt)                                           | no             | Linux, macOS          | Prebuild    | February 21, 2024 |
+| [kklochkov/rules_qt](https://github.com/kklochkov/rules_qt)                                           | yes             | Linux, macOS          | Prebuild & From Source    | July 25, 2026 |
 | [The-OpenROAD-Project/qt_bazel_prebuilts](https://github.com/The-OpenROAD-Project/qt_bazel_prebuilts) | yes            | ???                   | From Source | Jul 15, 2025      |
 
 ## License
