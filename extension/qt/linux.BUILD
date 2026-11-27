@@ -1,18 +1,28 @@
+# BUILD file of the Qt repository for Linux (x86_64) created by the `qt` module extension
 load("@rules_cc//cc:cc_library.bzl", "cc_library")
-load(":qt_libraries.bzl", "QT_LIBRARIES")
+load("@rules_qt//extension/qt:qt_libraries.bzl", "QT_LIBRARIES")
 
 [
     cc_library(
         name = "qt_%s_linux" % name,
-        srcs = glob([
-            "lib/lib%s.so*" % library_name,
-            "lib/libicu*.so*",
-        ], allow_empty = True),
-        data = glob([
-            "lib/lib%s.so*" % library_name,
-            "lib/libicu*.so*",
-        ], allow_empty = True),
-        hdrs = glob(["include/%s/**" % include_folder], allow_empty = True),
+        srcs = glob(
+            [
+                "lib/lib%s.so*" % library_name,
+                "lib/libicu*.so*",
+            ],
+            allow_empty = True,
+        ),
+        hdrs = glob(
+            ["include/%s/**" % include_folder],
+            allow_empty = True,
+        ),
+        data = glob(
+            [
+                "lib/lib%s.so*" % library_name,
+                "lib/libicu*.so*",
+            ],
+            allow_empty = True,
+        ),
         includes = [
             "include",
             "include/%s" % include_folder,
@@ -57,6 +67,15 @@ filegroup(
 )
 
 filegroup(
+    name = "lib_files",
+    srcs = glob([
+        "lib/**/*.so*",
+        "lib/**/libicu*",
+    ]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
     name = "qml_files",
     srcs = glob(["qml/**/*"]),
     visibility = ["//visibility:public"],
@@ -70,11 +89,18 @@ filegroup(
 
 filegroup(
     name = "metatypes_files",
-    srcs = glob(["metatypes/**/*"], allow_empty = True),
+    srcs = glob(
+        ["metatypes/**/*"],
+        allow_empty = True,
+    ),
     visibility = ["//visibility:public"],
 )
 
 exports_files(
-    ["qml", "plugins", "lib"],
+    [
+        "qml",
+        "plugins",
+        "lib",
+    ],
     visibility = ["//visibility:public"],
 )

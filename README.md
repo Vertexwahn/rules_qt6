@@ -1,4 +1,10 @@
 
+<!--
+SPDX-FileCopyrightText: 2022-2025 Julian Amann <dev@vertexwahn.de>
+SPDX-License-Identifier: Apache-2.0
+-->
+
+
 [![Support Ukraine](https://img.shields.io/badge/Support-Ukraine-FFD500?style=flat&labelColor=005BBB)](https://opensource.fb.com/support-ukraine) [<img src="docs/logo/bazel_logo.svg" alt="Bazel logo" width="24" height="24" />](https://bazel.build/) [<img src="docs/logo/qt-svgrepo-com.svg" alt="Qt logo" width="24" height="24" />](https://www.qt.io/product/qt6)
 
 # Bazel rules for Qt6
@@ -19,28 +25,94 @@ The idea of this project is to introduce own rules that simplify the usage of Qt
 
 ## Current status
 
-These rules were tested with Bazel 9.x.
-There is a chance that you also get this working with Bazel 7.x, and 8.x.
+These rules require Bazel 8 or newer and are tested with Bazel 9.x and 8.x (see [CI](.github/workflows/bazel_build.yml)).
 If you need support for older versions of Bazel, please check out an older state of this repository.
 Initially, this repository had support for Bazel 4.x.
 
-When using these rules,
-a prebuild version of Qt is fetched from [download.qt.io](https://download.qt.io/).
-Previously a prebuild version of Qt was fetched from [vertexwahn.de](https://vertexwahn.de/) (this approach was taken for example in release 0.0.4 of these rules).
-There is a variable `QT_BASE_DOWNLOAD_URL` that you can change to fetch Qt from a different source location.
+When using these rules, a prebuilt version of Qt is fetched from [download.qt.io](https://download.qt.io/) -
+only for the platforms that a build needs.
+Previously a prebuilt version of Qt was fetched from [vertexwahn.de](https://vertexwahn.de/) (this approach was taken for example in release 0.0.4 of these rules).
 
-I created a [`.bazelrc`](tests/.bazelrc) file that contains different configs: `vs2019`, `vs2022`, `gcc11`, `gcc13`, and `macos`.
-This is necessary since Qt6 requires at least C++17 standard to be enabled, and different C++ compilers require different flags to enable this. 
-Default C++ toolchains of Bazel 8 and newer have C++17 support. 
-Therefore, when not working with older versions the `.bazelrc` and the above configs could be dropped.
+Supported Qt versions (only LTS releases):
 
-The current targeted version of these rules is Qt 6.8.3. Qt 6.8 is the latest LTS version. 
-Also, there is the idea that these rules can support different versions of Qt, 
-but currently, only version 6.8.3 is tested and supported. When checking the code of these rules, 
-you can also find version 6.4.0 and get a rough idea of how different versions of Qt can be supported at the same time using these rules.
-Anyways, due to some differences between different Qt versions, 
-it is not always trivial to get everything working easily.
-The release 0.0.4 of these rules supports only Qt version 6.4.0.
+| Qt version | Notes                                   |
+| ---------- | --------------------------------------- |
+| 6.12.1     | Default (newest LTS release)            |
+| 6.8.3      | Previous LTS release                    |
+
+Supported platforms:
+
+| Platform       | Qt repository       | Requirements                                                                           |
+| -------------- | ------------------- | -------------------------------------------------------------------------------------- |
+| Linux x86_64   | `qt_linux_x86_64`   | glibc 2.34 or newer (e.g. Ubuntu 24.04+, Debian 12+)                                   |
+| Linux aarch64  | `qt_linux_aarch64`  | glibc 2.39 or newer (e.g. Ubuntu 24.04+, Debian 13+)                                   |
+| macOS arm64    | `qt_mac_aarch64`    | macOS 14.4 or newer for Qt 6.12.1, macOS 12 or newer for Qt 6.8.3                      |
+| macOS x86_64   | `qt_mac_x86_64`     | macOS 14.4 or newer for Qt 6.12.1, macOS 12 or newer for Qt 6.8.3                      |
+| Windows x86_64 | `qt_windows_x86_64` | Visual Studio 2022 or newer (MSVC). Only Qt Base, Qt Declarative, Qt SVG and Qt 5 Compat |
+
+On macOS, the Qt frameworks are built for a minimum macOS version (Qt 6.12.1: macOS 14.4).
+If you set `--macos_minimum_os`, use this version or a newer one.
+Otherwise, the linker warns `building for macOS-..., but linking with dylib '@rpath/QtCore.framework/Versions/A/QtCore' which was built for newer version 14.4`.
+
+Qt 6 requires at least C++17. The default C++ toolchains of Bazel 8 and newer use C++17 on Linux and macOS.
+With Visual Studio, you need to set `/std:c++17` (or newer) and `/Zc:__cplusplus` -
+the [`.bazelrc`](tests/.bazelrc) of the tests shows the settings that are used to test these rules.
+
+## Usage
+
+Add to your `MODULE.bazel` file:
+
+```starlark
+bazel_dep(name = "rules_qt", version = "0.0.8")
+
+# Optional - selects the Qt version (default: the newest supported Qt LTS release)
+qt = use_extension("@rules_qt//extension:qt.bzl", "fetch")
+qt.install(version = "6.12.1")
+```
+
+The Qt toolchains (moc, rcc, and uic) are registered by rules_qt. Use the rules in your `BUILD.bazel` files:
+
+```starlark
+load("@rules_qt//:qt.bzl", "qt_cc_binary")
+
+qt_cc_binary(
+    name = "hello_world",
+    srcs = ["hello_world.cpp"],
+    deps = [
+        "@rules_qt//:qt_core",
+        "@rules_qt//:qt_widgets",
+    ],
+)
+```
+
+Further options of `qt.install`:
+
+- `qt.install(os = "windows", version = "6.8.3")` selects the Qt version for one platform
+  (`linux_x86_64`, `linux_aarch64`, `macos`, or `windows`).
+- `qt.install(base_urls = ["https://mirror.example.com/qtproject/online/qtsdkrepository/"])` downloads Qt from mirrors of
+  https://download.qt.io/online/qtsdkrepository/.
+- If you reference the Qt repositories directly in your `BUILD.bazel` files (e.g. `@qt_linux_x86_64//:plugins`),
+  add them via `use_repo(qt, "qt_linux_x86_64")`.
+
+Migrating from rules_qt 0.0.7 or older: the former usage
+(`qt.install(name = ..., build_file = ..., os = ..., version = ..., windows_architecture = ...)` per platform) still works.
+`build_file` values that point to rules_qt (e.g. `@rules_qt//extension:qt/6.8.3/linux_x86_64.BUILD`) are ignored -
+you can remove them, as well as `register_toolchains("@rules_qt//tools:all")`.
+Own BUILD files (`build_file` outside of rules_qt) still work - on Windows, they should provide a `qt_runtime` target
+with the Qt DLLs that Qt plugins need at runtime (an empty one is added otherwise).
+moc is now taken from the Qt toolchain like rcc and uic - own toolchains (`qt_toolchain`) have to provide it as well.
+The `*_cmd` attributes of `qt_toolchain` are deprecated - use `moc`, `rcc`, and `uic`.
+
+### Adding a new Qt version
+
+The download paths and SHA-256 hashes of the prebuilt Qt archives are generated:
+
+```shell
+python3 extension/versions/generate.py 6.12.1
+```
+
+Afterwards, add the new version to [`extension/qt_versions.bzl`](extension/qt_versions.bzl)
+and to the CI matrix ([`.github/workflows/bazel_build.yml`](.github/workflows/bazel_build.yml)).
 
 ## Quick start
 
@@ -54,9 +126,11 @@ The following tools should be installed:
 - [Bazel](https://bazel.build/install)
 - A C++ compiler (GCC, Visual Studio, Clang, etc.)
 
-On Linux, the prebuilt binaries downloaded by this project require that your operating system ships with at least glibc 2.34 on x86_64 (eg. Ubuntu 22.04+ or Debian 12+) and 2.39 for aarch64 (Ubuntu 24.04+ or Debian 13+). You will also need to install these following system packages, which provide the necessary symbols needed for linking. 
+On Linux, you also need to install the following system packages, which provide the symbols needed for linking
+(the CI installs the same list). Without them, linking fails with errors like
+`libEGL.so.1, needed by libQt6Gui.so, not found`:
 
-```
+```shell
 sudo apt-get update && \
 sudo apt-get install -y  \
   libegl-dev \
@@ -64,7 +138,9 @@ sudo apt-get install -y  \
   libfontconfig1-dev \
   libgl-dev \
   libgl1-mesa-dev \
+  libpcsclite-dev \
   libpulse-dev \
+  libva-dev \
   libx11-xcb-dev \
   libxcb-cursor-dev \
   libxcb-icccm4-dev \
@@ -81,29 +157,10 @@ sudo apt-get install -y  \
 
 **Checkout, build, and run:**
 
-*All platforms:*
-
 ```shell
 git clone https://github.com/Vertexwahn/rules_qt6
 cd rules_qt6/tests
-```
-
-*Run Hello World demo with Windows 10/11 x64 with Visual Studio 2022:*
-
-```shell
-bazel run --config=vs2022 //hello_world:hello_world
-```
-
-*Run Hello World demo with Ubuntu 24.04:*
-
-```shell
-bazel run --config=gcc13 //hello_world:hello_world
-```
-
-*Run Hello World demo with macOS:*
-
-```shell
-bazel run --config=macos //hello_world:hello_world
+bazel run //hello_world:hello_world
 ```
 
 **Expected output**
@@ -125,7 +182,6 @@ The expected output should be similar (depending on your platform) to the follow
 **More Examples**
 
 More examples can be found in the [tests](tests) directory.
-
 ## Contributions are welcomed
 
 Any improvements to the Qt6 build experience using Bazel are always welcome.
@@ -144,7 +200,7 @@ If you name no specific license, I assume you are fine with the current used lic
 | [gwkawano/bazel_qt](https://github.com/gwkawano/bazel_qt)                                             | no             | Linux                 | Prebuild    | June 5, 2020      |
 | [jheaff1/rules_qt](https://github.com/jheaff1/rules_qt)                                               | no             | Linux, macOS, Windows | Prebuild    | June 19, 2023     |
 | [justbuchanan/bazel_rules_qt](https://github.com/justbuchanan/bazel_rules_qt)                         | no             | Linux, macOS, Windows | Prebuild    | November 13, 2024 |
-| [kklochkov/rules_qt](https://github.com/kklochkov/rules_qt)                                           | yes             | Linux, macOS          | Prebuild & From Source    | July 25, 2026 |
+| [kklochkov/rules_qt](https://github.com/kklochkov/rules_qt)                                           | yes            | Linux, macOS          | Prebuild & From Source | July 25, 2026 |
 | [The-OpenROAD-Project/qt_bazel_prebuilts](https://github.com/The-OpenROAD-Project/qt_bazel_prebuilts) | yes            | ???                   | From Source | Jul 15, 2025      |
 
 ## License

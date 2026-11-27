@@ -1,4 +1,4 @@
-"""qt library defines"""
+"""Qt libraries: (name, include folder, library name, dependencies) - shared by all supported Qt versions."""
 
 QT_LIBRARIES = [
     ## base and widgets
@@ -44,13 +44,13 @@ QT_LIBRARIES = [
     ("virtual_kerboard", "QtVirtualKeyboard", "Qt6VirtualKeyboard", [":qt_quick", ":qt_qml", ":qt_gui", ":qt_core"]),
     ("web_channel", "QtWebChannel", "Qt6WebChannel", [":qt_qml", ":qt_core"]),
     ("web_engine_core", "QtWebEngineCore", "Qt6WebEngineCore", [
-         ":qt_quick",
-         ":qt_gui",
-         ":qt_web_channel",
-         ":qt_qml",
-         ":qt_network",
-         ":qt_positioning",
-         ":qt_core",
+        ":qt_quick",
+        ":qt_gui",
+        ":qt_web_channel",
+        ":qt_qml",
+        ":qt_network",
+        ":qt_positioning",
+        ":qt_core",
     ]),
     ("web_engine_widgets", "QtWebEngineWidgets", "Qt6WebEngineWidgets", [":qt_quick_widgets", ":qt_web_engine_core", ":qt_print_support", ":qt_widgets", ":qt_gui", ":qt_core"]),
     ("web_sockets", "QtWebSockets", "Qt6WebSockets", [":qt_network", ":qt_core"]),

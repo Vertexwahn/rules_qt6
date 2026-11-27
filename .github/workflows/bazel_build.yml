@@ -1,188 +1,113 @@
 name: Bazel
 
 on:
-   pull_request: {}
-   push: {}
+  pull_request: {}
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  # This job was commented out since there is currently no prebuild version of macOS Intel that I can reference.
-  # If you can provide one, I am happy to reenable this job.
-  # build_and_test_macos13:
-  #   name: macOS 13 Bazel build <Apple Clang14> 
-  #   runs-on: macOS-13
+  test:
+    name: ${{ matrix.os }} - Qt ${{ matrix.qt }} - Bazel ${{ matrix.bazel }}
+    runs-on: ${{ matrix.runner }}  # see https://github.com/actions/runner-images
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Newest supported Qt LTS release (DEFAULT_QT_VERSION in extension/qt_versions.bzl)
+          - { os: Ubuntu 26.04 x86_64, runner: ubuntu-26.04, qt: "6.12.1", bazel: "9.x" }
+          - { os: Ubuntu 24.04 x86_64, runner: ubuntu-24.04, qt: "6.12.1", bazel: "9.x" }
+          - { os: Ubuntu 26.04 aarch64, runner: ubuntu-26.04-arm, qt: "6.12.1", bazel: "9.x" }
+          - { os: Ubuntu 24.04 aarch64, runner: ubuntu-24.04-arm, qt: "6.12.1", bazel: "9.x" }
+          - { os: macOS 27 arm64, runner: xcode-27, qt: "6.12.1", bazel: "9.x" }
+          - { os: macOS 26 arm64, runner: macos-26, qt: "6.12.1", bazel: "9.x" }
+          - { os: macOS 26 x86_64, runner: macos-26-intel, qt: "6.12.1", bazel: "9.x" }
+          - { os: Windows Server 2025, runner: windows-2025, qt: "6.12.1", bazel: "9.x" }
+          # Previous Qt LTS release
+          - { os: Ubuntu 24.04 x86_64, runner: ubuntu-24.04, qt: "6.8.3", bazel: "9.x" }
+          - { os: macOS 26 arm64, runner: macos-26, qt: "6.8.3", bazel: "9.x" }
+          - { os: Windows Server 2025, runner: windows-2025, qt: "6.8.3", bazel: "9.x" }
+          # Oldest supported Bazel version
+          - { os: Ubuntu 24.04 x86_64, runner: ubuntu-24.04, qt: "6.12.1", bazel: "8.x" }
+    defaults:
+      run:
+        shell: bash
+        working-directory: tests
 
-  #   steps:
-  #     - uses: actions/checkout@v7
-
-  #     - name: Print info
-  #       run: |
-  #         echo "OS info:"
-  #         sw_vers
-  #         uname
-  #         echo "Compiler info:"
-  #         clang --version
-
-  #     - name: Build
-  #       run: |
-  #         cd tests
-  #         bazel build --config=macos //...
-
-  build_and_test_macos14:
-    name: macOS 14 Bazel build <Apple Clang14>
-    runs-on: macOS-14  # macOS 14 Arm64 - see https://github.com/actions/runner-images
+    env:
+      USE_BAZEL_VERSION: ${{ matrix.bazel }}
+      # Git Bash on Windows would turn arguments like //... into /... (MSYS path conversion)
+      MSYS_NO_PATHCONV: "1"
+      MSYS2_ARG_CONV_EXCL: "*"
 
     steps:
       - uses: actions/checkout@v7
+
+      - uses: bazel-contrib/setup-bazel@0.19.2
+        with:
+          bazelisk-cache: true
+          repository-cache: true
+
+      # Keep in sync with the Linux prerequisites in README.md
+      - name: Install Linux system packages
+        if: runner.os == 'Linux'
+        run: |
+          # Failing third-party sources of the runner image (e.g. packages.microsoft.com)
+          # must not fail the job, all packages below come from the Ubuntu archive
+          sudo apt-get update || echo "::warning::apt-get update failed for some sources"
+          sudo apt-get install -y \
+            libegl-dev \
+            libegl1-mesa-dev \
+            libfontconfig1-dev \
+            libgl-dev \
+            libgl1-mesa-dev \
+            libpcsclite-dev \
+            libpulse-dev \
+            libva-dev \
+            libx11-xcb-dev \
+            libxcb-cursor-dev \
+            libxcb-icccm4-dev \
+            libxcb-image0-dev \
+            libxcb-keysyms1-dev \
+            libxcb-randr0-dev \
+            libxcb-render-util0-dev \
+            libxcb-shape0-dev \
+            libxcb-sync-dev \
+            libxcb-xfixes0-dev \
+            libxkbcommon-dev \
+            libxkbcommon-x11-dev
+
+      - name: Select Qt ${{ matrix.qt }}
+        run: |
+          perl -pi -e 's/qt\.install\(version = "[^"]*"\)/qt.install(version = "${{ matrix.qt }}")/' MODULE.bazel
+          grep 'qt.install' MODULE.bazel
 
       - name: Print info
         run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
+          uname -a
+          bazel version
 
       - name: Build
-        run: |
-          cd tests
-          bazel build --config=macos //...
+        run: bazel build //...
 
       - name: Test
-        run: |
-          cd tests
-          bazel test --config=macos //...
+        run: bazel test //...
 
-  build_and_test_macos15:
-    name: macOS 15 Bazel build <Apple Clang14>
-    runs-on: macOS-15  # macOS 15 Arm64 - see https://github.com/actions/runner-images
+      - name: Print Qt version
+        run: bazel run //version_test:version_test
 
+  # Stable check name for branch protection
+  all_tests_passed:
+    name: All tests passed
+    if: always()
+    needs: test
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-
-      - name: Print info
-        run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=macos //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=macos //...
-
-  build_and_test_macos26:
-    name: macOS 26 Bazel build <Apple Clang14>
-    runs-on: macOS-26  # macOS 26 Arm64 - see https://github.com/actions/runner-images
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Print info
-        run: |
-          echo "OS info:"
-          sw_vers
-          uname
-          echo "Compiler info:"
-          clang --version
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=macos //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=macos //...
-
-  build_and_test_ubuntu22:
-    name: Linux Ubuntu 22.04 x86_64 build <GCC 11.4.0>
-    runs-on: ubuntu-22.04
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=gcc11 //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=gcc11 //...
-
-  build_and_test_ubuntu24:
-    name: Linux Ubuntu 24.04 x86_64 build <GCC 13.2.0>
-    runs-on: ubuntu-24.04
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=gcc13 //...
-          
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=gcc13 //...
-
-  build_and_test_ubuntu24_arm:
-    name: Linux Ubuntu 24.04 aarch64 build <GCC 13.2.0>
-    runs-on: ubuntu-24.04-arm
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=gcc13 //...
-          
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=gcc13 //...
-
-  build_and_test_windows2022:
-    name: Windows Server 2022 build <Visual Studio 2022>
-    runs-on: windows-2022
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=vs2022 //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=vs2022 //...
-
-  build_and_test_windows2025:
-    name: Windows Server 2025 build <Visual Studio 2022>
-    runs-on: windows-2025
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - name: Build
-        run: |
-          cd tests
-          bazel build --config=vs2022 //...
-
-      - name: Test
-        run: |
-          cd tests
-          bazel test --config=vs2022 //...
+      - run: test "${{ needs.test.result }}" = "success"

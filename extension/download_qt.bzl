@@ -1,203 +1,150 @@
-"""Repository rule helpers for fetching Qt archives via aqt."""
+"""Repository rule that downloads and extracts a prebuilt Qt from the Qt online installer repository."""
 
-load("@bazel_skylib//lib:paths.bzl", "paths")
+load("//extension:qt_versions.bzl", "QT_VERSIONS")
 
-# The qt_modules.bzl file is auto-generated based on the qt_modules() def in
-# the root BUILD.bazel file.
-load("//extension:qt_modules.bzl", "QT_MODULES")
+# Mirrors of the Qt online installer repository (tried in order)
+QT_BASE_URLS = ["https://download.qt.io/online/qtsdkrepository/"]
 
-# Qt 6.4.0 and earlier use these paths
-_PATHS_6_4_0 = {
-    "mac": "macos",
-    "macos": "macos",
-    "linux_x86_64": "gcc_64",
-    "linux_aarch64": "gcc_arm64",
-    "win64_mingw": "mingw_64",
-    "win64_msvc2022": "msvc2022_64",
+# The Qt archives are 7z archives - 7-Zip is used to extract them (https://github.com/ip7z/7zip/releases)
+_7ZIP = {
+    "linux_aarch64": ("https://github.com/ip7z/7zip/releases/download/26.06/7z2606-linux-arm64.tar.xz", "edcc408aacce77da5223728f2eceb5e9f6dc713b8a9df934ad21e2a7f7560627"),
+    "linux_x86_64": ("https://github.com/ip7z/7zip/releases/download/26.06/7z2606-linux-x64.tar.xz", "2b539cf067b2ad48e1baa5093dbaa8818b73542d1222a0ffde9dc5f2922ea62e"),
+    # Newest universal (arm64 and x86_64) build - the macOS build of 26.06 is arm64 only
+    "macos": ("https://github.com/ip7z/7zip/releases/download/26.05/7z2605-mac.tar.xz", "12ef6830317743cfd3f0ab1724bde43fcc270d8b6d8564f8c12c2a2b7f993570"),
+    "windows": ("https://github.com/ip7z/7zip/releases/download/26.06/7zr.exe", "e80db2dad715a6c5adabe292d31ed54e11f4e9b99ca349827b50573b175891bc"),
 }
 
-# Qt 6.8.3 and later use these paths
-_PATHS_6_8_3 = {
-    "mac": "macos",
-    "macos": "macos",
-    "linux_x86_64": "linux_gcc_64",
-    "linux_aarch64": "gcc_arm64",
-    "win64_mingw": "mingw_64",
-    "win64_msvc2022": "win64_msvc2022_64",
-}
+def _7zip(rctx):
+    """Downloads 7-Zip for the host and returns the path of its executable."""
+    host = rctx.os.name.lower()
+    if host.startswith("windows"):
+        key = "windows"
+    elif host.startswith("mac"):
+        key = "macos"
+    elif rctx.os.arch in ("aarch64", "arm64"):
+        key = "linux_aarch64"
+    else:
+        key = "linux_x86_64"
 
-def _get_paths_for_version(version):
-    """Returns the appropriate paths dictionary for the given Qt version."""
+    url, sha256 = _7ZIP[key]
+    if url.endswith(".exe"):
+        rctx.download(url = url, sha256 = sha256, output = "_7zip/7zr.exe", executable = True)
+        return rctx.path("_7zip/7zr.exe")
+    rctx.download_and_extract(url = url, sha256 = sha256, output = "_7zip")
+    return rctx.path("_7zip/7zz")
 
-    # Parse version to compare
-    version_parts = version.split(".")
-    major = int(version_parts[0])
-    minor = int(version_parts[1])
+_QT_LIBRARIES = Label("//extension/qt:qt_libraries.bzl")
 
-    # Qt 6.8.3 and later use different paths
-    if major > 6 or (major == 6 and minor >= 8):
-        return _PATHS_6_8_3
-    return _PATHS_6_4_0
+# rules_qt needs a target for each of its libraries - entries of a custom qt_libraries.bzl take precedence
+_MERGED_QT_LIBRARIES = """\
+load(":qt_libraries_custom.bzl", _CUSTOM = "QT_LIBRARIES")
+load("@rules_qt//extension/qt:qt_libraries.bzl", _BUILT_IN = "QT_LIBRARIES")
+
+_CUSTOM_NAMES = [library[0] for library in _CUSTOM]
+
+QT_LIBRARIES = _CUSTOM + [library for library in _BUILT_IN if library[0] not in _CUSTOM_NAMES]
+"""
+
+def _adapt_custom_build_file(rctx, content):
+    """Keeps BUILD files that are not provided by rules_qt (e.g. written for rules_qt 0.0.7) working."""
+    build_file = rctx.attr.build_file
+
+    # rules_qt 0.0.7 copied the qt_libraries.bzl next to the BUILD file into the repository, which the BUILD
+    # file loads as `:qt_libraries.bzl` or `@rules_qt//:qt_libraries.bzl`
+    directory = build_file.name.rpartition("/")[0]
+    sibling = rctx.path(build_file.same_package_label(directory + "/qt_libraries.bzl" if directory else "qt_libraries.bzl"))
+    if sibling.exists:
+        rctx.file("qt_libraries_custom.bzl", rctx.read(sibling))
+        rctx.file("qt_libraries.bzl", _MERGED_QT_LIBRARIES)
+    else:
+        rctx.file("qt_libraries.bzl", "load(\"{}\", _QT_LIBRARIES = \"QT_LIBRARIES\")\n\nQT_LIBRARIES = _QT_LIBRARIES\n".format(_QT_LIBRARIES))
+    content = content.replace("@rules_qt//:qt_libraries.bzl", "//:qt_libraries.bzl")
+
+    # qt_cc_binary and qt_cc_test depend on :qt_runtime on Windows
+    if rctx.attr.platform == "windows" and "\"qt_runtime\"" not in content:
+        content = "\n".join([
+            "load(\"@rules_cc//cc:cc_library.bzl\", _rules_qt_cc_library = \"cc_library\")",
+            content,
+            "_rules_qt_cc_library(name = \"qt_runtime\", visibility = [\"//visibility:public\"])",
+            "",
+        ])
+    return content
 
 def _download_qt_impl(rctx):
-    if rctx.os.name.startswith("windows"):
-        # On Windows, download 7zr.exe standalone executable from the internet
-        # Normalize Windows OS name (e.g., "windows 11" -> "windows")
-        normalized_os = "windows"
-        host_platform = "{}-{}".format(normalized_os, rctx.os.arch)
-        _url = rctx.attr.url_7z[host_platform]
-        _sha = rctx.attr.sha256_7z[host_platform]
-        rctx.download(
-            url = _url,
-            sha256 = _sha,
-            output = "archiver_7z/7zr.exe",
-        )
-        archiver_bin = rctx.path("archiver_7z/7zr.exe")
-    elif rctx.os.name.startswith("mac"):
-        # On macOS, try to use system 7zz first
-        result = rctx.execute(["which", "7zz"])
-        if result.return_code == 0:
-            archiver_bin = rctx.path(result.stdout.strip())
-        else:
-            # Fallback: download 7z
-            host_platform = "{}-{}".format(rctx.os.name, rctx.os.arch)
-            _url = rctx.attr.url_7z[host_platform]
-            _sha = rctx.attr.sha256_7z[host_platform]
-            rctx.download_and_extract(
-                url = _url,
-                sha256 = _sha,
-                output = "archiver_7z",
-            )
-            archiver_bin = rctx.path("archiver_7z/7zz")
-    else:
-        # On Linux, download and extract 7z
-        host_platform = "{}-{}".format(rctx.os.name, rctx.os.arch)
-        _url = rctx.attr.url_7z[host_platform]
-        _sha = rctx.attr.sha256_7z[host_platform]
-        rctx.download_and_extract(
-            url = _url,
-            sha256 = _sha,
-            output = "archiver_7z",
-        )
-        archiver_bin = rctx.path("archiver_7z/7zz")
-
-    # Get modules for the specified version and platform
     version = rctx.attr.version
-    platform = rctx.attr.os
+    if version not in QT_VERSIONS:
+        fail("Qt {} is not supported. Supported versions: {}".format(version, ", ".join(QT_VERSIONS.keys())))
+    if rctx.attr.platform not in QT_VERSIONS[version]:
+        fail("Qt {} is not available for {}".format(version, rctx.attr.platform))
+    archives = QT_VERSIONS[version][rctx.attr.platform]
 
-    if platform not in QT_MODULES:
-        fail("Platform {} not found in QT_MODULES. Available platforms: {}".format(
-            platform,
-            ", ".join(QT_MODULES.keys()),
-        ))
+    # Start all downloads at once - they run in parallel
+    downloads = []
+    for module, archive in sorted(archives.items()):
+        output = "_archives/{}.7z".format(module)
+        downloads.append((output, rctx.download(
+            url = [base_url + archive["path"] for base_url in rctx.attr.base_urls],
+            sha256 = archive["sha256"],
+            output = output,
+            block = False,
+        )))
 
-    if version not in QT_MODULES[platform]:
-        available_versions = list(QT_MODULES[platform].keys())
-        fail("Qt version {} not found for platform {}. Available versions: {}".format(
-            version,
-            platform,
-            ", ".join(available_versions),
-        ))
+    seven_zip = _7zip(rctx)
+    for output, download in downloads:
+        download.wait()
 
-    version_modules = QT_MODULES[platform][version]
-
-    # We have to write our own download_and_extract() because the one in ctx
-    # doesn't support 7z decompress & that's what qt modules are downloaded as.
-    for _qt_module, download_info in version_modules.items():
-        res = rctx.download(
-            url = download_info["url"],
-            sha256 = download_info["sha256"],
-            output = "archives/{}".format(paths.basename(download_info["url"])),
-        )
-        if not res.success:
-            fail("Failed to download:\n{}\n{}".format(download_info["url"], res.stderr))
-
-        archive = paths.basename(download_info["url"])
-        if rctx.os.name.startswith("windows"):
-            arguments = [archiver_bin.realpath, "x"]
-        else:
-            arguments = [archiver_bin.realpath, "x"]
-        arguments += ["archives/{}".format(archive), "-o{}".format(".")]
-        res = rctx.execute(arguments)
-        if res.return_code != 0:
-            fail("Failed to decompress archive:\n{}\n{}".format(" ".join([str(arg) for arg in arguments]), res.stderr))
-
-    path_lookup = rctx.attr.os
-    if rctx.attr.os == "windows":
-        path_lookup = rctx.attr.windows_architecture
-
-    # Get the appropriate paths for this Qt version
-    _PATHS = _get_paths_for_version(rctx.attr.version)
-
-    # Qt 6.4.0 extracts to version/platform subdirectories (e.g., 6.4.0/gcc_64)
-    # Qt 6.8.3+ extracts directly to the root directory
-    # Try the versioned path first, fall back to root if it doesn't exist
-    base_path = "{}/{}".format(rctx.attr.version, _PATHS[path_lookup])
-
-    if not rctx.path(base_path).exists:
-        # Qt 6.8.3+ style: files are in the root
-        base_path = "."
-
-    if base_path == ".":
-        # For flat structure, symlink all top-level directories
-        for entry in rctx.path(".").readdir():
-            # Skip special files and the archives directory
-            if entry.basename not in ["WORKSPACE", "MODULE.bazel", "archives", "archiver_7z"]:
-                if not rctx.path(entry.basename).exists:
-                    rctx.symlink(entry, entry.basename)
-    else:
-        # For versioned structure, symlink from the version subdirectory
-        for entry in rctx.path(base_path).readdir():
-            rctx.symlink(entry, entry.basename)
+        # Since 7-Zip 25.01, symbolic links that point to other links (e.g. libQt6Core.so -> libQt6Core.so.6 ->
+        # libQt6Core.so.6.12.1) are not extracted by default - -snld20 allows them (the archives are verified by SHA-256)
+        result = rctx.execute([seven_zip, "x", "-y", "-bd", "-snld20", output])
+        if result.return_code != 0:
+            fail("Failed to extract {}:\n{}\n{}".format(output, result.stdout, result.stderr))
+        rctx.delete(output)
+    rctx.delete("_archives")
+    rctx.delete("_7zip")
 
     # Ensure ICU libraries are available under the lib directory for runtime lookup
     lib_dir = rctx.path("lib")
     if lib_dir.exists:
         for entry in rctx.path(".").readdir():
-            if not entry.basename.startswith("libicu"):
-                continue
-            dest = lib_dir.get_child(entry.basename)
-            if not dest.exists:
-                rctx.symlink(entry, "lib/{}".format(entry.basename))
+            if entry.basename.startswith("libicu") and not lib_dir.get_child(entry.basename).exists:
+                rctx.symlink(entry, "lib/" + entry.basename)
 
-    # Write out bazel workspace files
-    rctx.file("WORKSPACE", content = "")
-    rctx.file("MODULE.bazel", content = "module(name = {})".format(rctx.attr.name))
+    rctx.file("REPO.bazel", "")
+    rctx.file("qt_version.bzl", "QT_VERSION = \"{}\"\n".format(version))
+    content = rctx.read(rctx.attr.build_file)
+    if rctx.attr.build_file.repo_name != _QT_LIBRARIES.repo_name:
+        content = _adapt_custom_build_file(rctx, content)
+    rctx.file("BUILD.bazel", content)
 
-    # Write the qt_libraries definition file from the same directory as the build_file
-    build_file_dir = "/".join(str(rctx.attr.build_file).split("/")[:-1])
-    qt_libraries_path = build_file_dir + "/qt_libraries.bzl"
-    qt_library_defs = rctx.read(Label(qt_libraries_path))
-    rctx.file("qt_libraries.bzl", content = qt_library_defs)
-
-    # Write the toplevel BUILD.bazel file, removing the @rules_qt since the libraries def is contained therein
-    build_file_contents = rctx.read(rctx.attr.build_file)
-    rctx.file("BUILD.bazel", content = build_file_contents.replace("@rules_qt", ""))
+    # Mark the repository as reproducible so Bazel does not re-check file
+    # modification timestamps between builds.  Without this, running the Qt app
+    # via `bazel run` causes Windows to update NTFS metadata on plugin DLLs,
+    # which Bazel incorrectly interprets as external modifications and triggers
+    # a full re-download on the next build.
+    if hasattr(rctx, "repo_metadata"):  # Bazel 8.3+
+        return rctx.repo_metadata(reproducible = True)
+    return None
 
 download_qt = repository_rule(
     implementation = _download_qt_impl,
+    doc = "Downloads the archives of a prebuilt Qt (see `extension/qt_versions.bzl`) and extracts them.",
     attrs = {
-        "version": attr.string(default = "6.4.0"),
-        "os": attr.string(default = "linux_x86_64"),
-        "target_sdk": attr.string(default = "desktop"),
-        "windows_architecture": attr.string(default = ""),
-        "build_file": attr.label(default = "@rules_qt//:qt_linux_x86_64.BUILD"),
-        "url_7z": attr.string_dict(default = {
-            "linux-amd64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-linux-x64.tar.xz",
-            "linux-aarch64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-linux-arm64.tar.xz",
-            "mac os x-aarch64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-mac.tar.xz",
-            "mac os x-x86_64": "https://github.com/ip7z/7zip/releases/download/23.01/7z2301-mac.tar.xz",
-            "windows-amd64": "https://github.com/ip7z/7zip/releases/download/23.01/7zr.exe",
-            "windows-x86_64": "https://github.com/ip7z/7zip/releases/download/23.01/7zr.exe",
-        }),
-        "sha256_7z": attr.string_dict(default = {
-            "linux-amd64": "23babcab045b78016e443f862363e4ab63c77d75bc715c0b3463f6134cbcf318",
-            "linux-aarch64": "34e938fc4ba8ca6a835239733d9c1542ad8442cc037f43ca143a119bdf322b63",
-            "mac os x-aarch64": "343eae9ccbbd8f68320adaaa3c87e0244cf39fad0fbec6b9d2cd3e5b0f8a5fbf",
-            "mac os x-x86_64": "343eae9ccbbd8f68320adaaa3c87e0244cf39fad0fbec6b9d2cd3e5b0f8a5fbf",
-            "windows-amd64": "72c98287b2e8f85ea7bb87834b6ce1ce7ce7f41a8c97a81b307d4d4bf900922b",
-            "windows-x86_64": "72c98287b2e8f85ea7bb87834b6ce1ce7ce7f41a8c97a81b307d4d4bf900922b",
-        }),
-        "_qt_libraries": attr.label(default = None, allow_single_file = True),
+        "base_urls": attr.string_list(
+            default = QT_BASE_URLS,
+            doc = "Mirrors of the Qt online installer repository.",
+        ),
+        "build_file": attr.label(
+            mandatory = True,
+            doc = "BUILD file of the repository.",
+        ),
+        "platform": attr.string(
+            mandatory = True,
+            values = ["linux_aarch64", "linux_x86_64", "macos", "windows"],
+            doc = "Platform of the prebuilt Qt.",
+        ),
+        "version": attr.string(
+            mandatory = True,
+            doc = "Qt version, e.g. 6.12.1.",
+        ),
     },
 )
