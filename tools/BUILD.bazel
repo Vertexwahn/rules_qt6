@@ -5,68 +5,42 @@ package(default_visibility = ["//visibility:public"])
 toolchain_type(name = "toolchain_type")
 
 qt_toolchain(
-    name = "qt_linux_x86_64",
-    data = [
-        "@qt_linux_x86_64//:moc",
-        "@qt_linux_x86_64//:rcc",
-        "@qt_linux_x86_64//:uic",
-    ],
-    moc_cmd = "$(location @qt_linux_x86_64//:moc)",
-    rcc_cmd = "$(location @qt_linux_x86_64//:rcc)",
-    uic_cmd = "$(location @qt_linux_x86_64//:uic)",
+    name = "qt_linux",
+    moc = "@qt_linux_x86_64//:moc",
+    rcc = "@qt_linux_x86_64//:rcc",
+    uic = "@qt_linux_x86_64//:uic",
 )
 
 qt_toolchain(
-    name = "qt_linux_arm64",
-    data = [
-        "@qt_linux_aarch64//:moc",
-        "@qt_linux_aarch64//:rcc",
-        "@qt_linux_aarch64//:uic",
-    ],
-    moc_cmd = "$(location @qt_linux_aarch64//:moc)",
-    rcc_cmd = "$(location @qt_linux_aarch64//:rcc)",
-    uic_cmd = "$(location @qt_linux_aarch64//:uic)",
+    name = "qt_linux_aarch64",
+    moc = "@qt_linux_aarch64//:moc",
+    rcc = "@qt_linux_aarch64//:rcc",
+    uic = "@qt_linux_aarch64//:uic",
 )
 
-qt_toolchain(
-    name = "qt_windows",
-    data = [
-        "@qt_windows_x86_64//:moc",
-        "@qt_windows_x86_64//:rcc",
-        "@qt_windows_x86_64//:uic",
-    ],
-    moc_cmd = "$(location @qt_windows_x86_64//:moc)",
-    rcc_cmd = "$(location @qt_windows_x86_64//:rcc)",
-    uic_cmd = "$(location @qt_windows_x86_64//:uic)",
-)
-
-## osx current use pre installed qt, when ready, change to use download version like linux and windows
 qt_toolchain(
     name = "qt_osx",
-    data = [
-        "@qt_mac_x86_64//:moc",
-        "@qt_mac_x86_64//:rcc",
-        "@qt_mac_x86_64//:uic",
-    ],
-    moc_cmd = "$(location @qt_mac_x86_64//:moc)",
-    rcc_cmd = "$(location @qt_mac_x86_64//:rcc)",
-    uic_cmd = "$(location @qt_mac_x86_64//:uic)",
+    moc = "@qt_mac_x86_64//:moc",
+    rcc = "@qt_mac_x86_64//:rcc",
+    uic = "@qt_mac_x86_64//:uic",
 )
 
 qt_toolchain(
     name = "qt_osx_M1",
-    data = [
-        "@qt_mac_aarch64//:moc",
-        "@qt_mac_aarch64//:rcc",
-        "@qt_mac_aarch64//:uic",
-    ],
-    moc_cmd = "$(location @qt_mac_aarch64//:moc)",
-    rcc_cmd = "$(location @qt_mac_aarch64//:rcc)",
-    uic_cmd = "$(location @qt_mac_aarch64//:uic)",
+    moc = "@qt_mac_aarch64//:moc",
+    rcc = "@qt_mac_aarch64//:rcc",
+    uic = "@qt_mac_aarch64//:uic",
+)
+
+qt_toolchain(
+    name = "qt_windows",
+    moc = "@qt_windows_x86_64//:moc",
+    rcc = "@qt_windows_x86_64//:rcc",
+    uic = "@qt_windows_x86_64//:uic",
 )
 
 toolchain(
-    name = "qt_linux_x86_64_toolchain",
+    name = "qt_linux_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
     ],
@@ -74,12 +48,12 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:x86_64",
     ],
-    toolchain = ":qt_linux_x86_64",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
+    toolchain = ":qt_linux",
+    toolchain_type = ":toolchain_type",
 )
 
 toolchain(
-    name = "qt_linux_arm64_toolchain",
+    name = "qt_linux_aarch64_toolchain",
     exec_compatible_with = [
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
@@ -88,8 +62,35 @@ toolchain(
         "@platforms//os:linux",
         "@platforms//cpu:aarch64",
     ],
-    toolchain = ":qt_linux_arm64",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
+    toolchain = ":qt_linux_aarch64",
+    toolchain_type = ":toolchain_type",
+)
+
+# Qt for macOS consists of universal binaries - its tools run on arm64 and x86_64
+toolchain(
+    name = "qt_osx_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:osx",
+    ],
+    target_compatible_with = [
+        "@platforms//os:osx",
+        "@platforms//cpu:x86_64",
+    ],
+    toolchain = ":qt_osx",
+    toolchain_type = ":toolchain_type",
+)
+
+toolchain(
+    name = "qt_osx_M1_toolchain",
+    exec_compatible_with = [
+        "@platforms//os:osx",
+    ],
+    target_compatible_with = [
+        "@platforms//os:osx",
+        "@platforms//cpu:aarch64",
+    ],
+    toolchain = ":qt_osx_M1",
+    toolchain_type = ":toolchain_type",
 )
 
 toolchain(
@@ -102,31 +103,5 @@ toolchain(
         "@platforms//cpu:x86_64",
     ],
     toolchain = ":qt_windows",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
-)
-
-toolchain(
-    name = "qt_osx_toolchain",
-    exec_compatible_with = [
-        "@platforms//os:osx",
-    ],
-    target_compatible_with = [
-        "@platforms//os:osx",
-        "@platforms//cpu:x86_64",
-    ],
-    toolchain = ":qt_osx",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
-)
-
-toolchain(
-    name = "qt_osx_M1_toolchain",
-    exec_compatible_with = [
-        "@platforms//os:osx",
-    ],
-    target_compatible_with = [
-        "@platforms//os:osx",
-        "@platforms//cpu:arm64",
-    ],
-    toolchain = ":qt_osx_M1",
-    toolchain_type = "@rules_qt//tools:toolchain_type",
+    toolchain_type = ":toolchain_type",
 )
