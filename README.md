@@ -173,7 +173,7 @@ The expected output should be similar (depending on your platform) to the follow
 
 *Ubuntu*
 
-![Screenshot of HelloWorld demo on Ubuntu 24.04](/docs/screenshots/hello_world_Ubuntu24.04.png)
+![Screenshot of HelloWorld demo on Ubuntu 26.04](/docs/screenshots/hello_world_Ubuntu26.04.png)
 
 *macOS*
 
